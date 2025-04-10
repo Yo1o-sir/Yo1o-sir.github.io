@@ -65,6 +65,12 @@
     
   
   
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/@waline/client@2.15.8/dist/waline.css">
+
+    
+  
   
   
     
@@ -348,6 +354,11 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
       
       
       
+        <a data-aos="zoom-in" href="/2025/04/09/Yolo-s-new-blog/#comments" class="article-comment-link">
+          <span class="post-comments-count waline-comment-count" data-path="/2025/04/09/Yolo-s-new-blog/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
       
         <a data-aos="zoom-in" href="/2025/04/09/Yolo-s-new-blog/#comments" class="article-comment-link">
           <span class="post-comments-count twikoo-comment-count" data-path="/2025/04/09/Yolo-s-new-blog/" itemprop="commentCount"></span>
@@ -369,6 +380,11 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
         </script>
       
       
+      
+        <span data-aos="zoom-in" class="article-visitor-link">
+          <span class="waline-pageview-count" data-path="/2025/04/09/Yolo-s-new-blog/">0</span>
+          <em class="post-meta-item-text">阅读量</em>
+        </span>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/musc/" rel="tag">musc</a></li></ul>
@@ -418,6 +434,10 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
       <div class="comment-selector">
         <div class="comment-selector-wrap">
             
+            <div class="selector-item" data-selector="waline">
+              <span>waline</span>
+            </div>
+            
             <div class="selector-item" data-selector="twikoo">
               <span>twikoo</span>
             </div>
@@ -426,6 +446,10 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
       </div>
     </div>
     <div class="comment-content">
+      
+        <div class="comment waline-comment" data-aos="fade-up"
+          id="waline-comment">
+        </div>
       
         <div class="comment twikoo-comment" data-aos="fade-up"
           id="twikoo-comment">
@@ -724,7 +748,6 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 
 
 
-<div class="twikoo-comment" style="display: none;"></div>
 
 <script data-pjax>
   var loadScript = (src, integrity) => {
@@ -778,7 +801,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
       }
     },
     waline: {
-      enable: false,
+      enable: true,
       load: async () => {
         const container = document.querySelector('.waline-comment');
         if (!container) return;
@@ -793,7 +816,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
 
         window.walineInstance = walineInit({
           el: '.waline-comment',
-          serverURL: 'https://comment-krs13fp2e-yo1o-sirs-projects.vercel.app/',
+          serverURL: 'https://comment-sable-alpha.vercel.app/',
           lang: 'zh-CN',
           locale: {},
           emoji: ["https://unpkg.com/@waline/emojis@1.2.0/weibo","https://unpkg.com/@waline/emojis@1.2.0/alus","https://unpkg.com/@waline/emojis@1.2.0/bilibili","https://unpkg.com/@waline/emojis@1.2.0/qq","https://unpkg.com/@waline/emojis@1.2.0/tieba","https://unpkg.com/@waline/emojis@1.2.0/tw-emoji"],
@@ -823,7 +846,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
           if (window.twikoo) {
             twikoo.init({
               envId: 'https://twikoo-tau-inky.vercel.app/',
-              el: 'twikoo-comment',
+              el: '.tcomment',
               region: '',
             })
           }
@@ -931,7 +954,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
     
     // 3. 如果localStorage无效，检查配置的默认评论系统
     if (!defaultComment) {
-      var configDefault = 'twikoo';
+      var configDefault = 'waline';
       if (commentConfig[configDefault]?.enable) {
         defaultComment = configDefault;
       }
