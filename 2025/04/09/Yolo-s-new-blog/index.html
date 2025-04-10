@@ -360,25 +360,6 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">â€
         </a>
       
       
-        <a data-aos="zoom-in" href="/2025/04/09/Yolo-s-new-blog/#comments" class="article-comment-link">
-          <span class="post-comments-count twikoo-comment-count" data-path="/2025/04/09/Yolo-s-new-blog/" itemprop="commentCount"></span>
-          ç•™è¨€
-        </a>
-        <script>
-          twikoo.getCommentsCount({
-            envId: 'https://twikoo-tau-inky.vercel.app/',
-            region: '',
-            urls: [
-              '/2025/04/09/Yolo-s-new-blog/'
-            ],
-            includeReply: false
-          }).then((res) => {
-            _$('.twikoo-comment-count').innerText = res[0].count;
-          }).catch((err) => {
-            console.error(err);
-          });
-        </script>
-      
       
       
         <span data-aos="zoom-in" class="article-visitor-link">
@@ -438,10 +419,6 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">â€
               <span>waline</span>
             </div>
             
-            <div class="selector-item" data-selector="twikoo">
-              <span>twikoo</span>
-            </div>
-            
         </div>
       </div>
     </div>
@@ -449,10 +426,6 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">â€
       
         <div class="comment waline-comment" data-aos="fade-up"
           id="waline-comment">
-        </div>
-      
-        <div class="comment twikoo-comment" data-aos="fade-up"
-          id="twikoo-comment">
         </div>
       
     </div>
@@ -831,7 +804,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">â€
       }
     },
     twikoo: {
-      enable: true,
+      enable: false,
       load: () => {
         const container = document.querySelector('.twikoo-comment');
         if (!container) return;

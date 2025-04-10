@@ -327,25 +327,6 @@
         </a>
       
       
-        <a data-aos="zoom-in" href="/about/index.html#comments" class="article-comment-link">
-          <span class="post-comments-count twikoo-comment-count" data-path="/about/index.html" itemprop="commentCount"></span>
-          留言
-        </a>
-        <script>
-          twikoo.getCommentsCount({
-            envId: 'https://twikoo-tau-inky.vercel.app/',
-            region: '',
-            urls: [
-              '/about/index.html'
-            ],
-            includeReply: false
-          }).then((res) => {
-            _$('.twikoo-comment-count').innerText = res[0].count;
-          }).catch((err) => {
-            console.error(err);
-          });
-        </script>
-      
       
       
         <span data-aos="zoom-in" class="article-visitor-link">
@@ -381,10 +362,6 @@
               <span>waline</span>
             </div>
             
-            <div class="selector-item" data-selector="twikoo">
-              <span>twikoo</span>
-            </div>
-            
         </div>
       </div>
     </div>
@@ -392,10 +369,6 @@
       
         <div class="comment waline-comment" data-aos="fade-up"
           id="waline-comment">
-        </div>
-      
-        <div class="comment twikoo-comment" data-aos="fade-up"
-          id="twikoo-comment">
         </div>
       
     </div>
@@ -756,7 +729,7 @@
       }
     },
     twikoo: {
-      enable: true,
+      enable: false,
       load: () => {
         const container = document.querySelector('.twikoo-comment');
         if (!container) return;
