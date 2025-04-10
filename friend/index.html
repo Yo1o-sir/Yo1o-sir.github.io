@@ -649,6 +649,7 @@
 
 
 
+<div class="twikoo-comment" style="display: none;"></div>
 
 <script data-pjax>
   var loadScript = (src, integrity) => {
@@ -747,7 +748,7 @@
           if (window.twikoo) {
             twikoo.init({
               envId: 'https://twikoo-tau-inky.vercel.app/',
-              el: '.tcomment',
+              el: 'twikoo-comment',
               region: '',
             })
           }
