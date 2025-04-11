@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Yolo&#39;s Blog</title>
+  
+  <subtitle>Yolo&#39;s Blog</subtitle>
+  <link href="https://yolo-sir.github.io/atom.xml" rel="self"/>
+  
+  <link href="https://yolo-sir.github.io/"/>
+  <updated>2025-04-11T13:21:33.440Z</updated>
+  <id>https://yolo-sir.github.io/</id>
+  
+  <author>
+    <name>Yolo</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Yolo&#39;s new blog</title>
+    <link href="https://yolo-sir.github.io/2025/04/09/Yolo-s-new-blog/"/>
+    <id>https://yolo-sir.github.io/2025/04/09/Yolo-s-new-blog/</id>
+    <published>2025-04-09T13:58:45.000Z</published>
+    <updated>2025-04-11T13:21:33.440Z</updated>
+    
+    
+      
+      
+    <summary type="html"></summary>
+      
+    
+    
+    
+    
+    <category term="musc" scheme="https://yolo-sir.github.io/tags/musc/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hello World</title>
+    <link href="https://yolo-sir.github.io/2025/04/09/hello-world/"/>
+    <id>https://yolo-sir.github.io/2025/04/09/hello-world/</id>
+    <published>2025-04-09T13:41:26.790Z</published>
+    <updated>2025-04-10T11:25:14.690Z</updated>
+    
+    
+      
+      
+    <summary type="html"></summary>
+      
+    
+    
+    
+    
+  </entry>
+  
+</feed>
