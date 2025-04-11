@@ -2,11 +2,11 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Yolo&#39;s Blog</title>
   
-  <subtitle>Yolo&#39;s Blog</subtitle>
+  <subtitle>V&amp;N,X1cT34m,Misc</subtitle>
   <link href="https://yolo-sir.github.io/atom.xml" rel="self"/>
   
   <link href="https://yolo-sir.github.io/"/>
-  <updated>2025-04-11T13:21:33.440Z</updated>
+  <updated>2025-04-11T14:48:28.890Z</updated>
   <id>https://yolo-sir.github.io/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Yolo&#39;s new blog</title>
+    <title>Yolo の new blog</title>
     <link href="https://yolo-sir.github.io/2025/04/09/Yolo-s-new-blog/"/>
     <id>https://yolo-sir.github.io/2025/04/09/Yolo-s-new-blog/</id>
     <published>2025-04-09T13:58:45.000Z</published>
-    <updated>2025-04-11T13:21:33.440Z</updated>
+    <updated>2025-04-11T14:48:28.890Z</updated>
     
     
       
@@ -41,7 +41,7 @@
     <link href="https://yolo-sir.github.io/2025/04/09/hello-world/"/>
     <id>https://yolo-sir.github.io/2025/04/09/hello-world/</id>
     <published>2025-04-09T13:41:26.790Z</published>
-    <updated>2025-04-10T11:25:14.690Z</updated>
+    <updated>2025-04-11T15:02:26.328Z</updated>
     
     
       
@@ -50,6 +50,8 @@
       
     
     
+    
+    <category term="CTF" scheme="https://yolo-sir.github.io/categories/CTF/"/>
     
     
   </entry>
