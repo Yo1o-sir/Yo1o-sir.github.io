@@ -6,7 +6,7 @@
   <link href="https://yolo-sir.github.io/atom.xml" rel="self"/>
   
   <link href="https://yolo-sir.github.io/"/>
-  <updated>2025-04-13T03:46:49.778Z</updated>
+  <updated>2025-04-13T04:01:52.564Z</updated>
   <id>https://yolo-sir.github.io/</id>
   
   <author>
@@ -21,11 +21,15 @@
     <link href="https://yolo-sir.github.io/2025/04/13/png-challenge/"/>
     <id>https://yolo-sir.github.io/2025/04/13/png-challenge/</id>
     <published>2025-04-13T03:46:49.000Z</published>
-    <updated>2025-04-13T03:46:49.778Z</updated>
+    <updated>2025-04-13T04:01:52.564Z</updated>
     
     
     
     
+    
+    <category term="ctf" scheme="https://yolo-sir.github.io/tags/ctf/"/>
+    
+    <category term="png隐写" scheme="https://yolo-sir.github.io/tags/png%E9%9A%90%E5%86%99/"/>
     
   </entry>
   
@@ -34,7 +38,7 @@
     <link href="https://yolo-sir.github.io/2025/04/09/Yolo-s-new-blog/"/>
     <id>https://yolo-sir.github.io/2025/04/09/Yolo-s-new-blog/</id>
     <published>2025-04-09T13:58:45.000Z</published>
-    <updated>2025-04-13T03:52:04.088Z</updated>
+    <updated>2025-04-13T04:02:46.189Z</updated>
     
     
       
@@ -45,8 +49,6 @@
     
     
     <category term="dictionary" scheme="https://yolo-sir.github.io/categories/dictionary/"/>
-    
-    <category term="about" scheme="https://yolo-sir.github.io/categories/dictionary/about/"/>
     
     
     <category term="musc" scheme="https://yolo-sir.github.io/tags/musc/"/>
