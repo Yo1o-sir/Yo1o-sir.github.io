@@ -21,7 +21,10 @@
     Yolo&#39;s Blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
   
     <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   
@@ -316,7 +319,7 @@
     <div class="post-info">
       <div class="post-meta">
         <span><span class="icon-calendar"></span>2025-04-09</span>
-        <span><span class="icon-pencil"></span>232 字</span>
+        <span><span class="icon-pencil"></span>326 字</span>
         <span><span class="icon-clock"></span>1 分钟</span>
       </div>
       <h2 class="post-title">Yolo の new blog</h2>
@@ -355,22 +358,34 @@ This is an
     
     <div class="post-cover-right">
       
-        
-        
-          <img data-src="/images/banner.webp" data-sizes="auto" alt="png_challenge" class="lazyload">
-        
+        <img data-src="/images/png_challenge.png" data-sizes="auto" alt="png_challenge" class="lazyload">
       
     </div>
     <div class="post-info">
       <div class="post-meta">
         <span><span class="icon-calendar"></span>2025-04-13</span>
-        <span><span class="icon-pencil"></span>7 字</span>
+        <span><span class="icon-pencil"></span>265 字</span>
         <span><span class="icon-clock"></span>1 分钟</span>
       </div>
       <h2 class="post-title">png_challenge</h2>
       <article class="post-article">
         
-          这里测试下图片
+          
+大抵又是挖了个大大大的坑
+不过还是想坚持下来
+
+ png结构
+一切都从0开始，先说明下常见的png图片的结构
+ 1.png文件签名 (Signature)
+png文件以固定的8字节签名开头，用于标识文件类型：
+189 50 4E 47 0D 0A 1A 0A
+
+emm，见多png图片结构的话，就很快发现这是png的文件头了，然后进行后续操作，比方说zip的明文攻击等等
+ 2.数据块 (Chunks)
+png文件由多个数据块组成，每个数据块包含特定类型的信息。数据块是png的核心结构，可以被分作这几个部分
+
+
+长度(Length)：4字节，指定数据段的字节数（不包括长度、类型和CRC）。
 
 
 
@@ -412,7 +427,7 @@ This is an
     
       <div>
         <span class="icon-brush"></span>
-        239
+        591
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
         00:02
@@ -627,7 +642,7 @@ This is an
   \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
                                                   
 `,'color: #ff5252;')
-    console.log('%c Theme.Reimu v' + '1.7.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.8.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
   </script>
   
 

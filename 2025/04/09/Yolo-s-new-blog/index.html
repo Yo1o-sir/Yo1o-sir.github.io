@@ -22,7 +22,10 @@
     Yolo&#39;s Blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
   
     <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   
@@ -386,16 +389,25 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
         <div class="post-link-card-title">png_challenge</div>
         <div class="post-link-card-excerpt"> 
 
-这里测试下图片
+> 大抵又是挖了个大大大的坑
+> 
+> 不过还是想坚持下来
+
+# png结构
+
+一切都从0开始，先说明下常见的png图片的结构
+
+## 1.png文件签名 (Signature)
+
+png文件以固定的8字节签名开头，用于标识文件类型：
+
+```text
+89 50 4E 47 0D 0A 1A 0A
+```
 
 
 
-![](/images/png-challenge/20250413132903_0.png)
-
-
-
-![](/images/png-challenge/20250413132903_1.png)
-</div>
+emm，见多png图片结构的话，就很快发现这是png的文件头了，然后进行后续操</div>
       </div>
     </div>
   </div>
@@ -478,10 +490,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
       
       <div class="article-nav-link-wrap article-nav-link-left">
         
-          
-          
-            <img data-src="/images/banner.webp" data-sizes="auto" alt="png_challenge" class="lazyload">
-          
+          <img data-src="/images/png_challenge.png" data-sizes="auto" alt="png_challenge" class="lazyload">
         
         <a href="/2025/04/13/png-challenge/"></a>
         <div class="article-nav-caption">前一篇</div>
@@ -558,7 +567,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
     
       <div>
         <span class="icon-brush"></span>
-        239
+        591
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
         00:02
@@ -1228,7 +1237,7 @@ M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">�
   \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
                                                   
 `,'color: #ff5252;')
-    console.log('%c Theme.Reimu v' + '1.7.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.8.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
   </script>
   
 

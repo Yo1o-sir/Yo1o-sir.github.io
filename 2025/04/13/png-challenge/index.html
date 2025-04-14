@@ -22,7 +22,10 @@
     Yolo&#39;s Blog
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
   
     <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   
@@ -32,22 +35,21 @@
 
   
   
-    <meta name="description" content="这里测试下图片">
+    <meta name="description" content="大抵又是挖了个大大大的坑 不过还是想坚持下来   png结构 一切都从0开始，先说明下常见的png图片的结构  1.png文件签名 (Signature) png文件以固定的8字节签名开头，用于标识文件类型： 189 50 4E 47 0D 0A 1A 0A  emm，见多png图片结构的话，就很快发现这是png的文件头了，然后进行后续操作，比方说zip的明文攻击等等  2.数据块 (Chunk">
 <meta property="og:type" content="article">
 <meta property="og:title" content="png_challenge">
 <meta property="og:url" content="https://yolo-sir.github.io/2025/04/13/png-challenge/index.html">
 <meta property="og:site_name" content="Yolo&#39;s Blog">
-<meta property="og:description" content="这里测试下图片">
+<meta property="og:description" content="大抵又是挖了个大大大的坑 不过还是想坚持下来   png结构 一切都从0开始，先说明下常见的png图片的结构  1.png文件签名 (Signature) png文件以固定的8字节签名开头，用于标识文件类型： 189 50 4E 47 0D 0A 1A 0A  emm，见多png图片结构的话，就很快发现这是png的文件头了，然后进行后续操作，比方说zip的明文攻击等等  2.数据块 (Chunk">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://yolo-sir.github.io/images/png-challenge/20250413132903_0.png">
-<meta property="og:image" content="https://yolo-sir.github.io/images/png-challenge/20250413132903_1.png">
+<meta property="og:image" content="https://yolo-sir.github.io/images/png-challenge/20250414133337_0.png">
 <meta property="article:published_time" content="2025-04-13T03:46:49.000Z">
-<meta property="article:modified_time" content="2025-04-13T05:29:03.421Z">
+<meta property="article:modified_time" content="2025-04-14T05:33:37.127Z">
 <meta property="article:author" content="Yolo">
 <meta property="article:tag" content="ctf">
 <meta property="article:tag" content="png隐写">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yolo-sir.github.io/images/png-challenge/20250413132903_0.png">
+<meta name="twitter:image" content="https://yolo-sir.github.io/images/png-challenge/20250414133337_0.png">
   
   
     <link rel="alternate" href="/atom.xml" title="Yolo's Blog" type="application/atom+xml">
@@ -189,16 +191,8 @@
 </div>
 <header id="header">
   
-    
-      
-        <picture>
-          
-        </picture>
-        
-          <img  fetchpriority="high" src="/images/banner.webp" alt="png_challenge">
-        
-      
-    
+    <picture></picture>
+    <img  fetchpriority="high" src="/images/png_challenge.png" alt="png_challenge">
   
   <div id="header-outer">
     <div id="header-title">
@@ -233,7 +227,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#png%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text"> png结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1png%E6%96%87%E4%BB%B6%E7%AD%BE%E5%90%8D-signature"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.png文件签名 (Signature)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E6%95%B0%E6%8D%AE%E5%9D%97-chunks"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.数据块 (Chunks)</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -323,7 +317,7 @@
       <div class="article-date">
   <span class="article-date-link" data-aos="zoom-in">
     <time datetime="2025-04-13T03:46:49.000Z" itemprop="datePublished">2025-04-13</time>
-    <time style="display: none;" id="post-update-time">2025-04-13</time>
+    <time style="display: none;" id="post-update-time">2025-04-14</time>
   </span>
 </div>
 
@@ -338,9 +332,33 @@
         <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
       
       
-        <p>这里测试下图片</p>
-<p><img src="/images/png-challenge/20250413132903_0.png" alt="" /></p>
-<p><img src="/images/png-challenge/20250413132903_1.png" alt="" /></p>
+        <blockquote>
+<p>大抵又是挖了个大大大的坑</p>
+<p>不过还是想坚持下来</p>
+</blockquote>
+<h1 id="png结构"><a class="markdownIt-Anchor" href="#png结构"></a> png结构</h1>
+<p>一切都从0开始，先说明下常见的png图片的结构</p>
+<h2 id="1png文件签名-signature"><a class="markdownIt-Anchor" href="#1png文件签名-signature"></a> 1.png文件签名 (Signature)</h2>
+<p>png文件以固定的8字节签名开头，用于标识文件类型：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">89 50 4E 47 0D 0A 1A 0A</span><br></pre></td></tr></table></figure>
+<img title="" src="/images/png-challenge/20250414133337_0.png" alt="" width="532" data-align="center">
+<p>emm，见多png图片结构的话，就很快发现这是png的文件头了，然后进行后续操作，比方说zip的明文攻击等等</p>
+<h2 id="2数据块-chunks"><a class="markdownIt-Anchor" href="#2数据块-chunks"></a> 2.数据块 (Chunks)</h2>
+<p>png文件由多个数据块组成，每个数据块包含特定类型的信息。数据块是png的核心结构，可以被分作这几个部分</p>
+<ul>
+<li>
+<p>长度(Length)：4字节，指定数据段的字节数（不包括长度、类型和CRC）。</p>
+</li>
+<li>
+<p>块类型(Chunk Type): 4字节ASCII码，标识数据块的功能（如<code>IHDR</code>、<code>IDAT</code>等）</p>
+</li>
+<li>
+<p>数据 (Chunk Data): 长度指定的数据内容，可能是图像元数据、像素数据等。</p>
+</li>
+<li>
+<p>CRC校验(CRC)：4字节，循环冗余校验码，确保数据块完整性。</p>
+</li>
+</ul>
 
       
     </div>
@@ -351,7 +369,7 @@
     <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="https://yolo-sir.github.io/2025/04/13/png-challenge/">https://yolo-sir.github.io/2025/04/13/png-challenge/</a></p>
     
     
-    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-04-13 13:29:03</p>
+    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-04-14 13:33:37</p>
     <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -486,7 +504,7 @@
     
       <div>
         <span class="icon-brush"></span>
-        239
+        591
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
         00:02
@@ -522,7 +540,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#png%E7%BB%93%E6%9E%84"><span class="toc-number">1.</span> <span class="toc-text"> png结构</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1png%E6%96%87%E4%BB%B6%E7%AD%BE%E5%90%8D-signature"><span class="toc-number">1.1.</span> <span class="toc-text"> 1.png文件签名 (Signature)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2%E6%95%B0%E6%8D%AE%E5%9D%97-chunks"><span class="toc-number">1.2.</span> <span class="toc-text"> 2.数据块 (Chunks)</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -710,10 +728,10 @@
           url: "https://yolo-sir.github.io/2025/04/13/png-challenge/",
           excerpt: "",
           description: "",
-          stripContent: "这里测试下图片   ",
+          stripContent: " 大抵又是挖了个大大大的坑 不过还是想坚持下来   png结构 一切都从0开始，先说明下常见的png图片的结构  1.png文件签名 (Signature) png文件以固定的8字节签名开头，用于标识文件类型： 189 50 4E 47 0D 0A 1A 0A  emm，见多png图片结构的话，就很快发现这是png的文件头了，然后进行后续操作，比方说zip的明文攻击等等  2.数据块 (Chunks) png文件由多个数据块组成，每个数据块包含特定类型的信息。数据块是png的核心结构，可以被分作",
           date: "Sun Apr 13 2025 11:46:49 GMT+0800",
-          updated: "Sun Apr 13 2025 13:29:03 GMT+0800",
-          cover: "/images/banner.webp",
+          updated: "Mon Apr 14 2025 13:33:37 GMT+0800",
+          cover: "/images/png_challenge.png",
         };
       </script>
        
@@ -1077,7 +1095,7 @@
   \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
                                                   
 `,'color: #ff5252;')
-    console.log('%c Theme.Reimu v' + '1.7.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.8.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
   </script>
   
 
