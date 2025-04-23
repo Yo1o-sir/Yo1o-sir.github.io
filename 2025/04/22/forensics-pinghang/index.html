@@ -1,0 +1,1196 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  
+    
+      data-theme-mode="auto"
+    
+  >
+  <head>
+  
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":"复制成功(*^▽^*)","fail":"复制失败 (ﾟ⊿ﾟ)ﾂ","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.REIMU_CONFIG.outdate = {"enable":true,"daysAgo":180,"message":"本文最后更新于 {time}，请注意文中内容可能已经发生变化。"};window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://yo1o.top';</script>
+  
+  <title>
+    平航杯取证复现 |
+    
+    Yolo&#39;s Blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="target:将取证工具准备好，为了后面的fic和盘古石取证出一点点力气做准备  这个取证题目真的很nice，学到了不少东西呢  仿真&amp;bypass登录密码 这里我选择用ftk打开，然后进行转换格式进行仿真 然后记录下用ftk的技巧  在evidence tree下面右键项目，有个verify Drive&#x2F;image，这个可以帮助我们验证文件完整性，稍微费点时间，但是呢，我们平时使用概率">
+<meta property="og:type" content="article">
+<meta property="og:title" content="平航杯取证复现">
+<meta property="og:url" content="https://yo1o.top/2025/04/22/forensics-pinghang/index.html">
+<meta property="og:site_name" content="Yolo&#39;s Blog">
+<meta property="og:description" content="target:将取证工具准备好，为了后面的fic和盘古石取证出一点点力气做准备  这个取证题目真的很nice，学到了不少东西呢  仿真&amp;bypass登录密码 这里我选择用ftk打开，然后进行转换格式进行仿真 然后记录下用ftk的技巧  在evidence tree下面右键项目，有个verify Drive&#x2F;image，这个可以帮助我们验证文件完整性，稍微费点时间，但是呢，我们平时使用概率">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_1.png">
+<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_0.png">
+<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_2.png">
+<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_3.png">
+<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_4.png">
+<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_5.png">
+<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_6.png">
+<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_7.png">
+<meta property="article:published_time" content="2025-04-22T06:33:57.000Z">
+<meta property="article:modified_time" content="2025-04-23T09:24:35.068Z">
+<meta property="article:author" content="Yolo">
+<meta property="article:tag" content="forensics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_1.png">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="Yolo's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+    
+      
+        
+<link rel="stylesheet" href="https://npm.webcache.cn/katex@0.16.11/dist/katex.min.css">
+
+      
+    
+  
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/@waline/client@2.15.8/dist/waline.css">
+
+    
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
+
+  
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/">首页</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/archives">归档</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/about">关于</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/friend">友链</a>
+        </span>
+      
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅" target="_blank"></a>
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="搜索"></a>
+    
+  </nav>
+  
+</div>
+<header id="header">
+  
+    <picture></picture>
+    <img  fetchpriority="high" src="/images/background/forensics.png" alt="平航杯取证复现">
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">平航杯取证复现</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content"  class="sidebar-right" >
+          <aside id="sidebar">
+  
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        
+          <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BF%E7%9C%9Fbypass%E7%99%BB%E5%BD%95%E5%AF%86%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text"> 仿真&amp;bypass登录密码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%86%9C%E6%8B%9Caura%E7%A5%9E%E7%9A%84wp"><span class="toc-number">2.</span> <span class="toc-text"> 膜拜Aura神的wp</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/yolo.jpg" data-sizes="auto" alt="Yolo" class="lazyload">
+  <div class="sidebar-author-name">Yolo</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">1</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/yo1o-sir itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-bilibili sidebar-social-icon">
+      <a href=https://space.bilibili.com/1066455120 itemprop="url" target="_blank" aria-label="bilibili" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+        
+      
+      
+        
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+        
+      
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+  
+  </div>
+  
+</aside>
+
+          <section id="main"><article id="post-forensics-pinghang" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-04-22T06:33:57.000Z" itemprop="datePublished">2025-04-22</time>
+    <time style="display: none;" id="post-update-time">2025-04-23</time>
+  </span>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <blockquote id="outdate-blockquote" style="display: none;"><p></p></blockquote>
+      
+      
+        <blockquote>
+<p>target:将取证工具准备好，为了后面的fic和盘古石取证出一点点力气做准备</p>
+</blockquote>
+<p>这个取证题目真的很nice，学到了不少东西呢</p>
+<h1 id="仿真bypass登录密码"><a class="markdownIt-Anchor" href="#仿真bypass登录密码"></a> 仿真&amp;bypass登录密码</h1>
+<p>这里我选择用ftk打开，然后进行转换格式进行仿真</p>
+<p>然后记录下用ftk的技巧</p>
+<img src="/images/forensics-pinghang/20250423171625_1.png" alt="image-20250422153522106" style="zoom:50%;" />
+<p>在evidence tree下面右键项目，有个verify Drive/image，这个可以帮助我们验证文件完整性，稍微费点时间，但是呢，我们平时使用概率不大，就是打打ctf的取证，不见得出题师傅会在制作的镜像中偷偷更改文件。所以上面这个功能做做了解即可</p>
+<p>接下来我们需要做的是将e01镜像文件转换成vmdk格式的文件，然后绕过开机登录密码进行VMware仿真取证,有两种方式，一种是使用格式转换工具，比如<code>StarWind V2V Convertor</code>,操作很简单，按照上面的说明，把选项选好即可，这里就不赘叙了，因为它转换好后，依然需要我下面在wsl2的Ubuntu子系统中进行绕过开机密码操作</p>
+<p>操作如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> ~/mnt</span><br><span class="line">ewfmount window.e01 ~/mnt    <span class="comment">#将e01文件挂载到那个路径下，这是因为qemu-img无法直接从e01文件转换成vmdk，中间需要绕一步</span></span><br><span class="line">qemu-img convert -f raw ~/mnt/ewf1 -O vmdk window.vmdk <span class="comment">#需要等待，时间取决于文件大小</span></span><br><span class="line">/*接下来是绕过开机密码的操作*/</span><br><span class="line"><span class="built_in">sudo</span> modprobe nbd  <span class="comment">#加载Linux内核的网络块设备（NBD）模块</span></span><br><span class="line"><span class="built_in">sudo</span> qemu-nbd -c /dev/nbd0 window.vmdk <span class="comment">#将vmdk文件挂载到/dev/nbd0设备上</span></span><br><span class="line"><span class="built_in">sudo</span> fdisk -l /dev/nbd0  <span class="comment">#列出设备的分区表，确认分区布局</span></span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mkdir</span> /mnt/vmdk</span><br><span class="line"><span class="built_in">sudo</span> mount /dev/nbd0p1 /mnt/vmdk</span><br><span class="line"><span class="built_in">sudo</span> ntfsfix /dev/nbd0p2   <span class="comment">#如果上一步挂载失败，报错说有脏数据，就拿这条命令彻底清除即可</span></span><br><span class="line"><span class="built_in">sudo</span> mount -t ntfs-3g /dev/nbd0p2 /mnt/vmdk</span><br><span class="line"><span class="built_in">cd</span> /mnt/vmdk/Windows/System32/config</span><br><span class="line"><span class="built_in">sudo</span> chntpw -i SAM  <span class="comment">#操作Windows的注册表SAM</span></span><br><span class="line"><span class="built_in">sync</span></span><br><span class="line"><span class="built_in">sudo</span> umount /mnt/vmdk</span><br><span class="line"><span class="built_in">sudo</span> qemu-nbd -d /dev/nbd0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>具体交互流程就是下面这样</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">yolo@Yolo:~/Desktop$ <span class="built_in">mkdir</span> ~/mnt</span><br><span class="line">yolo@Yolo:~/Desktop$ ewfmount window.e01 ~/mnt</span><br><span class="line">ewfmount 20140814</span><br><span class="line"></span><br><span class="line">yolo@Yolo:~/Desktop$ qemu-img convert -f raw ~/mnt/ewf1 -O vmdk window.vmdk</span><br><span class="line">yolo@Yolo:~/Desktop$ <span class="built_in">ls</span></span><br><span class="line">docker  tools  window.e01  window.vmdk</span><br><span class="line">yolo@Yolo:~/Desktop$ <span class="built_in">sudo</span> modprobe nbd</span><br><span class="line">[<span class="built_in">sudo</span>] password <span class="keyword">for</span> yolo:</span><br><span class="line">yolo@Yolo:~/Desktop$ <span class="built_in">sudo</span> qemu-nbd -c /dev/nbd0 window.vmdk</span><br><span class="line">yolo@Yolo:~/Desktop$ <span class="built_in">sudo</span> fdisk -l /dev/nbd0</span><br><span class="line">Disk /dev/nbd0: 80 GiB, 85899345920 bytes, 167772160 sectors</span><br><span class="line">Units: sectors of 1 * 512 = 512 bytes</span><br><span class="line">Sector size (logical/physical): 512 bytes / 512 bytes</span><br><span class="line">I/O size (minimum/optimal): 512 bytes / 512 bytes</span><br><span class="line">Disklabel <span class="built_in">type</span>: dos</span><br><span class="line">Disk identifier: 0x4bb8fc9c</span><br><span class="line"></span><br><span class="line">Device      Boot     Start       End   Sectors  Size Id Type</span><br><span class="line">/dev/nbd0p1 *         2048    104447    102400   50M  7 HPFS/NTFS/exFAT</span><br><span class="line">/dev/nbd0p2         104448 124579774 124475327 59.4G  7 HPFS/NTFS/exFAT</span><br><span class="line">/dev/nbd0p3      124579840 166522879  41943040   20G  f W95 Ext<span class="string">&#x27;d (LBA)</span></span><br><span class="line"><span class="string">/dev/nbd0p4      166522880 167768063   1245184  608M 27 Hidden NTFS WinRE</span></span><br><span class="line"><span class="string">/dev/nbd0p5      124581888 166522879  41940992   20G  7 HPFS/NTFS/exFAT</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Partition table entries are not in disk order.</span></span><br><span class="line"><span class="string">yolo@Yolo:~/Desktop$ sudo mkdir /mnt/vmdk</span></span><br><span class="line"><span class="string">yolo@Yolo:~/Desktop$ sudo mount /dev/nbd0p1 /mnt/vmdk</span></span><br><span class="line"><span class="string">The disk contains an unclean file system (0, 0).</span></span><br><span class="line"><span class="string">Metadata kept in Windows cache, refused to mount.</span></span><br><span class="line"><span class="string">Falling back to read-only mount because the NTFS partition is in an</span></span><br><span class="line"><span class="string">unsafe state. Please resume and shutdown Windows fully (no hibernation</span></span><br><span class="line"><span class="string">or fast restarting.)</span></span><br><span class="line"><span class="string">Could not mount read-write, trying read-only</span></span><br><span class="line"><span class="string">yolo@Yolo:~/Desktop$ sudo ntfsfix /dev/nbd0p2</span></span><br><span class="line"><span class="string">Mounting volume... The disk contains an unclean file system (0, 0).</span></span><br><span class="line"><span class="string">Metadata kept in Windows cache, refused to mount.</span></span><br><span class="line"><span class="string">FAILED</span></span><br><span class="line"><span class="string">Attempting to correct errors...</span></span><br><span class="line"><span class="string">Processing $MFT and $MFTMirr...</span></span><br><span class="line"><span class="string">Reading $MFT... OK</span></span><br><span class="line"><span class="string">Reading $MFTMirr... OK</span></span><br><span class="line"><span class="string">Comparing $MFTMirr to $MFT... OK</span></span><br><span class="line"><span class="string">Processing of $MFT and $MFTMirr completed successfully.</span></span><br><span class="line"><span class="string">Setting required flags on partition... OK</span></span><br><span class="line"><span class="string">Going to empty the journal ($LogFile)... OK</span></span><br><span class="line"><span class="string">Checking the alternate boot sector... OK</span></span><br><span class="line"><span class="string">NTFS volume version is 3.1.</span></span><br><span class="line"><span class="string">NTFS partition /dev/nbd0p2 was processed successfully.</span></span><br><span class="line"><span class="string">yolo@Yolo:~/Desktop$ sudo mount -t ntfs-3g /dev/nbd0p2 /mnt/vmdk</span></span><br><span class="line"><span class="string">yolo@Yolo:~/Desktop$ cd /mnt/vmdk/Windows/System32/config</span></span><br><span class="line"><span class="string">yolo@Yolo:/mnt/vmdk/Windows/System32/config$ ls</span></span><br><span class="line"><span class="string">BBI</span></span><br><span class="line"><span class="string">BBI.LOG1</span></span><br><span class="line"><span class="string">BBI.LOG2</span></span><br><span class="line"><span class="string">BBI&#123;53b39ea0-18c4-11ea-a811-000d3aa4692b&#125;.TM.blf</span></span><br><span class="line"><span class="string">BBI&#123;53b39ea0-18c4-11ea-a811-000d3aa4692b&#125;.TMContainer00000000000000000001.regtrans-ms</span></span><br><span class="line"><span class="string">BBI&#123;53b39ea0-18c4-11ea-a811-000d3aa4692b&#125;.TMContainer00000000000000000002.regtrans-ms</span></span><br><span class="line"><span class="string">BCD-Template</span></span><br><span class="line"><span class="string">BCD-Template.LOG</span></span><br><span class="line"><span class="string">COMPONENTS</span></span><br><span class="line"><span class="string">COMPONENTS.LOG1</span></span><br><span class="line"><span class="string">COMPONENTS.LOG2</span></span><br><span class="line"><span class="string">COMPONENTS&#123;53b39e63-18c4-11ea-a811-000d3aa4692b&#125;.TM.blf</span></span><br><span class="line"><span class="string">COMPONENTS&#123;53b39e63-18c4-11ea-a811-000d3aa4692b&#125;.TMContainer00000000000000000001.regtrans-ms</span></span><br><span class="line"><span class="string">COMPONENTS&#123;53b39e63-18c4-11ea-a811-000d3aa4692b&#125;.TMContainer00000000000000000002.regtrans-ms</span></span><br><span class="line"><span class="string">DEFAULT</span></span><br><span class="line"><span class="string">DEFAULT.LOG1</span></span><br><span class="line"><span class="string">DEFAULT.LOG2</span></span><br><span class="line"><span class="string">DRIVERS</span></span><br><span class="line"><span class="string">DRIVERS.LOG1</span></span><br><span class="line"><span class="string">DRIVERS.LOG2</span></span><br><span class="line"><span class="string">DRIVERS&#123;53b39e70-18c4-11ea-a811-000d3aa4692b&#125;.TM.blf</span></span><br><span class="line"><span class="string">DRIVERS&#123;53b39e70-18c4-11ea-a811-000d3aa4692b&#125;.TMContainer00000000000000000001.regtrans-ms</span></span><br><span class="line"><span class="string">DRIVERS&#123;53b39e70-18c4-11ea-a811-000d3aa4692b&#125;.TMContainer00000000000000000002.regtrans-ms</span></span><br><span class="line"><span class="string">ELAM</span></span><br><span class="line"><span class="string">ELAM.LOG1</span></span><br><span class="line"><span class="string">ELAM.LOG2</span></span><br><span class="line"><span class="string">ELAM&#123;53b39eac-18c4-11ea-a811-000d3aa4692b&#125;.TM.blf</span></span><br><span class="line"><span class="string">ELAM&#123;53b39eac-18c4-11ea-a811-000d3aa4692b&#125;.TMContainer00000000000000000001.regtrans-ms</span></span><br><span class="line"><span class="string">ELAM&#123;53b39eac-18c4-11ea-a811-000d3aa4692b&#125;.TMContainer00000000000000000002.regtrans-ms</span></span><br><span class="line"><span class="string">Journal</span></span><br><span class="line"><span class="string">RegBack</span></span><br><span class="line"><span class="string">SAM</span></span><br><span class="line"><span class="string">SAM.LOG1</span></span><br><span class="line"><span class="string">SAM.LOG2</span></span><br><span class="line"><span class="string">SECURITY</span></span><br><span class="line"><span class="string">SECURITY.LOG1</span></span><br><span class="line"><span class="string">SECURITY.LOG2</span></span><br><span class="line"><span class="string">SOFTWARE</span></span><br><span class="line"><span class="string">SOFTWARE.LOG1</span></span><br><span class="line"><span class="string">SOFTWARE.LOG2</span></span><br><span class="line"><span class="string">SYSTEM</span></span><br><span class="line"><span class="string">SYSTEM.LOG1</span></span><br><span class="line"><span class="string">SYSTEM.LOG2</span></span><br><span class="line"><span class="string">TxR</span></span><br><span class="line"><span class="string">systemprofile</span></span><br><span class="line"><span class="string">yolo@Yolo:/mnt/vmdk/Windows/System32/config$sudo chntpw -i SAM</span></span><br></pre></td></tr></table></figure>
+<p>chntpw功能很强大，可以根据用户的rid进行密码更换、清除等操作</p>
+<p>但是很可惜，有一点是chntpw是不支持中文用户名的，这也就会导致它显示的用户列表中是找不到我想找的嫌疑人起早王的</p>
+<p><img src="/images/forensics-pinghang/20250423171625_0.png" alt="" /></p>
+<p>请看，长这样</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">&lt;&gt;========&lt;&gt; chntpw Main Interactive Menu &lt;&gt;========&lt;&gt;</span><br><span class="line"></span><br><span class="line">Loaded hives: &lt;SAM&gt;</span><br><span class="line"></span><br><span class="line">  1 - Edit user data and passwords</span><br><span class="line">  2 - List groups</span><br><span class="line">      - - -</span><br><span class="line">  9 - Registry editor, now with full write support!</span><br><span class="line">  q - Quit (you will be asked if there is something to save)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">What to do? [1] -&gt; 1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">===== chntpw Edit User Info &amp; Passwords ====</span><br><span class="line"></span><br><span class="line">| RID -|---------- Username ------------| Admin? |- Lock? --|</span><br><span class="line">| 01f4 | Administrator                  | ADMIN  | dis/lock |</span><br><span class="line">| 01f7 | DefaultAccount                 |        | dis/lock |</span><br><span class="line">| 01f5 | Guest                          |        | dis/lock |</span><br><span class="line">| 01f8 | WDAGUtilityAccount             |        | dis/lock |</span><br><span class="line">Cannot find value &lt;\SAM\Domains\Account\Users\FFFFFFFF\V&gt;</span><br><span class="line"></span><br><span class="line">Please enter user number (RID) or 0 to exit: [1] 3e9</span><br></pre></td></tr></table></figure>
+<p>然后我后面输入的3e9是通过注册表SAM查看的</p>
+<img src="/images/forensics-pinghang/20250423171625_2.png" alt="image-20250422231954246" style="zoom:50%;" />
+<p>好在，在chntpw中是能操作的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">================= USER EDIT ====================</span><br><span class="line"></span><br><span class="line">RID     : 1001 [03e9]</span><br><span class="line">Username: w�</span><br><span class="line">fullname:</span><br><span class="line">comment :</span><br><span class="line">homedir :</span><br><span class="line"></span><br><span class="line">00000220 = Administrators (which has 2 members)</span><br><span class="line"></span><br><span class="line">Account bits: 0x0214 =</span><br><span class="line">[ ] Disabled        | [ ] Homedir req.    | [X] Passwd not req. |</span><br><span class="line">[ ] Temp. duplicate | [X] Normal account  | [ ] NMS account     |</span><br><span class="line">[ ] Domain trust ac | [ ] Wks trust act.  | [ ] Srv trust act   |</span><br><span class="line">[X] Pwd don&#x27;t expir | [ ] Auto lockout    | [ ] (unknown 0x08)  |</span><br><span class="line">[ ] (unknown 0x10)  | [ ] (unknown 0x20)  | [ ] (unknown 0x40)  |</span><br><span class="line"></span><br><span class="line">Failed login count: 0, while max tries is: 10</span><br><span class="line">Total  login count: 34</span><br><span class="line"></span><br><span class="line">- - - - User Edit Menu:</span><br><span class="line"> 1 - Clear (blank) user password</span><br><span class="line">(2 - Unlock and enable user account) [seems unlocked already]</span><br><span class="line"> 3 - Promote user (make user an administrator)</span><br><span class="line"> 4 - Add user to a group</span><br><span class="line"> 5 - Remove user from a group</span><br><span class="line"> q - Quit editing user, back to user select</span><br><span class="line">Select: [q] &gt; 1</span><br><span class="line">Password cleared!</span><br></pre></td></tr></table></figure>
+<p>通过选项1做到了清除密码，接下来我们退出保存即可</p>
+<p>使用sync同步下磁盘就好，然后把保存好的vmdk复制到有VMware的设备中，然后这里记录下怎么通过vmdk新建虚拟机，首先是自定义</p>
+<img src="/images/forensics-pinghang/20250423171625_3.png" alt="image-20250422232320260" style="zoom: 50%;" />
+<p>中间默认的部分我不截图了</p>
+<img src="/images/forensics-pinghang/20250423171625_4.png" alt="image-20250422232350110" style="zoom: 50%;" />
+<p>这里选择稍后</p>
+<p>这里选择BIOS</p>
+<img src="/images/forensics-pinghang/20250423171625_5.png" alt="image-20250422232416008" style="zoom:50%;" />
+<p>这里选择IDE</p>
+<img src="/images/forensics-pinghang/20250423171625_6.png" alt="image-20250422232435662" style="zoom:50%;" />
+<p>这里选择使用已存在的磁盘，就是通过Ubuntu系统保存的那个</p>
+<img src="/images/forensics-pinghang/20250423171625_7.png" alt="image-20250422232527872" style="zoom:50%;" />
+<p>清除残留linux系统的一些东西</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo umount /mnt/vmdk</span><br><span class="line"></span><br><span class="line">sudo qemu-nbd -d /dev/nbd0</span><br><span class="line"></span><br><span class="line">sudo mount /mnt/vmdk</span><br><span class="line"></span><br><span class="line">sudo umount ~/mnt</span><br><span class="line"></span><br><span class="line">sudo rmdir ~/mnt</span><br></pre></td></tr></table></figure>
+<p>bypass到这里over</p>
+<hr />
+<p>取证的题目和解题过程我就不在这里重复了，在这里放一份来自Aura大佬的完整wp，值得反复观看学习</p>
+<h1 id="膜拜aura神的wp"><a class="markdownIt-Anchor" href="#膜拜aura神的wp"></a> 膜拜Aura神的wp</h1>
+
+
+	<div class="row">
+    <embed src="/files/aura_wp_forensics.pdf" width="100%" height="550" type="application/pdf">
+	</div>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      
+        <blockquote class="article-copyright">
+    <p><strong><span class="icon-user icon"></span>本文作者：</strong>Yolo @ Yolo's Blog</p>
+    <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="https://yo1o.top/2025/04/22/forensics-pinghang/">https://yo1o.top/2025/04/22/forensics-pinghang/</a></p>
+    
+    
+    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-04-23 17:24:35</p>
+    <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
+    <span class="icon-creative-commons article-copyright-bg"></span>
+  </blockquote>
+      
+      
+        <div class="sponsor-wrapper">
+  <div class="sponsor-button-wrapper">
+    <div class="sponsor-icon rotate"></div>
+    <div class="sponsor-title">赞助</div>
+    <div class="sponsor-icon rotate"></div>
+  </div>
+  <div class="sponsor-tip">请作者喝杯咖啡吧！</div>
+  
+    <div class="sponsor-qr">
+      
+        <div class="sponsor-qr-image-wrapper">
+          <img src="/../images/zhifubao.jpg" alt=支付宝 width="200" />
+          <p class="sponsor-qr-name">支付宝</p>
+        </div>
+      
+        <div class="sponsor-qr-image-wrapper">
+          <img src="/../images/wechat.png" alt=微信 width="200" />
+          <p class="sponsor-qr-name">微信</p>
+        </div>
+      
+    </div>
+  
+</div>
+      
+      
+      
+      
+        <a data-aos="zoom-in" href="/2025/04/22/forensics-pinghang/#comments" class="article-comment-link">
+          <span class="post-comments-count waline-comment-count" data-path="/2025/04/22/forensics-pinghang/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+      
+      
+        <span data-aos="zoom-in" class="article-visitor-link">
+          <span class="waline-pageview-count" data-path="/2025/04/22/forensics-pinghang/">0</span>
+          <em class="post-meta-item-text">阅读量</em>
+        </span>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/forensics/" rel="tag">forensics</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        <img data-src="/images/background/python_study.png" data-sizes="auto" alt="py_study" class="lazyload">
+      
+      <a href="/2025/04/18/py-study/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          py_study
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+
+
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+      
+      
+      <h2 class="comment-title">说些什么吧！</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            
+            <div class="selector-item" data-selector="waline">
+              <span>waline</span>
+            </div>
+            
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+      
+        <div class="comment waline-comment" data-aos="fade-up"
+          id="waline-comment">
+        </div>
+      
+    </div>
+  </section>
+
+
+</section>
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      
+      
+      
+        2024-2025
+      
+      <span class="footer-info-sep rotate"></span>
+      Yolo
+    </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        15.6k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        01:08
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%BF%E7%9C%9Fbypass%E7%99%BB%E5%BD%95%E5%AF%86%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text"> 仿真&amp;bypass登录密码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%86%9C%E6%8B%9Caura%E7%A5%9E%E7%9A%84wp"><span class="toc-number">2.</span> <span class="toc-text"> 膜拜Aura神的wp</span></a></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/yolo.jpg" data-sizes="auto" alt="Yolo" class="lazyload">
+  <div class="sidebar-author-name">Yolo</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">1</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/yo1o-sir itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-bilibili sidebar-social-icon">
+      <a href=https://space.bilibili.com/1066455120 itemprop="url" target="_blank" aria-label="bilibili" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+      
+    
+  </div>
+  
+    
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  
+</nav>
+
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/reimu.png"/>
+        </div>
+      </div>
+    
+    
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.1.1/dist/index.umd.js" integrity="sha384-8LyaidD9GPxQQgLJO&#x2F;WRw&#x2F;O2h3BoNq&#x2F;ApI&#x2F;ecpvM6RsrCz2qP2ppBXUKihP4V&#x2F;2d" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/live2d-widgets@0.9.0/autoload.js" integrity="sha384-poTN7wN&#x2F;SqNhQqo3jdFeX20ikddWeFGkUkDEzsKjgH&#x2F;ez8aQLn81oI0Cw6q5xNyB" crossorigin="anonymous"></script>
+
+
+
+
+  
+<script src="https://npm.webcache.cn/quicklink@2.3.0/dist/quicklink.umd.js" integrity="sha384-aD7FsuQkS1ohgFKY41fJfeA+Wd&#x2F;QRNnrOd9Bs58K3FzKdJJv8yPnYU8Tnp5z1agS" crossorigin="anonymous"></script>
+
+  <script data-pjax>
+    window.quicklink?.listen({
+      timeout: 3000,
+      priority: true,
+      ignores: []
+    });
+  </script>
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Yolo",
+          title: "平航杯取证复现",
+          url: "https://yo1o.top/2025/04/22/forensics-pinghang/",
+          excerpt: "",
+          description: "",
+          stripContent: " target:将取证工具准备好，为了后面的fic和盘古石取证出一点点力气做准备  这个取证题目真的很nice，学到了不少东西呢  仿真&amp;amp;bypass登录密码 这里我选择用ftk打开，然后进行转换格式进行仿真 然后记录下用ftk的技巧  在evidence tree下面右键项目，有个verify Drive/image，这个可以帮助我们验证文件完整性，稍微费点时间，但是呢，我们平时使用概率不大，就是打打ctf的取证，不见得出题师傅会在制作的镜像中偷偷更改文件。所以上面这个功能做做了解即可",
+          date: "Tue Apr 22 2025 14:33:57 GMT+0800",
+          updated: "Wed Apr 23 2025 17:24:35 GMT+0800",
+          cover: "/images/background/forensics.png",
+        };
+      </script>
+       
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+        
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+        
+
+
+
+
+
+
+
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ['valine', 'waline', 'twikoo', 'gitalk', 'giscus'];
+  var commentConfig = {
+    valine: {
+      enable: false,
+      load: () => {
+        const container = document.querySelector('.valine-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        const script = loadScript(
+          'https://npm.webcache.cn/valine@1.5.1/dist/Valine.min.js',
+          'sha384-3ma91AExDeMAZ1rjTjaP8V2A2obQE+s5ltKRwYlwdpArz9xVbp0tF3b0VV2ACNPn'
+        );
+        script.onload = () => {
+          var GUEST_INFO = ['nick', 'mail', 'link'];
+          var guest_info = 'nick,mail,link'.split(',').filter((item) => {
+            return GUEST_INFO.indexOf(item) > -1
+          });
+          var recordIP = JSON.parse('true');
+          var highlight = JSON.parse('true');
+          var visitor = JSON.parse('false');
+
+          if (window.Valine) {
+            new Valine({
+              el: '.valine-comment',
+              appId: "",
+              appKey: "",
+              placeholder: "Just go go",
+              pageSize: '10',
+              avatar: 'mp',
+              lang: 'zh-cn',
+              recordIP: recordIP,
+              highlight: highlight,
+              visitor: visitor,
+              requiredFields: guest_info,
+              path: window.location.pathname
+            });
+          }
+        };
+        document.head.appendChild(script);
+      }
+    },
+    waline: {
+      enable: true,
+      load: async () => {
+        const container = document.querySelector('.waline-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        let walineInit;
+        const walineCdn = 'https://npm.webcache.cn/@waline/client@2.15.8/dist/waline.mjs';
+        const walineIntegrity = 'sha384-9sbqJjrfGjbkI6/PI4nU/MvBfEmkkPC4YK9I4zBeMIf1CVCZdCMH/KinBEAZII/5';
+
+        const module = await safeImport(walineCdn, walineIntegrity);
+        walineInit = module.init;
+
+        window.walineInstance = walineInit({
+          el: '.waline-comment',
+          serverURL: 'https://comment-sable-alpha.vercel.app/',
+          lang: 'zh-CN',
+          locale: {},
+          emoji: ["https://unpkg.com/@waline/emojis@1.2.0/weibo","https://unpkg.com/@waline/emojis@1.2.0/alus","https://unpkg.com/@waline/emojis@1.2.0/bilibili","https://unpkg.com/@waline/emojis@1.2.0/qq","https://unpkg.com/@waline/emojis@1.2.0/tieba","https://unpkg.com/@waline/emojis@1.2.0/tw-emoji"],
+          meta: ["nick","mail","link"],
+          requiredMeta: ["nick","mail"],
+          wordLimit: JSON.parse('0'),
+          comment: true,
+          pageSize: JSON.parse('10'),
+          dark: 'html[data-theme="dark"]',
+          pageview: JSON.parse('true'),
+        });
+      }
+    },
+    twikoo: {
+      enable: false,
+      load: () => {
+        const container = document.querySelector('.twikoo-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        const script = loadScript(
+          'https://npm.webcache.cn/twikoo@1.6.16/dist/twikoo.all.min.js',
+          'sha384-lDHsr5aZmkMS0eKnsUu6e9RWP+dRmn7sgjRAKGOAoXfMyzbUK6Qi86zZK7R+KvRV'
+        );
+
+        script.onload = () => {
+          if (window.twikoo) {
+            twikoo.init({
+              envId: 'https://twikoo-tau-inky.vercel.app/',
+              el: '.tcomment',
+              region: '',
+            })
+          }
+        } 
+        document.head.appendChild(script);
+      }
+    },
+    gitalk: {
+      enable: false,
+      load: () => {
+        const container = document.querySelector('.gitalk-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        const script = loadScript(
+          'https://npm.webcache.cn/gitalk@1.8.0/dist/gitalk.min.js',
+          'sha384-kspnZUWBoSWwoJHa0hBCXYbHGbhvU/lcEH5O8eVbSDhbPwsiVUTp/aGX/z/5EuMA'
+        );
+
+        script.onload = () => {
+          if (false) {
+            const md5Script = loadScript(
+              'https://npm.webcache.cn/blueimp-md5@2.19.0/js/md5.min.js',
+              'sha384-JmVtRz6RWiXnA14QbIOJzPuU3MidULOpBP66deeLLyyoF4Tr/gZlbkHkL6vTthxH'
+            );
+            md5Script.onload = initGitalk;
+            document.head.appendChild(md5Script);
+          } else {
+            initGitalk();
+          }
+        }
+        document.head.appendChild(script);
+
+        function initGitalk() {
+          var gitalkId = location.pathname;
+          var gitalk = new Gitalk({
+            clientID: '',
+            clientSecret: '',
+            repo: '',
+            owner: '',
+            admin: null,
+            id: gitalkId, // Ensure uniqueness and length less than 50
+            distractionFreeMode: false // Facebook-like distraction free mode
+          })
+          gitalk.render('gitalk-comment');
+        }
+      }
+    },
+    giscus: {
+      enable: false,
+      load: () => {
+        const container = document.querySelector('.giscus-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        // 删除可能已存在的 giscus 脚本和 iframe
+        const existingScript = container.querySelector('script[src*="giscus.app/client.js"]');
+        if (existingScript) existingScript.remove();
+        const existingFrame = document.querySelector('iframe.giscus-frame');
+        if (existingFrame) existingFrame.remove();
+
+        const giscusScript = document.createElement('script');
+        const domMode = document.documentElement.getAttribute("data-theme");
+        giscusScript.src = 'https://giscus.app/client.js';
+        giscusScript.setAttribute('data-repo', '');
+        giscusScript.setAttribute('data-repo-id', '');
+        giscusScript.setAttribute('data-category', ''); 
+        giscusScript.setAttribute('data-category-id', '');
+        giscusScript.setAttribute('data-mapping', '0');
+        giscusScript.setAttribute('data-strict', '0');
+        giscusScript.setAttribute('data-reactions-enabled', '1');
+        giscusScript.setAttribute('data-emit-metadata', '0');
+        giscusScript.setAttribute('data-input-position', 'bottom');
+        giscusScript.setAttribute('data-theme', domMode === 'dark' ? 'dark' : 'light');
+        giscusScript.setAttribute('data-lang', 'zh-CN');
+        giscusScript.setAttribute('crossorigin', 'anonymous');
+        giscusScript.async = true;
+        container.appendChild(giscusScript);
+        document.body.addEventListener('light-theme-set', () => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: 'light' } } }, 'https://giscus.app');
+        });
+        document.body.addEventListener('dark-theme-set', () => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: 'dark' } } }, 'https://giscus.app');
+        });
+      }
+    }
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    // 评论组件加载状态跟踪
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+      
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.8.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+<script data-pjax>
+  var updateTime = _$('#post-update-time')?.innerHTML;
+
+  if (updateTime) {
+    const update = new Date(updateTime);
+    const now = new Date();
+    const diff = now - update;
+    const days = diff / 86400000;
+    const { daysAgo, message: template } = window.REIMU_CONFIG.outdate;
+    if (days >= daysAgo) {
+      const message = template.replace(/{time}/, updateTime);
+      const blockquote = _$('#outdate-blockquote');
+      if (blockquote) {
+        blockquote.querySelector('p').innerText = message;
+        blockquote.style.display = 'block';
+      }
+    }
+  }
+</script>
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+  
+
+
+
+
+
+
+
+    
+  </body>
+  </html>
+
