@@ -17,7 +17,7 @@
   <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://yo1o.top';</script>
   
   <title>
-    Manchester_encoding |
+    深入理解曼彻斯特编码及其变种 |
     
     Yolo&#39;s Blog
   </title>
@@ -35,19 +35,25 @@
 
   
   
-    <meta name="description" content="曼彻斯特编码 曼彻斯特编码是一种在电信和数据存储中常用的线路编码技术，它通过在每个数据位的中间引入电平跳变来同时传输时钟信号和数据。由于其内置了同步机制，因此也被称为自同步码或相位编码  核心原理 曼彻斯特编码的核心思想是将每一位数据用两个电平状态来表示，并且在每个码元（比特周期）的中间时刻必定发生一次电平跳变。这个跳变既作为时钟信号，也用来表示数据。 😱这个具体编码规则通常有两种：  IEE">
+    <meta name="description" content="曼彻斯特编码 (Manchester Encoding) 曼彻斯特编码是一种在数字通信和数据存储中广泛应用的线路编码技术。其核心特点是在每个数据位的中间时刻引入电平跳变，这个跳变既承载了时钟同步信号，也用于表示数据本身。由于其内置了同步机制，因此也被称为自同步码 (Self-Synchronizing Code) 或 相位编码 (Phase Encoding, PE)。  核心原理 曼彻斯特编码">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Manchester_encoding">
+<meta property="og:title" content="深入理解曼彻斯特编码及其变种">
 <meta property="og:url" content="https://yo1o.top/2025/05/11/Manchester-encoding/index.html">
 <meta property="og:site_name" content="Yolo&#39;s Blog">
-<meta property="og:description" content="曼彻斯特编码 曼彻斯特编码是一种在电信和数据存储中常用的线路编码技术，它通过在每个数据位的中间引入电平跳变来同时传输时钟信号和数据。由于其内置了同步机制，因此也被称为自同步码或相位编码  核心原理 曼彻斯特编码的核心思想是将每一位数据用两个电平状态来表示，并且在每个码元（比特周期）的中间时刻必定发生一次电平跳变。这个跳变既作为时钟信号，也用来表示数据。 😱这个具体编码规则通常有两种：  IEE">
+<meta property="og:description" content="曼彻斯特编码 (Manchester Encoding) 曼彻斯特编码是一种在数字通信和数据存储中广泛应用的线路编码技术。其核心特点是在每个数据位的中间时刻引入电平跳变，这个跳变既承载了时钟同步信号，也用于表示数据本身。由于其内置了同步机制，因此也被称为自同步码 (Self-Synchronizing Code) 或 相位编码 (Phase Encoding, PE)。  核心原理 曼彻斯特编码">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Manchester_encoding_both_conventions.svg/650px-Manchester_encoding_both_conventions.svg.png">
+<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250511234158_0.png">
 <meta property="article:published_time" content="2025-05-11T08:51:46.000Z">
-<meta property="article:modified_time" content="2025-05-11T09:22:34.067Z">
+<meta property="article:modified_time" content="2025-05-11T15:41:58.791Z">
 <meta property="article:author" content="Yolo">
+<meta property="article:tag" content="数字通信">
+<meta property="article:tag" content="数据编码">
+<meta property="article:tag" content="曼彻斯特编码">
+<meta property="article:tag" content="差分曼彻斯特编码">
+<meta property="article:tag" content="IEEE 802.3">
+<meta property="article:tag" content="G.E. Thomas">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Manchester_encoding_both_conventions.svg/650px-Manchester_encoding_both_conventions.svg.png">
+<meta name="twitter:image" content="https://yo1o.top/images/Manchester-encoding/20250511234158_0.png">
   
   
     <link rel="alternate" href="/atom.xml" title="Yolo's Blog" type="application/atom+xml">
@@ -207,7 +213,7 @@
           
         </picture>
         
-          <img  fetchpriority="high" src="/images/banner.webp" alt="Manchester_encoding">
+          <img  fetchpriority="high" src="/images/banner.webp" alt="深入理解曼彻斯特编码及其变种">
         
       
     
@@ -218,7 +224,7 @@
         
         
           <a href="/" id="logo">
-            <h1 data-aos="slide-up">Manchester_encoding</h1>
+            <h1 data-aos="slide-up">深入理解曼彻斯特编码及其变种</h1>
           </a>
         
       
@@ -245,7 +251,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ieee-8023%E6%A0%87%E5%87%86%E5%B8%B8%E7%94%A8%E4%BA%8E%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.1.1.</span> <span class="toc-text"> IEEE 802.3标准（常用于以太网）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gethomas%E6%8F%90%E5%87%BA%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9C%89%E6%97%B6%E4%B9%9F%E7%A7%B0%E4%BD%9C%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E5%85%B6%E4%B8%AD%E4%B8%80%E7%A7%8D%E5%AE%9A%E4%B9%89%E6%88%96%E6%97%A9%E6%9C%9F%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.2.</span> <span class="toc-text"> G.E.Thomas提出的方式（有时也称作差分曼彻斯特编码的其中一种定义或早期定义）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-manchester-encoding"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码 (Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E7%9A%84%E4%B8%A4%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 编码规则的两种主要约定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text"> 标准曼彻斯特编码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-differential-manchester-encoding"><span class="toc-number">1.4.</span> <span class="toc-text"> 差分曼彻斯特编码 (Differential Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 核心原理与编码规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 差分曼彻斯特编码示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text"> 曼彻斯特编码的解码过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%97%B6%E9%92%9F%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%90%8C%E6%AD%A5-clock-recovery-and-synchronization"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1. 时钟恢复与同步 (Clock Recovery and Synchronization)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%86%E5%88%AB%E6%AF%94%E7%89%B9%E5%86%85%E7%9A%84%E7%94%B5%E5%B9%B3%E6%A8%A1%E5%BC%8F%E8%B7%B3%E5%8F%98%E7%89%B9%E5%BE%81"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2. 识别比特内的电平模式&#x2F;跳变特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E8%BF%9B%E8%A1%8C%E8%A7%A3%E7%A0%81"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3. 应用编码规则进行解码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">1.5.4.</span> <span class="toc-text"> 4. 处理数据流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E7%A4%BA%E4%BE%8B%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E8%A7%A3%E7%A0%81"><span class="toc-number">1.6.</span> <span class="toc-text"> Python 示例脚本 (用于解码)</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -266,7 +272,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">7</div>
+    <div class="sidebar-state-number">13</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -364,103 +370,494 @@
     <div class="e-content article-entry" itemprop="articleBody">
       
       
-        <h1 id="曼彻斯特编码"><a class="markdownIt-Anchor" href="#曼彻斯特编码"></a> 曼彻斯特编码</h1>
-<p>曼彻斯特编码是一种在电信和数据存储中常用的线路编码技术，它通过在每个数据位的中间引入电平跳变来同时传输时钟信号和数据。由于其内置了同步机制，因此也被称为自同步码或相位编码</p>
+        <h1 id="曼彻斯特编码-manchester-encoding"><a class="markdownIt-Anchor" href="#曼彻斯特编码-manchester-encoding"></a> 曼彻斯特编码 (Manchester Encoding)</h1>
+<p>曼彻斯特编码是一种在数字通信和数据存储中广泛应用的线路编码技术。其核心特点是在每个数据位的中间时刻引入电平跳变，这个跳变既承载了时钟同步信号，也用于表示数据本身。由于其内置了同步机制，因此也被称为<strong>自同步码 (Self-Synchronizing Code)</strong> 或 <strong>相位编码 (Phase Encoding, PE)</strong>。</p>
 <h2 id="核心原理"><a class="markdownIt-Anchor" href="#核心原理"></a> 核心原理</h2>
-<p>曼彻斯特编码的核心思想是将每一位数据用两个电平状态来表示，并且在每个码元（比特周期）的中间时刻必定发生一次电平跳变。这个跳变既作为时钟信号，也用来表示数据。</p>
-<p>😱这个具体编码规则通常有两种：</p>
-<h3 id="ieee-8023标准常用于以太网"><a class="markdownIt-Anchor" href="#ieee-8023标准常用于以太网"></a> IEEE 802.3标准（常用于以太网）</h3>
-<p>逻辑“1”表示为从低电平到高电平的跳变（在比特周期的中间）</p>
-<p>逻辑“0”表示为从高电平到低电平的跳变（在比特周期的中间）</p>
-<h3 id="gethomas提出的方式有时也称作差分曼彻斯特编码的其中一种定义或早期定义"><a class="markdownIt-Anchor" href="#gethomas提出的方式有时也称作差分曼彻斯特编码的其中一种定义或早期定义"></a> G.E.Thomas提出的方式（有时也称作差分曼彻斯特编码的其中一种定义或早期定义）</h3>
-<p>逻辑“0”表示为从高电平到低电平的跳变</p>
-<p>逻辑“1”表示为从低电平到高电平的跳变</p>
-<p>📓注意，这里关于G.E.Thomas的定义有时会与差分曼彻斯特编码混淆，关键在于记住比特中间的跳变是核心，而跳变方向定义了数据。</p>
+<p>曼彻斯特编码的基本思想是，每一个原始数据比特都被扩展为两个电平状态（或称为码元、chip）来表示。在每个原始比特的持续时间的中心点，信号电平必定会发生一次跳变。</p>
+<p>这个在比特中点发生的跳变是曼彻斯特编码的关键，它为接收端提供了精确的时钟同步信息。数据的表示则依赖于这个跳变的方向，或者说，依赖于比特周期内前半部分和后半部分的电平高低组合。</p>
+<h3 id="编码规则的两种主要约定"><a class="markdownIt-Anchor" href="#编码规则的两种主要约定"></a> 编码规则的两种主要约定</h3>
+<p>对于标准的曼彻斯特编码，通常有两种广为流传的定义（它们在逻辑值与电平跳变方向的对应关系上正好相反）：</p>
+<ol>
+<li>
+<p><strong>IEEE 802.3 标准 (常用于以太网)</strong></p>
+<ul>
+<li>逻辑 <strong>‘1’</strong>：表示为在比特周期中间从 <strong>低电平跳变到高电平</strong> (LH)。</li>
+<li>逻辑 <strong>‘0’</strong>：表示为在比特周期中间从 <strong>高电平跳变到低电平</strong> (HL)。</li>
+</ul>
+</li>
+<li>
+<p><strong>G.E. Thomas 提出的方式 (有时也被视为“经典”约定)</strong></p>
+<ul>
+<li>逻辑 <strong>‘0’</strong>：表示为在比特周期中间从 <strong>低电平跳变到高电平</strong> (LH)。</li>
+<li>逻辑 <strong>‘1’</strong>：表示为在比特周期中间从 <strong>高电平跳变到低电平</strong> (HL)。</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>注意</strong>：G.E. Thomas 方式定义的标准曼彻斯特编码有时容易与“差分曼彻斯特编码”的概念混淆。关键在于，标准曼彻斯特编码（无论是IEEE 802.3还是G.E. Thomas约定）的核心是<strong>比特中间的跳变方向直接定义了数据值</strong>。而差分曼彻斯特编码的数据表示依赖于比特开始处是否有跳变。</p>
+</blockquote>
 <h2 id="关键特性"><a class="markdownIt-Anchor" href="#关键特性"></a> 关键特性</h2>
-<p>位中间跳变：无论传输的是“0”还是“1”，在每个比特周期的中间都会有一次电平转换</p>
-<p>同步信息：接收端可以根据这个位中间的跳变来提取时钟信号，从而与发送端保持同步，解决了不归零(NRZ)编码中可能出现的长串“0”或“1”导致同步丢失的问题。</p>
-<p>无直流分量：由于每个比特周期内高低电平占据的时间大致相等（或者说必然有跳变），信号的平均直流分量接近于零。这对于通过某些不允许有直流分量的传输介质（如变压器耦合）是有利的</p>
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Manchester_encoding_both_conventions.svg/650px-Manchester_encoding_both_conventions.svg.png" alt="img" style="zoom:50%;" />
+<ul>
+<li><strong>位中间跳变</strong>：无论传输的是逻辑 ‘0’ 还是 ‘1’，在每个比特周期的精确中间位置，信号电平都会发生一次转换。这是其最显著的物理特征。</li>
+<li><strong>同步信息</strong>：接收端可以检测这个位中间的跳变来精确地恢复时钟信号，从而与发送端保持同步。这有效解决了像不归零 (NRZ) 编码那样可能因连续的相同数据位而导致同步丢失的问题。</li>
+<li><strong>无直流分量 (No DC Component)</strong>：由于每个比特周期内，高电平和低电平占据的时间通常是相等的（因为总有一次跳变），所以信号的平均直流分量趋近于零。这使得曼彻斯特编码的信号可以直接通过不允许有直流分量的传输介质，例如变压器耦合的线路。</li>
+<li><strong>错误检测能力</strong>：由于每个比特都必须有一次中点跳变，如果接收端在预期的中点没有检测到跳变，或者在不应该有跳变的地方（如比特边界处，对于非差分编码而言）检测到跳变，就可以指示可能发生了传输错误。</li>
+</ul>
+<h2 id="标准曼彻斯特编码示例"><a class="markdownIt-Anchor" href="#标准曼彻斯特编码示例"></a> 标准曼彻斯特编码示例</h2>
+<p>下面我们用表格清晰展示上述两种主要约定的标准曼彻斯特编码规则。我们约定高电平为 ‘1’，低电平为 ‘0’。</p>
+<p><strong>表1: IEEE 802.3 曼彻斯特编码规则</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">原始数据</th>
+<th>规则说明 (编码定义)</th>
+<th style="text-align:center">比特周期<br>前半段电平</th>
+<th style="text-align:center">比特周期<br>后半段电平</th>
+<th style="text-align:center">形成的编码<br>(电平序列 1/0)</th>
+<th style="text-align:center">比特中点<br>电平跳变方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>0</strong></td>
+<td>信号在比特中点由高跳变到低</td>
+<td style="text-align:center">高 (1)</td>
+<td style="text-align:center">低 (0)</td>
+<td style="text-align:center"><code>10</code></td>
+<td style="text-align:center">高 → 低</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>1</strong></td>
+<td>信号在比特中点由低跳变到高</td>
+<td style="text-align:center">低 (0)</td>
+<td style="text-align:center">高 (1)</td>
+<td style="text-align:center"><code>01</code></td>
+<td style="text-align:center">低 → 高</td>
+</tr>
+</tbody>
+</table>
+<p><strong>表2: G.E. Thomas 曼彻斯特编码规则</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">原始数据</th>
+<th>规则说明 (编码定义)</th>
+<th style="text-align:center">比特周期<br>前半段电平</th>
+<th style="text-align:center">比特周期<br>后半段电平</th>
+<th style="text-align:center">形成的编码<br>(电平序列 1/0)</th>
+<th style="text-align:center">比特中点<br>电平跳变方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><strong>0</strong></td>
+<td>信号在比特中点由低跳变到高</td>
+<td style="text-align:center">低 (0)</td>
+<td style="text-align:center">高 (1)</td>
+<td style="text-align:center"><code>01</code></td>
+<td style="text-align:center">低 → 高</td>
+</tr>
+<tr>
+<td style="text-align:center"><strong>1</strong></td>
+<td>信号在比特中点由高跳变到低</td>
+<td style="text-align:center">高 (1)</td>
+<td style="text-align:center">低 (0)</td>
+<td style="text-align:center"><code>10</code></td>
+<td style="text-align:center">高 → 低</td>
+</tr>
+</tbody>
+</table>
+<p><img src="/images/Manchester-encoding/20250511234158_0.png" alt="" /></p>
 <p>上图是根据两种规定的曼彻斯特编码方式</p>
-<p>这里先说明802.3规定的编码解码方式</p>
+<h2 id="差分曼彻斯特编码-differential-manchester-encoding"><a class="markdownIt-Anchor" href="#差分曼彻斯特编码-differential-manchester-encoding"></a> 差分曼彻斯特编码 (Differential Manchester Encoding)</h2>
+<p>差分曼彻斯特编码是曼彻斯特编码的一种重要变种。它同样在每个比特周期的中间有一次电平跳变（主要用于时钟同步），但其表示数据的方式与标准曼彻斯特编码不同。</p>
+<h3 id="核心原理与编码规则"><a class="markdownIt-Anchor" href="#核心原理与编码规则"></a> 核心原理与编码规则</h3>
+<p>差分曼彻斯特编码通过<strong>比特周期的起始处是否存在电平跳变</strong>来表示数据：</p>
+<ul>
+<li>逻辑 <strong>‘0’</strong>：通过在比特周期的<strong>开始处引入一次电平跳变</strong>来表示（相对于前一个比特周期的结束电平而言）。</li>
+<li>逻辑 <strong>‘1’</strong>：通过在比特周期的<strong>开始处不发生电平跳变</strong>来表示（即当前比特的起始电平与前一个比特的结束电平相同）。</li>
+</ul>
+<p>无论数据是 ‘0’ 还是 ‘1’，<strong>比特周期的中间仍然必须有一次电平跳变</strong>以维持时钟同步。这意味着差分曼彻斯特编码的每个比特单元的两个半周期电平也总是相反的。</p>
+<h3 id="关键特性-2"><a class="markdownIt-Anchor" href="#关键特性-2"></a> 关键特性</h3>
+<ul>
+<li><strong>自同步性</strong>：与标准曼彻斯特编码一样，通过比特中点的固定跳变实现。</li>
+<li><strong>对信号极性不敏感（部分情况）</strong>：由于数据是通过“变化”或“无变化”来表示的，而不是绝对的电平高低或跳变方向，因此在某些情况下，如果整个信号流的极性被意外反转，差分编码仍然可以被正确解码（但这取决于接收器的具体实现）。</li>
+<li><strong>需要初始参考</strong>：解码第一个比特时，需要知道数据流开始之前的线路电平状态，作为判断第一个比特开始处是否有跳变的参考。</li>
+<li><strong>无直流分量</strong>：与标准曼彻斯特编码类似。</li>
+</ul>
+<h3 id="差分曼彻斯特编码示例"><a class="markdownIt-Anchor" href="#差分曼彻斯特编码示例"></a> 差分曼彻斯特编码示例</h3>
+<p>下表展示了差分曼彻斯特编码的过程。注意，当前比特的编码依赖于前一个比特的结束电平。</p>
 <table>
 <thead>
 <tr>
-<th>原始数据</th>
-<th>时钟信号特征</th>
-<th>曼彻斯特编码值 (低=0, 高=1)</th>
-<th>电平跳变方向 (在比特位中间)</th>
+<th style="text-align:center">原始数据 (D)</th>
+<th style="text-align:center">前一比特<br>结束电平 (Prev_End)</th>
+<th style="text-align:center">当前比特开始处<br>是否有跳变?</th>
+<th style="text-align:center">当前比特<br>前半段电平 (S1)</th>
+<th style="text-align:center">当前比特<br>后半段电平 (S2)<br>(S2 必定与S1相反)</th>
+<th style="text-align:center">形成的编码<br>(电平序列 S1S2)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>0</td>
-<td>每个比特位中间必须有跳变</td>
-<td>01</td>
-<td>低 → 高</td>
+<td style="text-align:center"><em>(初始状态)</em></td>
+<td style="text-align:center"><em>(假设为高 ‘1’)</em></td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
 </tr>
-<tr>
-<td>1</td>
-<td>每个比特位中间必须有跳变</td>
-<td>10</td>
-<td>高 → 低</td>
-</tr>
-<tr>
-<td>(空闲)</td>
-<td>(通常维持特定电平)</td>
-<td>(通常无跳变或特定模式)</td>
-<td>-</td>
-</tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">原始数据</th>
-<th style="text-align:center">时钟信号<br>(第1相位 / 第2相位)</th>
-<th style="text-align:center">运算说明<br>(原始数据 ⊕ 时钟相位)</th>
-<th style="text-align:center">曼彻斯特值<br>(第1相位 / 第2相位)</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td style="text-align:center"><strong>0</strong></td>
-<td style="text-align:center">0<br>1</td>
-<td style="text-align:center">(0 ⊕ 0) = 0(0 ⊕ 1) = 1</td>
-<td style="text-align:center"><strong>0</strong><br><strong>1</strong></td>
+<td style="text-align:center">高 (‘1’)</td>
+<td style="text-align:center">是 (S1≠Prev_End)</td>
+<td style="text-align:center">低 (‘0’)</td>
+<td style="text-align:center">高 (‘1’)</td>
+<td style="text-align:center"><code>01</code></td>
 </tr>
 <tr>
 <td style="text-align:center"><strong>1</strong></td>
-<td style="text-align:center">0<br>1</td>
-<td style="text-align:center">(1 ⊕ 0) = 1<br>(1 ⊕ 1) = 0</td>
-<td style="text-align:center"><strong>1</strong><br><strong>0</strong></td>
+<td style="text-align:center">高 (‘1’)</td>
+<td style="text-align:center">否 (S1=Prev_End)</td>
+<td style="text-align:center">高 (‘1’)</td>
+<td style="text-align:center">低 (‘0’)</td>
+<td style="text-align:center"><code>10</code></td>
 </tr>
-</tbody>
-</table>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">原始数据</th>
-<th style="text-align:center">时钟信号<br>(第1相位 / 第2相位)</th>
-<th style="text-align:center">运算说明<br>(原始数据 ⊕ 时钟相位)</th>
-<th style="text-align:center">曼彻斯特值<br>(第1相位 / 第2相位)</th>
-</tr>
-</thead>
-<tbody>
 <tr>
 <td style="text-align:center"><strong>0</strong></td>
-<td style="text-align:center">0<br>1</td>
-<td style="text-align:center">(0 ⊕ 0) = 0<br>(0 ⊕ 1) = 1</td>
-<td style="text-align:center"><strong>0</strong><br><strong>1</strong></td>
+<td style="text-align:center">低 (‘0’)</td>
+<td style="text-align:center">是 (S1≠Prev_End)</td>
+<td style="text-align:center">高 (‘1’)</td>
+<td style="text-align:center">低 (‘0’)</td>
+<td style="text-align:center"><code>10</code></td>
 </tr>
 <tr>
 <td style="text-align:center"><strong>1</strong></td>
-<td style="text-align:center">0<br>1</td>
-<td style="text-align:center">(1 ⊕ 0) = 1<br>(1 ⊕ 1) = 0</td>
-<td style="text-align:center"><strong>1</strong><br><strong>0</strong></td>
+<td style="text-align:center">低 (‘0’)</td>
+<td style="text-align:center">否 (S1=Prev_End)</td>
+<td style="text-align:center">低 (‘0’)</td>
+<td style="text-align:center">高 (‘1’)</td>
+<td style="text-align:center"><code>01</code></td>
 </tr>
 </tbody>
 </table>
+<p><em>(上表示例中，S2 的选择是为了确保中点跳变，例如若S1为低，则S2为高，反之亦然。实际波形会自然形成这种中点跳变。)</em></p>
+<h2 id="曼彻斯特编码的解码过程"><a class="markdownIt-Anchor" href="#曼彻斯特编码的解码过程"></a> 曼彻斯特编码的解码过程</h2>
+<p>无论是标准曼彻斯特编码还是差分曼彻斯特编码，其解码过程都依赖于对信号中电平跳变的精确检测。</p>
+<h3 id="1-时钟恢复与同步-clock-recovery-and-synchronization"><a class="markdownIt-Anchor" href="#1-时钟恢复与同步-clock-recovery-and-synchronization"></a> 1. 时钟恢复与同步 (Clock Recovery and Synchronization)</h3>
+<ul>
+<li><strong>寻找跳变</strong>：解码器首先持续检测输入信号中的电平跳变。对于这两种曼彻斯特编码，每个比特周期的中间都保证有一次跳变。</li>
+<li><strong>同步时钟</strong>：利用这些周期性的中点跳变，接收端可以调整其内部时钟，使其与发送数据的速率和相位同步。硬件实现中常使用锁相环 (PLL)。</li>
+<li><strong>确定比特边界</strong>：一旦时钟同步，接收端就能准确地划分出每个曼彻斯特编码符号（代表一个原始数据位）的起始和结束时刻，以及关键的比特周期中点。</li>
+</ul>
+<h3 id="2-识别比特内的电平模式跳变特征"><a class="markdownIt-Anchor" href="#2-识别比特内的电平模式跳变特征"></a> 2. 识别比特内的电平模式/跳变特征</h3>
+<p>对于每一个已确定边界的编码符号：</p>
+<ul>
+<li><strong>标准曼彻斯特解码</strong>：
+<ul>
+<li><strong>方法一 (检测中点跳变方向)</strong>：在比特周期的中间时刻，判断电平是从高跳到低 (H→L)，还是从低跳到高 (L→H)。</li>
+<li><strong>方法二 (采样前后半段电平)</strong>：分别采样比特周期前半段和后半段的电平，比较两者以确定是 “高-低”(HL) 模式还是 “低-高”(LH) 模式。</li>
+</ul>
+</li>
+<li><strong>差分曼彻斯特解码</strong>：
+<ul>
+<li>获取当前比特周期的第一个半周期电平 (S1)。</li>
+<li>获取前一个比特周期的第二个半周期电平 (即前一比特的结束电平)。</li>
+<li>比较 S1 与前一比特的结束电平，判断当前比特开始时是否发生了跳变。</li>
+<li><strong>同时，必须验证当前比特的 S1 和 S2 是否相反</strong>，以确认比特内中点跳变的存在。如果 S1 和 S2 相同，则这是一个无效的差分曼彻斯特编码符号。</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-应用编码规则进行解码"><a class="markdownIt-Anchor" href="#3-应用编码规则进行解码"></a> 3. 应用编码规则进行解码</h3>
+<p>根据已知的编码标准（IEEE 802.3, G.E. Thomas, 或差分曼彻斯特）和上一步识别出的特征，将每个编码符号转换回原始的 ‘0’ 或 ‘1’。</p>
+<ul>
+<li><strong>IEEE 802.3</strong>：
+<ul>
+<li>高→低 (HL / <code>10</code>) 解码为 <strong>‘0’</strong>。</li>
+<li>低→高 (LH / <code>01</code>) 解码为 <strong>‘1’</strong>。</li>
+</ul>
+</li>
+<li><strong>G.E. Thomas</strong>：
+<ul>
+<li>低→高 (LH / <code>01</code>) 解码为 <strong>‘0’</strong>。</li>
+<li>高→低 (HL / <code>10</code>) 解码为 <strong>‘1’</strong>。</li>
+</ul>
+</li>
+<li><strong>差分曼彻斯特</strong>：
+<ul>
+<li>比特开始处<strong>有</strong>电平跳变，解码为 <strong>‘0’</strong>。</li>
+<li>比特开始处<strong>无</strong>电平跳变，解码为 <strong>‘1’</strong>。</li>
+<li>(解码第一个比特时，需要知道数据流开始前的信号电平作为初始参考。)</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-处理数据流"><a class="markdownIt-Anchor" href="#4-处理数据流"></a> 4. 处理数据流</h3>
+<p>对接收到的整个曼彻斯特编码信号流，逐个编码符号重复上述同步、识别和解码步骤，最终将解码出的所有原始数据位按顺序排列，恢复出原始信息。</p>
+<h2 id="python-示例脚本-用于解码"><a class="markdownIt-Anchor" href="#python-示例脚本-用于解码"></a> Python 示例脚本 (用于解码)</h2>
+<p>以下是一个 Python 脚本，它可以读取包含 ‘0’ 和 ‘1’ 字符（代表编码后的电平状态）的文件，并根据用户选择的曼彻斯特编码标准（包括差分曼彻斯特）进行解码，同时提供ASCII预览和逆序选项。</p>
+<pre><code class="python">import os # 用于处理文件路径和名称
+
+def decode_manchester_ieee802_3(encoded_data_str):
+    &quot;&quot;&quot;
+    使用 IEEE 802.3 标准解码曼彻斯特编码字符串。
+    规则: '01' (低-高) -&gt; '1', '10' (高-低) -&gt; '0'.
+    &quot;&quot;&quot;
+    decoded_bits = []
+    errors = []
+    warnings = []
+    n = len(encoded_data_str)
+    
+    for i in range(0, n - (n % 2), 2):
+        pair = encoded_data_str[i:i+2]
+        if pair == &quot;01&quot;:
+            decoded_bits.append(&quot;1&quot;)
+        elif pair == &quot;10&quot;:
+            decoded_bits.append(&quot;0&quot;)
+        else:
+            errors.append(f&quot;错误 (IEEE 802.3)：在输入编码数据的位置 &#123;i&#125; 处发现无效的曼彻斯特编码对 '&#123;pair&#125;' (应为 '01' 或 '10')。&quot;)
+            
+    if n % 2 != 0:
+        warnings.append(f&quot;警告：输入编码数据长度为奇数 (&#123;n&#125;)。最后一个字符 '&#123;encoded_data_str[-1]&#125;' 已被忽略。&quot;)
+        
+    return &quot;&quot;.join(decoded_bits), errors, warnings
+
+def decode_manchester_ge_thomas(encoded_data_str):
+    &quot;&quot;&quot;
+    使用 G.E. Thomas 标准解码曼彻斯特编码字符串。
+    规则: '01' (低-高) -&gt; '0', '10' (高-低) -&gt; '1'.
+    &quot;&quot;&quot;
+    decoded_bits = []
+    errors = []
+    warnings = []
+    n = len(encoded_data_str)
+    
+    for i in range(0, n - (n % 2), 2):
+        pair = encoded_data_str[i:i+2]
+        if pair == &quot;01&quot;: 
+            decoded_bits.append(&quot;0&quot;)
+        elif pair == &quot;10&quot;: 
+            decoded_bits.append(&quot;1&quot;)
+        else:
+            errors.append(f&quot;错误 (G.E. Thomas)：在输入编码数据的位置 &#123;i&#125; 处发现无效的曼彻斯特编码对 '&#123;pair&#125;' (应为 '01' 或 '10')。&quot;)
+            
+    if n % 2 != 0:
+        warnings.append(f&quot;警告：输入编码数据长度为奇数 (&#123;n&#125;)。最后一个字符 '&#123;encoded_data_str[-1]&#125;' 已被忽略。&quot;)
+        
+    return &quot;&quot;.join(decoded_bits), errors, warnings
+
+def decode_differential_manchester(encoded_data_str, initial_prev_level_char):
+    &quot;&quot;&quot;
+    使用差分曼彻斯特标准解码编码字符串。
+    规则: 比特开始处有跳变 -&gt; '0', 无跳变 -&gt; '1'.
+          每个比特内部必须有中点跳变 (即两个半周期电平不同).
+    &quot;&quot;&quot;
+    decoded_bits = []
+    errors = []
+    warnings = []
+    n = len(encoded_data_str)
+    
+    if initial_prev_level_char not in ('0', '1'):
+        errors.append(&quot;严重错误 (差分曼彻斯特)：无效的初始前一电平状态。&quot;)
+        return &quot;&quot;, errors, warnings # 返回空数据和错误
+
+    previous_level_second_half = initial_prev_level_char
+    
+    for i in range(0, n - (n % 2), 2):
+        s1 = encoded_data_str[i]
+        s2 = encoded_data_str[i+1] # Pair is s1+s2
+
+        # 1. 检查比特内部中点跳变 (关键)
+        if s1 == s2:
+            errors.append(f&quot;错误 (差分曼彻斯特)：在位置 &#123;i&#125; 处发现无效符号 '&#123;s1&#125;&#123;s2&#125;'，缺少比特内中点跳变。&quot;)
+            # 当出现这种严重错误时，后续的差分解码可能无意义
+            # 但为了尽可能解码，我们仍然会尝试基于s1做判断，并用s2更新previous_level_second_half
+            # 如果希望更严格，可以在此处中断或标记后续数据不可靠
+
+        # 2. 解码逻辑：基于比特开始处是否有跳变
+        if s1 == previous_level_second_half: # 电平未变 -&gt; 1
+            decoded_bits.append(&quot;1&quot;)
+        else: # 电平变化 -&gt; 0
+            decoded_bits.append(&quot;0&quot;)
+            
+        # 3. 更新前一个比特的结束电平，用于下一个比特的比较
+        previous_level_second_half = s2
+            
+    if n % 2 != 0:
+        warnings.append(f&quot;警告：输入编码数据长度为奇数 (&#123;n&#125;)。最后一个字符 '&#123;encoded_data_str[-1]&#125;' 已被忽略。&quot;)
+        
+    return &quot;&quot;.join(decoded_bits), errors, warnings
+
+def binary_to_ascii_preview(binary_str, max_chars=50, bits_per_char=8):
+    &quot;&quot;&quot;
+    将二进制字符串的前缀转换为ASCII字符预览。
+    非标准可打印ASCII字符将用 '.' 代替。
+    &quot;&quot;&quot;
+    if not binary_str or len(binary_str) &lt; bits_per_char:
+        return &quot;(二进制数据不足以转换为ASCII)&quot;
+
+    ascii_chars = []
+    # 确保只处理完整的字符块
+    num_full_chars_possible = len(binary_str) // bits_per_char
+    
+    for i in range(min(num_full_chars_possible, max_chars)): # 最多转换 max_chars 个字符
+        byte_str = binary_str[i*bits_per_char : (i+1)*bits_per_char]
+        try:
+            decimal_value = int(byte_str, 2)
+            # 标准可打印ASCII字符范围: 32 (空格) 到 126 (~)
+            if 32 &lt;= decimal_value &lt;= 126:
+                ascii_chars.append(chr(decimal_value))
+            else:
+                ascii_chars.append('.') # 用 '.' 替换控制字符或非标准可打印字符
+        except ValueError: # 如果byte_str不是有效的二进制（理论上不应发生）
+            ascii_chars.append('?') 
+            
+    return &quot;&quot;.join(ascii_chars)
+
+def main():
+    file_path = input(&quot;请输入包含曼彻斯特编码数据的文件路径: &quot;)
+    
+    try:
+        with open(file_path, 'r') as file:
+            raw_content = file.read()
+            
+        signal_string_no_whitespace = &quot;&quot;.join(raw_content.split())
+        
+        valid_chars = []
+        invalid_char_messages = []
+        for char_idx, char_val in enumerate(signal_string_no_whitespace):
+            if char_val in ('0', '1'):
+                valid_chars.append(char_val)
+            else:
+                invalid_char_messages.append(f&quot;警告：在原始数据中发现并忽略了无效字符 '&#123;char_val&#125;' (在清理空白后的位置 &#123;char_idx&#125;)。&quot;)
+        
+        manchester_encoded_string = &quot;&quot;.join(valid_chars)
+
+        if invalid_char_messages:
+            print(&quot;\n--- 输入数据清理警告 ---&quot;)
+            for msg in invalid_char_messages:
+                print(msg)
+        
+        if not manchester_encoded_string:
+            print(&quot;错误：文件内容为空或不包含有效的 '0' 或 '1' 字符以供解码。&quot;)
+            return
+            
+        print(f&quot;\n读取并清理后的待解码数据 (长度 &#123;len(manchester_encoded_string)&#125;): &#123;manchester_encoded_string[:100]&#125;&#123;'...' if len(manchester_encoded_string) &gt; 100 else ''&#125;&quot;)
+        
+        print(&quot;\n请选择曼彻斯特解码标准:&quot;)
+        print(&quot;1: IEEE 802.3 (电平序列 '01' -&gt; 数据 '1', '10' -&gt; 数据 '0')&quot;)
+        print(&quot;2: G.E. Thomas (电平序列 '01' -&gt; 数据 '0', '10' -&gt; 数据 '1')&quot;)
+        print(&quot;3: 差分曼彻斯特 (比特初有跳变为'0', 无则为'1'; 比特中点必有跳变)&quot;)
+        
+        standard_choice = input(&quot;请输入选项 (1, 2 或 3): &quot;).strip()
+        
+        decoded_data_initial = &quot;&quot;
+        errors = []
+        warnings = []
+        standard_name = &quot;&quot;
+        initial_level_for_diff = ''
+
+        if standard_choice == '1':
+            standard_name = &quot;IEEE 802.3&quot;
+            decoded_data_initial, errors, warnings = decode_manchester_ieee802_3(manchester_encoded_string)
+        elif standard_choice == '2':
+            standard_name = &quot;G.E. Thomas&quot;
+            decoded_data_initial, errors, warnings = decode_manchester_ge_thomas(manchester_encoded_string)
+        elif standard_choice == '3':
+            standard_name = &quot;差分曼彻斯特&quot;
+            while True:
+                initial_level_for_diff = input(&quot;请输入在数据流开始之前的信号电平 ('0' 表示低电平, '1' 表示高电平): &quot;).strip()
+                if initial_level_for_diff in ('0', '1'):
+                    break
+                else:
+                    print(&quot;无效的输入，请输入 '0' 或 '1'。&quot;)
+            decoded_data_initial, errors, warnings = decode_differential_manchester(manchester_encoded_string, initial_level_for_diff)
+        else:
+            print(&quot;错误：无效的解码标准选项。程序将退出。&quot;)
+            return
+            
+        print(f&quot;\n--- 使用 &#123;standard_name&#125; 标准进行解码 ---&quot;)
+        if standard_name == &quot;差分曼彻斯特&quot;:
+            print(f&quot;(假设数据流开始前的电平为: '&#123;initial_level_for_diff&#125;')&quot;)
+
+        if warnings:
+            print(&quot;\n--- 解码过程警告 ---&quot;)
+            for warning in warnings:
+                print(warning)
+                
+        if errors:
+            print(&quot;\n--- 解码过程错误 ---&quot;)
+            for error in errors:
+                print(error)
+            print(f&quot;共发现 &#123;len(errors)&#125; 个错误。&quot;)
+        
+        data_to_process = decoded_data_initial
+        is_reversed = False
+        final_output_header_prefix = &quot;解码后的原始数据&quot; # 默认标题前缀
+
+        if not errors and data_to_process: 
+            # 先打印一次初始解码数据 (如果无错误且有数据)
+            print(f&quot;\n--- &#123;final_output_header_prefix&#125; (&#123;standard_name&#125; 标准) ---&quot;)
+            chunk_size = 80
+            for i in range(0, len(data_to_process), chunk_size):
+                print(data_to_process[i:i+chunk_size])
+
+            # ASCII预览
+            print(&quot;\n--- ASCII预览 (前约50字符, 基于8位/字符) ---&quot;)
+            ascii_preview_str = binary_to_ascii_preview(data_to_process, max_chars=50, bits_per_char=8)
+            print(f&quot;ASCII预览: &#123;ascii_preview_str&#125;&quot;)
+            print(&quot;(提示: 非标准可打印字符显示为'.'。此预览可帮助判断解码模式是否正确。)&quot;)
+
+            # 询问是否逆序
+            reverse_choice = input(&quot;\n是否需要将解码后的二进制数据串进行整体逆序? (y/n, 默认为 n): &quot;).strip().lower()
+            if reverse_choice == 'y':
+                data_to_process = data_to_process[::-1] 
+                is_reversed = True
+                final_output_header_prefix = &quot;逆序后的解码数据&quot; # 更新标题前缀
+                # 如果逆序了，再次打印更新后的数据
+                print(f&quot;\n--- &#123;final_output_header_prefix&#125; (&#123;standard_name&#125; 标准) ---&quot;) 
+                for i in range(0, len(data_to_process), chunk_size):
+                    print(data_to_process[i:i+chunk_size])
+        
+        elif not data_to_process and not errors: 
+             print(&quot;\n未能解码出有效数据（可能是因为输入数据过短或在错误清理/过滤后已为空）。&quot;)
+        # 如果有错误 (errors is not empty), 错误信息已在上面打印, 不会进入此处的if/elif
+
+        # 保存文件逻辑 (基于最终的 data_to_process)
+        if not errors and data_to_process: # 再次确认无错误且有最终数据才保存
+            print(&quot;-&quot; * 30)
+            input_filename_part = os.path.basename(file_path)
+            base_input_name, input_ext = os.path.splitext(input_filename_part)
+            if not input_ext: 
+                input_ext = &quot;.txt&quot; 
+
+            safe_standard_name = standard_name.replace(&quot; &quot;, &quot;_&quot;).replace(&quot;.&quot;, &quot;&quot;).replace(&quot;(&quot;, &quot;&quot;).replace(&quot;)&quot;, &quot;&quot;)
+            reversal_suffix = &quot;_reversed&quot; if is_reversed else &quot;&quot;
+            output_file_path_default = f&quot;&#123;base_input_name&#125;_decoded_&#123;safe_standard_name&#125;&#123;reversal_suffix&#125;&#123;input_ext&#125;&quot;
+            
+            save_prompt_message = f&quot;处理结果 (&#123;standard_name&#125; 标准&#123;' - 数据已逆序' if is_reversed else ''&#125;)。\n请输入保存数据的文件名 (默认为: &#123;output_file_path_default&#125;): &quot;
+            output_file_path = input(save_prompt_message)
+            if not output_file_path:
+                output_file_path = output_file_path_default
+            
+            try:
+                with open(output_file_path, 'w') as outfile:
+                    outfile.write(data_to_process) 
+                print(f&quot;数据已成功保存到: &#123;output_file_path&#125;&quot;)
+            except Exception as e:
+                print(f&quot;错误：无法保存数据到文件 '&#123;output_file_path&#125;': &#123;e&#125;&quot;)
+        elif errors: 
+            print(&quot;\n由于解码过程中检测到错误，数据将不会自动保存到文件。&quot;)
+        elif not data_to_process and not errors: 
+             print(&quot;\n没有有效的解码数据可以保存。&quot;)
+            
+    except FileNotFoundError:
+        print(f&quot;错误：文件 '&#123;file_path&#125;' 未找到。&quot;)
+    except Exception as e:
+        print(f&quot;处理文件时发生意外错误: &#123;e&#125;&quot;)
+
+if __name__ == &quot;__main__&quot;:
+    main()
+</code></pre>
 
       
     </div>
@@ -471,7 +868,7 @@
     <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="https://yo1o.top/2025/05/11/Manchester-encoding/">https://yo1o.top/2025/05/11/Manchester-encoding/</a></p>
     
     
-    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-05-11 17:22:34</p>
+    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-05-11 23:41:58</p>
     <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -522,6 +919,8 @@
         </span>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/G-E-Thomas/" rel="tag">G.E. Thomas</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/IEEE-802-3/" rel="tag">IEEE 802.3</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81/" rel="tag">差分曼彻斯特编码</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E5%AD%97%E9%80%9A%E4%BF%A1/" rel="tag">数字通信</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E6%95%B0%E6%8D%AE%E7%BC%96%E7%A0%81/" rel="tag">数据编码</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81/" rel="tag">曼彻斯特编码</a></li></ul>
+
 
     </footer>
   </div>
@@ -613,10 +1012,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        17.3k
+        21.3k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:14
+        01:30
       </div>
     
     
@@ -649,7 +1048,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ieee-8023%E6%A0%87%E5%87%86%E5%B8%B8%E7%94%A8%E4%BA%8E%E4%BB%A5%E5%A4%AA%E7%BD%91"><span class="toc-number">1.1.1.</span> <span class="toc-text"> IEEE 802.3标准（常用于以太网）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gethomas%E6%8F%90%E5%87%BA%E7%9A%84%E6%96%B9%E5%BC%8F%E6%9C%89%E6%97%B6%E4%B9%9F%E7%A7%B0%E4%BD%9C%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E5%85%B6%E4%B8%AD%E4%B8%80%E7%A7%8D%E5%AE%9A%E4%B9%89%E6%88%96%E6%97%A9%E6%9C%9F%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.2.</span> <span class="toc-text"> G.E.Thomas提出的方式（有时也称作差分曼彻斯特编码的其中一种定义或早期定义）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-manchester-encoding"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码 (Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E7%9A%84%E4%B8%A4%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 编码规则的两种主要约定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text"> 标准曼彻斯特编码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-differential-manchester-encoding"><span class="toc-number">1.4.</span> <span class="toc-text"> 差分曼彻斯特编码 (Differential Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 核心原理与编码规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 差分曼彻斯特编码示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text"> 曼彻斯特编码的解码过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%97%B6%E9%92%9F%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%90%8C%E6%AD%A5-clock-recovery-and-synchronization"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1. 时钟恢复与同步 (Clock Recovery and Synchronization)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%86%E5%88%AB%E6%AF%94%E7%89%B9%E5%86%85%E7%9A%84%E7%94%B5%E5%B9%B3%E6%A8%A1%E5%BC%8F%E8%B7%B3%E5%8F%98%E7%89%B9%E5%BE%81"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2. 识别比特内的电平模式&#x2F;跳变特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E8%BF%9B%E8%A1%8C%E8%A7%A3%E7%A0%81"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3. 应用编码规则进行解码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">1.5.4.</span> <span class="toc-text"> 4. 处理数据流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E7%A4%BA%E4%BE%8B%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E8%A7%A3%E7%A0%81"><span class="toc-number">1.6.</span> <span class="toc-text"> Python 示例脚本 (用于解码)</span></a></li></ol></li></ol>
       
   </div>
 </div>
@@ -670,7 +1069,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">7</div>
+    <div class="sidebar-state-number">13</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -849,13 +1248,13 @@
       <script data-pjax>
         window.REIMU_POST = {
           author: "Yolo",
-          title: "Manchester_encoding",
+          title: "深入理解曼彻斯特编码及其变种",
           url: "https://yo1o.top/2025/05/11/Manchester-encoding/",
           excerpt: "",
           description: "",
-          stripContent: " 曼彻斯特编码 曼彻斯特编码是一种在电信和数据存储中常用的线路编码技术，它通过在每个数据位的中间引入电平跳变来同时传输时钟信号和数据。由于其内置了同步机制，因此也被称为自同步码或相位编码  核心原理 曼彻斯特编码的核心思想是将每一位数据用两个电平状态来表示，并且在每个码元（比特周期）的中间时刻必定发生一次电平跳变。这个跳变既作为时钟信号，也用来表示数据。 😱这个具体编码规则通常有两种：  IEEE 802.3标准（常用于以太网） 逻辑“1”表示为从低电平到高电平的跳变（在比特周期的中间） 逻辑",
+          stripContent: " 曼彻斯特编码 (Manchester Encoding) 曼彻斯特编码是一种在数字通信和数据存储中广泛应用的线路编码技术。其核心特点是在每个数据位的中间时刻引入电平跳变，这个跳变既承载了时钟同步信号，也用于表示数据本身。由于其内置了同步机制，因此也被称为自同步码 (Self-Synchronizing Code) 或 相位编码 (Phase Encoding, PE)。  核心原理 曼彻斯特编码的基本思想是，每一个原始数据比特都被扩展为两个电平状态（或称为码元、chip）来表示。在每个原始比特",
           date: "Sun May 11 2025 16:51:46 GMT+0800",
-          updated: "Sun May 11 2025 17:22:34 GMT+0800",
+          updated: "Sun May 11 2025 23:41:58 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
