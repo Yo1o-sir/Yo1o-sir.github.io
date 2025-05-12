@@ -14,7 +14,7 @@
 
   
 
-  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://yo1o.top';</script>
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://www.yo1o.top';</script>
   
   <title>
     深入理解曼彻斯特编码及其变种 |
@@ -38,25 +38,25 @@
     <meta name="description" content="曼彻斯特编码 (Manchester Encoding) 曼彻斯特编码是一种在数字通信和数据存储中广泛应用的线路编码技术。其核心特点是在每个数据位的中间时刻引入电平跳变，这个跳变既承载了时钟同步信号，也用于表示数据本身。由于其内置了同步机制，因此也被称为自同步码 (Self-Synchronizing Code) 或 相位编码 (Phase Encoding, PE)。  核心原理 曼彻斯特编码">
 <meta property="og:type" content="article">
 <meta property="og:title" content="深入理解曼彻斯特编码及其变种">
-<meta property="og:url" content="https://yo1o.top/2025/05/11/Manchester-encoding/index.html">
+<meta property="og:url" content="https://www.yo1o.top/2025/05/11/Manchester-encoding/index.html">
 <meta property="og:site_name" content="Yolo&#39;s Blog">
 <meta property="og:description" content="曼彻斯特编码 (Manchester Encoding) 曼彻斯特编码是一种在数字通信和数据存储中广泛应用的线路编码技术。其核心特点是在每个数据位的中间时刻引入电平跳变，这个跳变既承载了时钟同步信号，也用于表示数据本身。由于其内置了同步机制，因此也被称为自同步码 (Self-Synchronizing Code) 或 相位编码 (Phase Encoding, PE)。  核心原理 曼彻斯特编码">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250511234158_0.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_0.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_1.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_2.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_3.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_4.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_5.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_6.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_7.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_8.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_9.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_10.png">
-<meta property="og:image" content="https://yo1o.top/images/Manchester-encoding/20250512140935_11.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250511234158_0.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_0.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_1.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_2.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_3.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_4.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_5.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_6.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_7.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_8.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_9.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_10.png">
+<meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_11.png">
 <meta property="article:published_time" content="2025-05-11T08:51:46.000Z">
-<meta property="article:modified_time" content="2025-05-12T06:15:22.604Z">
+<meta property="article:modified_time" content="2025-05-12T06:56:33.858Z">
 <meta property="article:author" content="Yolo">
 <meta property="article:tag" content="数字通信">
 <meta property="article:tag" content="数据编码">
@@ -65,7 +65,7 @@
 <meta property="article:tag" content="IEEE 802.3">
 <meta property="article:tag" content="G.E. Thomas">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yo1o.top/images/Manchester-encoding/20250511234158_0.png">
+<meta name="twitter:image" content="https://www.yo1o.top/images/Manchester-encoding/20250511234158_0.png">
   
   
     <link rel="alternate" href="/atom.xml" title="Yolo's Blog" type="application/atom+xml">
@@ -219,16 +219,8 @@
 </div>
 <header id="header">
   
-    
-      
-        <picture>
-          
-        </picture>
-        
-          <img  fetchpriority="high" src="/images/banner.webp" alt="深入理解曼彻斯特编码及其变种">
-        
-      
-    
+    <picture></picture>
+    <img  fetchpriority="high" src="/images/background/manchester.png" alt="深入理解曼彻斯特编码及其变种">
   
   <div id="header-outer">
     <div id="header-title">
@@ -654,10 +646,10 @@
       
         <blockquote class="article-copyright">
     <p><strong><span class="icon-user icon"></span>本文作者：</strong>Yolo @ Yolo's Blog</p>
-    <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="https://yo1o.top/2025/05/11/Manchester-encoding/">https://yo1o.top/2025/05/11/Manchester-encoding/</a></p>
+    <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="https://www.yo1o.top/2025/05/11/Manchester-encoding/">https://www.yo1o.top/2025/05/11/Manchester-encoding/</a></p>
     
     
-    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-05-12 14:15:22</p>
+    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-05-12 14:56:33</p>
     <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -1038,13 +1030,13 @@
         window.REIMU_POST = {
           author: "Yolo",
           title: "深入理解曼彻斯特编码及其变种",
-          url: "https://yo1o.top/2025/05/11/Manchester-encoding/",
+          url: "https://www.yo1o.top/2025/05/11/Manchester-encoding/",
           excerpt: "",
           description: "",
           stripContent: " 曼彻斯特编码 (Manchester Encoding) 曼彻斯特编码是一种在数字通信和数据存储中广泛应用的线路编码技术。其核心特点是在每个数据位的中间时刻引入电平跳变，这个跳变既承载了时钟同步信号，也用于表示数据本身。由于其内置了同步机制，因此也被称为自同步码 (Self-Synchronizing Code) 或 相位编码 (Phase Encoding, PE)。  核心原理 曼彻斯特编码的基本思想是，每一个原始数据比特都被扩展为两个电平状态（或称为码元、chip）来表示。在每个原始比特",
           date: "Sun May 11 2025 16:51:46 GMT+0800",
-          updated: "Mon May 12 2025 14:15:22 GMT+0800",
-          cover: "/images/banner.webp",
+          updated: "Mon May 12 2025 14:56:33 GMT+0800",
+          cover: "/images/background/manchester.png",
         };
       </script>
        

@@ -14,7 +14,7 @@
 
   
 
-  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://yo1o.top';</script>
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://www.yo1o.top';</script>
   
   <title>
     平航杯取证复现 |
@@ -38,24 +38,24 @@
     <meta name="description" content="target:将取证工具准备好，为了后面的fic和盘古石取证出一点点力气做准备  这个取证题目真的很nice，学到了不少东西呢  仿真&amp;bypass登录密码 这里我选择用ftk打开，然后进行转换格式进行仿真 然后记录下用ftk的技巧  在evidence tree下面右键项目，有个verify Drive&#x2F;image，这个可以帮助我们验证文件完整性，稍微费点时间，但是呢，我们平时使用概率">
 <meta property="og:type" content="article">
 <meta property="og:title" content="平航杯取证复现">
-<meta property="og:url" content="https://yo1o.top/2025/04/22/forensics-pinghang/index.html">
+<meta property="og:url" content="https://www.yo1o.top/2025/04/22/forensics-pinghang/index.html">
 <meta property="og:site_name" content="Yolo&#39;s Blog">
 <meta property="og:description" content="target:将取证工具准备好，为了后面的fic和盘古石取证出一点点力气做准备  这个取证题目真的很nice，学到了不少东西呢  仿真&amp;bypass登录密码 这里我选择用ftk打开，然后进行转换格式进行仿真 然后记录下用ftk的技巧  在evidence tree下面右键项目，有个verify Drive&#x2F;image，这个可以帮助我们验证文件完整性，稍微费点时间，但是呢，我们平时使用概率">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_1.png">
-<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_0.png">
-<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_2.png">
-<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_3.png">
-<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_4.png">
-<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_5.png">
-<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_6.png">
-<meta property="og:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_7.png">
+<meta property="og:image" content="https://www.yo1o.top/images/forensics-pinghang/20250423171625_1.png">
+<meta property="og:image" content="https://www.yo1o.top/images/forensics-pinghang/20250423171625_0.png">
+<meta property="og:image" content="https://www.yo1o.top/images/forensics-pinghang/20250423171625_2.png">
+<meta property="og:image" content="https://www.yo1o.top/images/forensics-pinghang/20250423171625_3.png">
+<meta property="og:image" content="https://www.yo1o.top/images/forensics-pinghang/20250423171625_4.png">
+<meta property="og:image" content="https://www.yo1o.top/images/forensics-pinghang/20250423171625_5.png">
+<meta property="og:image" content="https://www.yo1o.top/images/forensics-pinghang/20250423171625_6.png">
+<meta property="og:image" content="https://www.yo1o.top/images/forensics-pinghang/20250423171625_7.png">
 <meta property="article:published_time" content="2025-04-22T06:33:57.000Z">
 <meta property="article:modified_time" content="2025-04-23T09:24:35.068Z">
 <meta property="article:author" content="Yolo">
 <meta property="article:tag" content="forensics">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://yo1o.top/images/forensics-pinghang/20250423171625_1.png">
+<meta name="twitter:image" content="https://www.yo1o.top/images/forensics-pinghang/20250423171625_1.png">
   
   
     <link rel="alternate" href="/atom.xml" title="Yolo's Blog" type="application/atom+xml">
@@ -420,7 +420,7 @@
       
         <blockquote class="article-copyright">
     <p><strong><span class="icon-user icon"></span>本文作者：</strong>Yolo @ Yolo's Blog</p>
-    <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="https://yo1o.top/2025/04/22/forensics-pinghang/">https://yo1o.top/2025/04/22/forensics-pinghang/</a></p>
+    <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="https://www.yo1o.top/2025/04/22/forensics-pinghang/">https://www.yo1o.top/2025/04/22/forensics-pinghang/</a></p>
     
     
     <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-04-23 17:24:35</p>
@@ -818,7 +818,7 @@
         window.REIMU_POST = {
           author: "Yolo",
           title: "平航杯取证复现",
-          url: "https://yo1o.top/2025/04/22/forensics-pinghang/",
+          url: "https://www.yo1o.top/2025/04/22/forensics-pinghang/",
           excerpt: "",
           description: "",
           stripContent: " target:将取证工具准备好，为了后面的fic和盘古石取证出一点点力气做准备  这个取证题目真的很nice，学到了不少东西呢  仿真&amp;amp;bypass登录密码 这里我选择用ftk打开，然后进行转换格式进行仿真 然后记录下用ftk的技巧  在evidence tree下面右键项目，有个verify Drive/image，这个可以帮助我们验证文件完整性，稍微费点时间，但是呢，我们平时使用概率不大，就是打打ctf的取证，不见得出题师傅会在制作的镜像中偷偷更改文件。所以上面这个功能做做了解即可",
