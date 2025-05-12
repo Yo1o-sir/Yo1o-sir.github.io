@@ -56,7 +56,7 @@
 <meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_10.png">
 <meta property="og:image" content="https://www.yo1o.top/images/Manchester-encoding/20250512140935_11.png">
 <meta property="article:published_time" content="2025-05-11T08:51:46.000Z">
-<meta property="article:modified_time" content="2025-05-12T06:56:33.858Z">
+<meta property="article:modified_time" content="2025-05-12T08:38:31.173Z">
 <meta property="article:author" content="Yolo">
 <meta property="article:tag" content="数字通信">
 <meta property="article:tag" content="数据编码">
@@ -255,7 +255,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-manchester-encoding"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码 (Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E7%9A%84%E4%B8%A4%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 编码规则的两种主要约定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text"> 标准曼彻斯特编码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-differential-manchester-encoding"><span class="toc-number">1.4.</span> <span class="toc-text"> 差分曼彻斯特编码 (Differential Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 核心原理与编码规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 差分曼彻斯特编码示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text"> 曼彻斯特编码的解码过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%97%B6%E9%92%9F%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%90%8C%E6%AD%A5-clock-recovery-and-synchronization"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1. 时钟恢复与同步 (Clock Recovery and Synchronization)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%86%E5%88%AB%E6%AF%94%E7%89%B9%E5%86%85%E7%9A%84%E7%94%B5%E5%B9%B3%E6%A8%A1%E5%BC%8F%E8%B7%B3%E5%8F%98%E7%89%B9%E5%BE%81"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2. 识别比特内的电平模式&#x2F;跳变特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E8%BF%9B%E8%A1%8C%E8%A7%A3%E7%A0%81"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3. 应用编码规则进行解码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">1.5.4.</span> <span class="toc-text"> 4. 处理数据流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.</span> <span class="toc-text"> Python 脚本 (用于编码)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E8%A7%A3%E7%A0%81"><span class="toc-number">1.7.</span> <span class="toc-text"> Python 脚本 (用于解码)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%A6%8F%E5%88%A9%E7%BD%91%E9%BC%8E%E6%9D%AF-%E6%9C%B1%E9%9B%80%E7%BB%84-misc1"><span class="toc-number">2.</span> <span class="toc-text"> 小福利（网鼎杯-朱雀组-Misc1)</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-manchester-encoding"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码 (Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E7%9A%84%E4%B8%A4%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 编码规则的两种主要约定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text"> 标准曼彻斯特编码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-differential-manchester-encoding"><span class="toc-number">1.4.</span> <span class="toc-text"> 差分曼彻斯特编码 (Differential Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 核心原理与编码规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 差分曼彻斯特编码示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text"> 曼彻斯特编码的解码过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%97%B6%E9%92%9F%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%90%8C%E6%AD%A5-clock-recovery-and-synchronization"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1. 时钟恢复与同步 (Clock Recovery and Synchronization)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%86%E5%88%AB%E6%AF%94%E7%89%B9%E5%86%85%E7%9A%84%E7%94%B5%E5%B9%B3%E6%A8%A1%E5%BC%8F%E8%B7%B3%E5%8F%98%E7%89%B9%E5%BE%81"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2. 识别比特内的电平模式&#x2F;跳变特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E8%BF%9B%E8%A1%8C%E8%A7%A3%E7%A0%81"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3. 应用编码规则进行解码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">1.5.4.</span> <span class="toc-text"> 4. 处理数据流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#summary"><span class="toc-number">1.6.</span> <span class="toc-text"> Summary</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ieee-8023%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.1.</span> <span class="toc-text"> IEEE 802.3编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gethomas%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.2.</span> <span class="toc-text"> G.E.Thomas曼彻斯特编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8Fsummary"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 小Summary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.4.</span> <span class="toc-text"> 差分曼彻斯特编码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E7%BC%96%E7%A0%81"><span class="toc-number">1.7.</span> <span class="toc-text"> Python 脚本 (用于编码)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E8%A7%A3%E7%A0%81"><span class="toc-number">1.8.</span> <span class="toc-text"> Python 脚本 (用于解码)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%A6%8F%E5%88%A9%E7%BD%91%E9%BC%8E%E6%9D%AF-%E6%9C%B1%E9%9B%80%E7%BB%84-misc1"><span class="toc-number">2.</span> <span class="toc-text"> 小福利（网鼎杯-朱雀组-Misc1)</span></a></li></ol>
       
   </div>
 </div>
@@ -597,6 +597,238 @@
 </ul>
 <h3 id="4-处理数据流"><a class="markdownIt-Anchor" href="#4-处理数据流"></a> 4. 处理数据流</h3>
 <p>对接收到的整个曼彻斯特编码信号流，逐个编码符号重复上述同步、识别和解码步骤，最终将解码出的所有原始数据位按顺序排列，恢复出原始信息。</p>
+<h2 id="summary"><a class="markdownIt-Anchor" href="#summary"></a> Summary</h2>
+<div class="tip custom-block"><p class="custom-block-title">TIP</p>
+<p>这里给没有理解清楚的小白开个小灶,如果理解深刻的话，可以直接翻阅我下面写的python脚本以及小福利哈</p>
+</div>
+<p>相信上面的内容还是对小白不够友好，我这里做个总结，把过程再剖析下，希望大家能理解清楚</p>
+<p>电脑是不直接认识字母’a’的，它只认识’0’,’1’,所以我们需要先把’a’变成标准的二进制暗号</p>
+<p>在ASCII表中，字母a的十进制为97，转换成8位二进制数后，就是<code>01100001</code></p>
+<p>这里的三种编码方式，我会选择一个很通俗易懂的例子：手电筒规则</p>
+<h3 id="ieee-8023编码"><a class="markdownIt-Anchor" href="#ieee-8023编码"></a> IEEE 802.3编码</h3>
+<p>想象一下，我们现在要用手电筒发送一串01100001给朋友，然后我们的手电筒只有两种状态：</p>
+<ul>
+<li>亮（高电平，用1代表）</li>
+<li>低（低电平，用0代表）</li>
+</ul>
+<p>然后IEEE 802.3曼彻斯特编码的规则是：</p>
+<ul>
+<li>要发送原始数据0时，我们需要让手电筒先<strong>亮</strong>一段时间，然后在发送这个0的时间段的正中间，立刻把手电筒变成<strong>灭</strong>，所以，0的信号模式是“亮-灭”（即10）</li>
+<li>要发送原始数据1时，我们需要让手电筒先<strong>灭</strong>一段时间，然后在发送这个1的时间段的正中间，立刻把手电筒变成<strong>亮</strong>，所以，1的信号模式是“灭-亮”（即01）</li>
+</ul>
+<p>接下来看那个字母a，它的二进制编码是<code>01100001</code></p>
+<p>过程如下：</p>
+<ul>
+<li>发送第一个比特 <code>0</code>：
+<ul>
+<li>规则：<code>0</code> → “亮-灭” (<code>10</code>)</li>
+<li>手电筒动作：先亮，后灭。</li>
+<li>编码后的电平：<code>10</code></li>
+</ul>
+</li>
+<li>发送第二个比特 <code>1</code>：
+<ul>
+<li>规则：<code>1</code> → “灭-亮” (<code>01</code>)</li>
+<li>手电筒动作：先灭，后亮。</li>
+<li>编码后的电平：<code>01</code></li>
+</ul>
+</li>
+<li>发送第三个比特 <code>1</code>：
+<ul>
+<li>规则：<code>1</code> → “灭-亮” (<code>01</code>)</li>
+<li>手电筒动作：先灭，后亮。</li>
+<li>编码后的电平：<code>01</code></li>
+</ul>
+</li>
+<li>发送第四个比特 <code>0</code>：
+<ul>
+<li>规则：<code>0</code> → “亮-灭” (<code>10</code>)</li>
+<li>手电筒动作：先亮，后灭。</li>
+<li>编码后的电平：<code>10</code></li>
+</ul>
+</li>
+<li>发送第五个比特 <code>0</code>：
+<ul>
+<li>规则：<code>0</code> → “亮-灭” (<code>10</code>)</li>
+<li>手电筒动作：先亮，后灭。</li>
+<li>编码后的电平：<code>10</code></li>
+</ul>
+</li>
+<li>发送第六个比特 <code>0</code>：
+<ul>
+<li>规则：<code>0</code> → “亮-灭” (<code>10</code>)</li>
+<li>手电筒动作：先亮，后灭。</li>
+<li>编码后的电平：<code>10</code></li>
+</ul>
+</li>
+<li>发送第七个比特 <code>0</code>：
+<ul>
+<li>规则：<code>0</code> → “亮-灭” (<code>10</code>)</li>
+<li>手电筒动作：先亮，后灭。</li>
+<li>编码后的电平：<code>10</code></li>
+</ul>
+</li>
+<li>发送第八个比特 <code>1</code>：
+<ul>
+<li>规则：<code>1</code> → “灭-亮” (<code>01</code>)</li>
+<li>手电筒动作：先灭，后亮。</li>
+<li>编码后的电平：<code>01</code></li>
+</ul>
+</li>
+</ul>
+<p>接下来将上面编码后的电平记录出来10 01 01 10 10 10 10 01</p>
+<p>感觉还算简单吧</p>
+<h3 id="gethomas曼彻斯特编码"><a class="markdownIt-Anchor" href="#gethomas曼彻斯特编码"></a> G.E.Thomas曼彻斯特编码</h3>
+<p>同样，我们使用字母a进行研究</p>
+<p>G.E.Thomas曼彻斯特编码的手电筒规则如下</p>
+<ul>
+<li><strong>要发送原始数据 <code>0</code> 时</strong>：我们需要让手电筒先 <strong>灭</strong> 一小段时间，然后在发送这个 <code>0</code> 的时间段的 <strong>正中间</strong>，立刻把手电筒变成 <strong>亮</strong>。所以，<code>0</code> 的信号模式是 “灭-亮”（即 <code>01</code>）。</li>
+<li><strong>要发送原始数据 <code>1</code> 时</strong>：我们需要让手电筒先 <strong>亮</strong> 一小段时间，然后在发送这个 <code>1</code> 的时间段的 <strong>正中间</strong>，立刻把手电筒变成 <strong>灭</strong>。所以，<code>1</code> 的信号模式是 “亮-灭”（即 <code>10</code>）。</li>
+</ul>
+<p>这样的话，我们发送完整的数据的过程是</p>
+<ul>
+<li>发送第一个比特 <code>0</code>：
+<ul>
+<li>规则 (G.E. Thomas)：<code>0</code> → “灭-亮” (<code>01</code>)</li>
+<li>手电筒动作：先灭，后亮。</li>
+<li>编码后的电平：<code>01</code></li>
+</ul>
+</li>
+<li>发送第二个比特 <code>1</code>：
+<ul>
+<li>规则 (G.E. Thomas)：<code>1</code> → “亮-灭” (<code>10</code>)</li>
+<li>手电筒动作：先亮，后灭。</li>
+<li>编码后的电平：<code>10</code></li>
+</ul>
+</li>
+<li>发送第三个比特 <code>1</code>：
+<ul>
+<li>规则 (G.E. Thomas)：<code>1</code> → “亮-灭” (<code>10</code>)</li>
+<li>手电筒动作：先亮，后灭。</li>
+<li>编码后的电平：<code>10</code></li>
+</ul>
+</li>
+<li>发送第四个比特 <code>0</code>：
+<ul>
+<li>规则 (G.E. Thomas)：<code>0</code> → “灭-亮” (<code>01</code>)</li>
+<li>手电筒动作：先灭，后亮。</li>
+<li>编码后的电平：<code>01</code></li>
+</ul>
+</li>
+<li>发送第五个比特 <code>0</code>：
+<ul>
+<li>规则 (G.E. Thomas)：<code>0</code> → “灭-亮” (<code>01</code>)</li>
+<li>手电筒动作：先灭，后亮。</li>
+<li>编码后的电平：<code>01</code></li>
+</ul>
+</li>
+<li>发送第六个比特 <code>0</code>：
+<ul>
+<li>规则 (G.E. Thomas)：<code>0</code> → “灭-亮” (<code>01</code>)</li>
+<li>手电筒动作：先灭，后亮。</li>
+<li>编码后的电平：<code>01</code></li>
+</ul>
+</li>
+<li>发送第七个比特 <code>0</code>：
+<ul>
+<li>规则 (G.E. Thomas)：<code>0</code> → “灭-亮” (<code>01</code>)</li>
+<li>手电筒动作：先灭，后亮。</li>
+<li>编码后的电平：<code>01</code></li>
+</ul>
+</li>
+<li>发送第八个比特 <code>1</code>：
+<ul>
+<li>规则 (G.E. Thomas)：<code>1</code> → “亮-灭” (<code>10</code>)</li>
+<li>手电筒动作：先亮，后灭。</li>
+<li>编码后的电平：<code>10</code></li>
+</ul>
+</li>
+</ul>
+<p>总结上面的所有电平信号：0110100101010110</p>
+<h3 id="小summary"><a class="markdownIt-Anchor" href="#小summary"></a> 小Summary</h3>
+<p>这里给出我的理解，IEEE 802.3编码结构是时钟+数据，也就是说，每两个数字中，一直是状态量+数据值，然后G.E.Thomas就不一样了，或者说恰恰相反，它的结构就是先数据值再状态量</p>
+<h3 id="差分曼彻斯特编码"><a class="markdownIt-Anchor" href="#差分曼彻斯特编码"></a> 差分曼彻斯特编码</h3>
+<p>这个类型就和前两个差距稍微明显了一点点</p>
+<p>差分曼彻斯特编码的规则更加关注“变化”本身：</p>
+<ol>
+<li><strong>比特中间的跳变依然存在</strong>：和标准曼彻斯特编码一样，在每个原始比特的持续时间的<strong>正中间</strong>，手电筒的状态（亮/灭）<strong>必须反转一次</strong>。这是为了保持时钟同步。</li>
+<li>数据的表示看比特开始时：
+<ul>
+<li><strong>要发送原始数据 <code>0</code> 时</strong>：在<strong>开始</strong>发送这个 ‘0’ 的那一刻，手电筒的状态必须与<strong>上一个比特结束时的状态相反</strong>（即发生一次电平跳变）。</li>
+<li><strong>要发送原始数据 <code>1</code> 时</strong>：在<strong>开始</strong>发送这个 ‘1’ 的那一刻，手电筒的状态必须与<strong>上一个比特结束时的状态相同</strong>（即不发生电平跳变）。</li>
+</ul>
+</li>
+</ol>
+<p><strong>关键点</strong>：差分编码需要知道“上一个比特结束时的状态”是什么。那么对于第一个要发送的比特，它“上一个比特”是什么呢？我们需要一个<strong>初始状态</strong>的约定。</p>
+<p>这种编码关注的点其实是跳变，如果数据是0的话，我们就必须在最开始跳变一次，如果是1的话，我们就不能在最开始跳变</p>
+<p>先看看发送数据的过程（假设初始手电筒是亮的，也就是说状态量为1）</p>
+<ul>
+<li>发送第一个比特 <code>0</code>：
+<ul>
+<li>规则：发送 ‘0’ 时，比特开始处要有跳变。</li>
+<li>当前手电筒是 <strong>亮 (‘1’)</strong>。为了有跳变，这个比特开始时手电筒要变成 <strong>灭 (‘0’)</strong> (这是比特的第一半状态)。</li>
+<li>比特中间必须再次跳变：所以后半段手电筒从 灭(‘0’) 变成 <strong>亮 (‘1’)</strong>。</li>
+<li>编码后的电平：<code>01</code>。</li>
+<li><strong>更新状态</strong>：这个比特结束时，手电筒是 <strong>亮 (‘1’)</strong>。</li>
+</ul>
+</li>
+<li>发送第二个比特 <code>1</code>：
+<ul>
+<li>规则：发送 ‘1’ 时，比特开始处无跳变。</li>
+<li>上一个比特结束时手电筒是 <strong>亮 (‘1’)</strong>。为了无跳变，这个比特开始时手电筒保持 <strong>亮 (‘1’)</strong> (这是比特的第一半状态)。</li>
+<li>比特中间必须再次跳变：所以后半段手电筒从 亮(‘1’) 变成 <strong>灭 (‘0’)</strong>。</li>
+<li>编码后的电平：<code>10</code>。</li>
+<li><strong>更新状态</strong>：这个比特结束时，手电筒是 <strong>灭 (‘0’)</strong>。</li>
+</ul>
+</li>
+<li>发送第三个比特 <code>1</code>：
+<ul>
+<li>规则：发送 ‘1’ 时，比特开始处无跳变。</li>
+<li>上一个比特结束时手电筒是 <strong>灭 (‘0’)</strong>。为了无跳变，这个比特开始时手电筒保持 <strong>灭 (‘0’)</strong>。</li>
+<li>比特中间跳变：后半段变成 <strong>亮 (‘1’)</strong>。</li>
+<li>编码后的电平：<code>01</code>。</li>
+<li><strong>更新状态</strong>：这个比特结束时，手电筒是 <strong>亮 (‘1’)</strong>。</li>
+</ul>
+</li>
+<li>发送第四个比特 <code>0</code>：
+<ul>
+<li>规则：发送 ‘0’ 时，比特开始处要有跳变。</li>
+<li>上一个比特结束时手电筒是 <strong>亮 (‘1’)</strong>。为了有跳变，这个比特开始时变成 <strong>灭 (‘0’)</strong>。</li>
+<li>比特中间跳变：后半段变成 <strong>亮 (‘1’)</strong>。</li>
+<li>编码后的电平：<code>01</code>。</li>
+<li><strong>更新状态</strong>：这个比特结束时，手电筒是 <strong>亮 (‘1’)</strong>。</li>
+</ul>
+</li>
+<li>发送第五个比特 <code>0</code>： (同上，前一个结束为亮’1’)
+<ul>
+<li>编码后的电平：<code>01</code>。</li>
+<li><strong>更新状态</strong>：结束时为 <strong>亮 (‘1’)</strong>。</li>
+</ul>
+</li>
+<li>发送第六个比特 <code>0</code>： (同上，前一个结束为亮’1’)
+<ul>
+<li>编码后的电平：<code>01</code>。</li>
+<li><strong>更新状态</strong>：结束时为 <strong>亮 (‘1’)</strong>。</li>
+</ul>
+</li>
+<li>发送第七个比特 <code>0</code>： (同上，前一个结束为亮’1’)
+<ul>
+<li>编码后的电平：<code>01</code>。</li>
+<li><strong>更新状态</strong>：结束时为 <strong>亮 (‘1’)</strong>。</li>
+</ul>
+</li>
+<li>发送第八个比特 <code>1</code>：
+<ul>
+<li>规则：发送 ‘1’ 时，比特开始处无跳变。</li>
+<li>上一个比特结束时手电筒是 <strong>亮 (‘1’)</strong>。为了无跳变，这个比特开始时保持 <strong>亮 (‘1’)</strong>。</li>
+<li>比特中间跳变：后半段变成 <strong>灭 (‘0’)</strong>。</li>
+<li>编码后的电平：<code>10</code>。</li>
+<li><strong>更新状态</strong>：这个比特结束时，手电筒是 <strong>灭 (‘0’)</strong>。</li>
+</ul>
+</li>
+</ul>
+<p>总结下所有的电平信号，得到了0110010101010110</p>
+<p>希望上面的Summary能帮助到大家</p>
 <h2 id="python-脚本-用于编码"><a class="markdownIt-Anchor" href="#python-脚本-用于编码"></a> Python 脚本 (用于编码)</h2>
 <p>以下是一个python脚本，它可以读取任意路径的文件，任意格式，然后可以自定义三种曼彻斯特编码模式，以及选择是否进行逆序处理</p>
 <p>还有ASCII预览呢</p>
@@ -649,7 +881,7 @@
     <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="https://www.yo1o.top/2025/05/11/Manchester-encoding/">https://www.yo1o.top/2025/05/11/Manchester-encoding/</a></p>
     
     
-    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-05-12 14:56:33</p>
+    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-05-12 16:38:31</p>
     <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -793,10 +1025,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        24.2k
+        26.4k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        01:44
+        01:52
       </div>
     
     
@@ -829,7 +1061,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-manchester-encoding"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码 (Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E7%9A%84%E4%B8%A4%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 编码规则的两种主要约定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text"> 标准曼彻斯特编码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-differential-manchester-encoding"><span class="toc-number">1.4.</span> <span class="toc-text"> 差分曼彻斯特编码 (Differential Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 核心原理与编码规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 差分曼彻斯特编码示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text"> 曼彻斯特编码的解码过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%97%B6%E9%92%9F%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%90%8C%E6%AD%A5-clock-recovery-and-synchronization"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1. 时钟恢复与同步 (Clock Recovery and Synchronization)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%86%E5%88%AB%E6%AF%94%E7%89%B9%E5%86%85%E7%9A%84%E7%94%B5%E5%B9%B3%E6%A8%A1%E5%BC%8F%E8%B7%B3%E5%8F%98%E7%89%B9%E5%BE%81"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2. 识别比特内的电平模式&#x2F;跳变特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E8%BF%9B%E8%A1%8C%E8%A7%A3%E7%A0%81"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3. 应用编码规则进行解码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">1.5.4.</span> <span class="toc-text"> 4. 处理数据流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.</span> <span class="toc-text"> Python 脚本 (用于编码)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E8%A7%A3%E7%A0%81"><span class="toc-number">1.7.</span> <span class="toc-text"> Python 脚本 (用于解码)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%A6%8F%E5%88%A9%E7%BD%91%E9%BC%8E%E6%9D%AF-%E6%9C%B1%E9%9B%80%E7%BB%84-misc1"><span class="toc-number">2.</span> <span class="toc-text"> 小福利（网鼎杯-朱雀组-Misc1)</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-manchester-encoding"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码 (Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E7%9A%84%E4%B8%A4%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 编码规则的两种主要约定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text"> 标准曼彻斯特编码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-differential-manchester-encoding"><span class="toc-number">1.4.</span> <span class="toc-text"> 差分曼彻斯特编码 (Differential Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 核心原理与编码规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 差分曼彻斯特编码示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text"> 曼彻斯特编码的解码过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%97%B6%E9%92%9F%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%90%8C%E6%AD%A5-clock-recovery-and-synchronization"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1. 时钟恢复与同步 (Clock Recovery and Synchronization)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%86%E5%88%AB%E6%AF%94%E7%89%B9%E5%86%85%E7%9A%84%E7%94%B5%E5%B9%B3%E6%A8%A1%E5%BC%8F%E8%B7%B3%E5%8F%98%E7%89%B9%E5%BE%81"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2. 识别比特内的电平模式&#x2F;跳变特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E8%BF%9B%E8%A1%8C%E8%A7%A3%E7%A0%81"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3. 应用编码规则进行解码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">1.5.4.</span> <span class="toc-text"> 4. 处理数据流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#summary"><span class="toc-number">1.6.</span> <span class="toc-text"> Summary</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ieee-8023%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.1.</span> <span class="toc-text"> IEEE 802.3编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gethomas%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.2.</span> <span class="toc-text"> G.E.Thomas曼彻斯特编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8Fsummary"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 小Summary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.4.</span> <span class="toc-text"> 差分曼彻斯特编码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E7%BC%96%E7%A0%81"><span class="toc-number">1.7.</span> <span class="toc-text"> Python 脚本 (用于编码)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E8%A7%A3%E7%A0%81"><span class="toc-number">1.8.</span> <span class="toc-text"> Python 脚本 (用于解码)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%A6%8F%E5%88%A9%E7%BD%91%E9%BC%8E%E6%9D%AF-%E6%9C%B1%E9%9B%80%E7%BB%84-misc1"><span class="toc-number">2.</span> <span class="toc-text"> 小福利（网鼎杯-朱雀组-Misc1)</span></a></li></ol>
       
   </div>
 </div>
@@ -1035,7 +1267,7 @@
           description: "",
           stripContent: " 曼彻斯特编码 (Manchester Encoding) 曼彻斯特编码是一种在数字通信和数据存储中广泛应用的线路编码技术。其核心特点是在每个数据位的中间时刻引入电平跳变，这个跳变既承载了时钟同步信号，也用于表示数据本身。由于其内置了同步机制，因此也被称为自同步码 (Self-Synchronizing Code) 或 相位编码 (Phase Encoding, PE)。  核心原理 曼彻斯特编码的基本思想是，每一个原始数据比特都被扩展为两个电平状态（或称为码元、chip）来表示。在每个原始比特",
           date: "Sun May 11 2025 16:51:46 GMT+0800",
-          updated: "Mon May 12 2025 14:56:33 GMT+0800",
+          updated: "Mon May 12 2025 16:38:31 GMT+0800",
           cover: "/images/background/manchester.png",
         };
       </script>
