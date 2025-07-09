@@ -43,7 +43,7 @@
 <meta property="og:description" content="前言：作为ctfer，自然是经常与命令行工具打交道，但是每次不清楚怎么使用命令这可不好，用的时候去问ai或上网查询太耗时了，不如在这里记录平时使用的命令行工具的用法，忘记怎么用的时候就回来看看（ps:我只记录遇到的命令，所以有的部分不够全哈）   wsl2的安装卸载 123wsl --list --all     #这个命令可以帮助我们把已经安装的子系统列举下来，还有，这里的操作建议在管理员权限">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-04-25T11:13:50.000Z">
-<meta property="article:modified_time" content="2025-04-25T14:57:53.279Z">
+<meta property="article:modified_time" content="2025-07-04T15:42:38.243Z">
 <meta property="article:author" content="Yolo">
 <meta property="article:tag" content="dictionary">
 <meta name="twitter:card" content="summary">
@@ -244,7 +244,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#wsl2%E7%9A%84%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.</span> <span class="toc-text"> wsl2的安装卸载</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pyenv%E7%9A%84%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text"> pyenv的安装使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu2404%E4%B8%AD"><span class="toc-number">2.1.</span> <span class="toc-text"> Ubuntu24.04中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#windows%E4%B8%AD"><span class="toc-number">2.2.</span> <span class="toc-text"> Windows中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pyenv%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="toc-number">2.3.</span> <span class="toc-text"> pyenv使用技巧</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#wsl2%E7%9A%84%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.</span> <span class="toc-text"> wsl2的安装卸载</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pyenv%E7%9A%84%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text"> pyenv的安装使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu2404%E4%B8%AD"><span class="toc-number">2.1.</span> <span class="toc-text"> Ubuntu24.04中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pyenv%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="toc-number">2.2.</span> <span class="toc-text"> pyenv使用技巧</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bkcrack%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text"> bkcrack的使用</span></a></li></ol>
       
   </div>
 </div>
@@ -257,7 +257,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">6</div>
+    <div class="sidebar-state-number">5</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -265,7 +265,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">16</div>
+    <div class="sidebar-state-number">14</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -350,7 +350,7 @@
       <div class="article-date">
   <span class="article-date-link" data-aos="zoom-in">
     <time datetime="2025-04-25T11:13:50.000Z" itemprop="datePublished">2025-04-25</time>
-    <time style="display: none;" id="post-update-time">2025-04-25</time>
+    <time style="display: none;" id="post-update-time">2025-07-04</time>
   </span>
 </div>
 
@@ -368,13 +368,16 @@
 </blockquote>
 <h1 id="wsl2的安装卸载"><a class="markdownIt-Anchor" href="#wsl2的安装卸载"></a> wsl2的安装卸载</h1>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wsl --list --all     <span class="comment">#这个命令可以帮助我们把已经安装的子系统列举下来，还有，这里的操作建议在管理员权限下进行</span></span><br><span class="line"></span><br><span class="line">wsl --unregister Debian <span class="comment">#这个命令可以让我删除指定的子系统,Debian是我在列举中想删除的那个</span></span><br></pre></td></tr></table></figure>
-<p>over</p>
 <h1 id="pyenv的安装使用"><a class="markdownIt-Anchor" href="#pyenv的安装使用"></a> pyenv的安装使用</h1>
 <h2 id="ubuntu2404中"><a class="markdownIt-Anchor" href="#ubuntu2404中"></a> Ubuntu24.04中</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev \</span><br><span class="line">libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils \</span><br><span class="line">tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev      <span class="comment">#这里是安装一些依赖</span></span><br><span class="line"></span><br><span class="line">curl https://pyenv.run | bash   <span class="comment">#这里是按照那个网址的命令进行安装pyenv，尽管运行</span></span><br><span class="line"></span><br><span class="line">nano ~/.bashrc   <span class="comment">#在这里配置下环境变量</span></span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;</span><span class="string">&#x27;在文件末尾加入这些内容</span></span><br><span class="line"><span class="string">export PYENV_ROOT=&quot;$HOME/.pyenv&quot;</span></span><br><span class="line"><span class="string">export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;</span></span><br><span class="line"><span class="string">eval &quot;$(pyenv init --path)&quot;</span></span><br><span class="line"><span class="string">eval &quot;$(pyenv init -)&quot;</span></span><br><span class="line"><span class="string">&#x27;</span><span class="string">&#x27;&#x27;</span>使用Ctrl+O,Enter,Ctrl+X实现保存并退出</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc  <span class="comment"># 应用更改</span></span><br><span class="line"></span><br><span class="line">pyenv --version  <span class="comment">#验证pyenv安装成功</span></span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv  <span class="comment">#挺推荐弄个这个虚拟环境的，主要是考虑到不同工具使用同样的方法名，但是调用的库可能不一样，使用pyenv来回全局调试很容易奔溃的（maybe奔溃的是我们/(ㄒoㄒ)/~~</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;eval &quot;$(pyenv virtualenv-init -)&quot;&#x27;</span> &gt;&gt; ~/.bashrc  <span class="comment">#将它的环境变量追加到后面，然后应用更改</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line"></span><br><span class="line">pyenv virtualenv --version    <span class="comment">#检查工具是否安装成功 </span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 温馨提示，如果是在Ubuntu24.04中安装python2.x版本的话，需要安装一些openssl1.1.1x提供依赖</span></span><br><span class="line"><span class="built_in">sudo</span> apt install -y   build-essential   libssl-dev   zlib1g-dev   libbz2-dev   libreadline-dev   libsqlite3-dev   curl   libncursesw5-dev   xz-utils   tk-dev   libxml2-dev   libxmlsec1-dev   libffi-dev   liblzma-dev   python3-openssl</span><br><span class="line">wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz</span><br><span class="line">tar -zxvf openssl-1.1.1w.tar.gz</span><br><span class="line"><span class="built_in">cd</span> openssl-1.1.1w</span><br><span class="line">./config --prefix=/usr/local/openssl-1.1 --openssldir=/usr/local/openssl-1.1   <span class="comment">#编译</span></span><br><span class="line">make</span><br><span class="line"><span class="built_in">sudo</span> make install</span><br><span class="line"><span class="built_in">ls</span> -l /usr/local/openssl-1.1/lib/libssl.so.1.1 /usr/local/openssl-1.1/lib/libcrypto.so.1.1   <span class="comment">#确认库文件名是否存在</span></span><br><span class="line"><span class="built_in">sudo</span> nano /etc/ld.so.conf.d/openssl-1.1.conf    <span class="comment">#配置动态链接器路径，添加/usr/local/openssl-1.1/lib</span></span><br><span class="line"><span class="built_in">sudo</span> ldconfig    <span class="comment">#更新缓存</span></span><br><span class="line">ldconfig -p | grep libssl.so.1.1   <span class="comment">#验证</span></span><br><span class="line"><span class="built_in">sudo</span> apt-get update</span><br><span class="line"><span class="built_in">sudo</span> apt-get install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev curl libbz2-dev    <span class="comment">#安装一些基本依赖</span></span><br><span class="line"><span class="comment"># 设置openssl路径环境变量</span></span><br><span class="line"><span class="built_in">export</span> CFLAGS=<span class="string">&quot;-I/usr/local/openssl-1.1/include&quot;</span></span><br><span class="line"><span class="built_in">export</span> LDFLAGS=<span class="string">&quot;-L/usr/local/openssl-1.1/lib&quot;</span></span><br><span class="line"><span class="built_in">export</span> LD_LIBRARY_PATH=<span class="string">&quot;/usr/local/openssl-1.1/lib:<span class="variable">$LD_LIBRARY_PATH</span>&quot;</span></span><br><span class="line"><span class="built_in">export</span> PKG_CONFIG_PATH=<span class="string">&quot;/usr/local/openssl-1.1/lib/pkgconfig:<span class="variable">$PKG_CONFIG_PATH</span>&quot;</span></span><br><span class="line">CONFIGURE_OPTS=<span class="string">&quot;--with-openssl=/usr/local/openssl-1.1&quot;</span> pyenv install 2.7.18</span><br><span class="line">这样做可以安装成功，但是在设置虚拟环境的时候找不到动态链接器，需要动手编辑</span><br><span class="line"><span class="built_in">ls</span> -l ~/.pyenv/versions/2.7.18/lib/libpython2.7.so*  <span class="comment">#先确认共享库存在</span></span><br><span class="line"><span class="built_in">sudo</span> nano /etc/ld.so.conf.d/python2.7.conf</span><br><span class="line">输入内容：/home/yolo(要改！！！)/.pyenv/versions/2.7.18/lib</span><br><span class="line"><span class="built_in">sudo</span> ldconfig   <span class="comment">#更新动态链接器缓存</span></span><br><span class="line">ldconfig -p | grep libpython2.7  <span class="comment">#验证库路径</span></span><br><span class="line">pyenv virtualenv 2.7.18 vol2     <span class="comment">#设置虚拟环境，over</span></span><br></pre></td></tr></table></figure>
-<h2 id="windows中"><a class="markdownIt-Anchor" href="#windows中"></a> Windows中</h2>
 <h2 id="pyenv使用技巧"><a class="markdownIt-Anchor" href="#pyenv使用技巧"></a> pyenv使用技巧</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">pyenv install --list  <span class="comment">#这会列出所有可安装的python版本</span></span><br><span class="line"></span><br><span class="line">pyenv install 3.13.1  <span class="comment">#安装我们指定的版本3.13.1</span></span><br><span class="line"></span><br><span class="line">pyenv global 3.13.1   <span class="comment">#设置全局python版本</span></span><br><span class="line"></span><br><span class="line">python --version      <span class="comment">#验证上面的设置</span></span><br><span class="line"></span><br><span class="line">pyenv versions        <span class="comment">#列举已经有的python版本</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="bkcrack的使用"><a class="markdownIt-Anchor" href="#bkcrack的使用"></a> bkcrack的使用</h1>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bkcrack -L 压缩包路径   <span class="comment">#可以查看压缩包里的文件信息(啥都有喔)</span></span><br><span class="line">bkcrack -C 加密压缩包 -c 加密压缩包中已知的文件名 -P 那个已知的文件的压缩包 -p 那个已知文件 -o 指定明文的偏移量  <span class="comment">#那个-P和-o其实不是必须的，但是多一点可能会解密更快呢</span></span><br><span class="line">bkcrack -C 加密压缩包 -k 上面命令最后得到的key -U 新压缩包的名字 newpassword</span><br><span class="line">bkcrack -C 加密压缩包 -k 之前命令最后得到的key -c 加密文件 -d 那个加密文件保存出来的名字 </span><br></pre></td></tr></table></figure>
+<p>tips：遇到png文件头明文攻击的话，一定要背会png头，或及时用010看</p>
+<p><code>echo 89504E470D0A1A0A0000000D49484452 | xxd -r -ps &gt;pngheader</code></p>
+
       
     </div>
     <footer class="article-footer">
@@ -384,7 +387,7 @@
     <p><strong><span class="icon-link icon"></span>本文链接：</strong><a href="https://www.yo1o.top/2025/04/25/command-line-tools/">https://www.yo1o.top/2025/04/25/command-line-tools/</a></p>
     
     
-    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-04-25 22:57:53</p>
+    <p><strong><span class="icon-calendar icon"></span>本文更新时间：</strong>2025-07-04 23:42:38</p>
     <p><strong><span class="icon-copyright icon"></span>本文版权：</strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener external nofollow noreferrer" target="_blank"><span class="icon-creative-commons"></span>BY-NC-SA</a> 许可协议。转载请注明出处！</p>
     <span class="icon-creative-commons article-copyright-bg"></span>
   </blockquote>
@@ -539,10 +542,10 @@
     
       <div>
         <span class="icon-brush"></span>
-        32k
+        29.1k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        02:18
+        02:06
       </div>
     
     
@@ -575,7 +578,7 @@
   <h3 class="toc-title">文章目录</h3>
   <div class="sidebar-toc-wrapper toc-div-class" >
       
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#wsl2%E7%9A%84%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.</span> <span class="toc-text"> wsl2的安装卸载</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pyenv%E7%9A%84%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text"> pyenv的安装使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu2404%E4%B8%AD"><span class="toc-number">2.1.</span> <span class="toc-text"> Ubuntu24.04中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#windows%E4%B8%AD"><span class="toc-number">2.2.</span> <span class="toc-text"> Windows中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pyenv%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="toc-number">2.3.</span> <span class="toc-text"> pyenv使用技巧</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#wsl2%E7%9A%84%E5%AE%89%E8%A3%85%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.</span> <span class="toc-text"> wsl2的安装卸载</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#pyenv%E7%9A%84%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text"> pyenv的安装使用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ubuntu2404%E4%B8%AD"><span class="toc-number">2.1.</span> <span class="toc-text"> Ubuntu24.04中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pyenv%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7"><span class="toc-number">2.2.</span> <span class="toc-text"> pyenv使用技巧</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#bkcrack%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text"> bkcrack的使用</span></a></li></ol>
       
   </div>
 </div>
@@ -588,7 +591,7 @@
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">6</div>
+    <div class="sidebar-state-number">5</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -596,7 +599,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">16</div>
+    <div class="sidebar-state-number">14</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -781,7 +784,7 @@
           description: "",
           stripContent: " 前言：作为ctfer，自然是经常与命令行工具打交道，但是每次不清楚怎么使用命令这可不好，用的时候去问ai或上网查询太耗时了，不如在这里记录平时使用的命令行工具的用法，忘记怎么用的时候就回来看看（ps:我只记录遇到的命令，所以有的部分不够全哈）   wsl2的安装卸载 123wsl --list --all     #这个命令可以帮助我们把已经安装的子系统列举下来，还有，这里的操作建议在管理员权限下进行wsl --unregister Debian #这个命令可以让我删除指定的子系统,Debia",
           date: "Fri Apr 25 2025 19:13:50 GMT+0800",
-          updated: "Fri Apr 25 2025 22:57:53 GMT+0800",
+          updated: "Fri Jul 04 2025 23:42:38 GMT+0800",
           cover: "/images/banner.webp",
         };
       </script>
