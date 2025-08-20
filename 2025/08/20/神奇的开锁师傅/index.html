@@ -1,0 +1,1175 @@
+
+  <!DOCTYPE html>
+  <html lang="zh-CN"  
+    
+      data-theme-mode="auto"
+    
+  >
+  <head>
+  
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://www.yo1o.top';</script>
+  
+  <title>
+    神奇的开锁师傅 |
+    
+    Yolo&#39;s Blog
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="zip 常见攻击汇总  Yolo 这里会对遇到的 zip 攻击做个汇总，对原理会做一个简单的讲解   CRC32 爆破攻击 这有两个重要概念需要清楚（来自 Gemini 老师 CRC32 是什么？  全称：Cyclic Redundancy Check，循环冗余校验。 用途：它是一种数据完整性校验算法，而不是加密算法。它的主要目的是检查数据在传输或存储过程中是否发生了意外的损坏或改变。 原理：它">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神奇的开锁师傅">
+<meta property="og:url" content="https://www.yo1o.top/2025/08/20/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/index.html">
+<meta property="og:site_name" content="Yolo&#39;s Blog">
+<meta property="og:description" content="zip 常见攻击汇总  Yolo 这里会对遇到的 zip 攻击做个汇总，对原理会做一个简单的讲解   CRC32 爆破攻击 这有两个重要概念需要清楚（来自 Gemini 老师 CRC32 是什么？  全称：Cyclic Redundancy Check，循环冗余校验。 用途：它是一种数据完整性校验算法，而不是加密算法。它的主要目的是检查数据在传输或存储过程中是否发生了意外的损坏或改变。 原理：它">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.yo1o.top/images/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/20250820130830_003.webp">
+<meta property="og:image" content="https://www.yo1o.top/images/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/20250820130829_000.webp">
+<meta property="og:image" content="https://www.yo1o.top/images/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/20250820130829_001.webp">
+<meta property="og:image" content="https://www.yo1o.top/images/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/20250820130829_002.webp">
+<meta property="og:image" content="https://www.yo1o.top/images/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/20250820130830_004.webp">
+<meta property="og:image" content="https://www.yo1o.top/images/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/20250820130830_005.webp">
+<meta property="article:published_time" content="2025-08-20T01:42:19.000Z">
+<meta property="article:modified_time" content="2025-08-20T05:49:42.855Z">
+<meta property="article:author" content="Yolo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.yo1o.top/images/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/20250820130830_003.webp">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="Yolo's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" as="style" onload="this.onload&#x3D;null;this.rel&#x3D;&#39;stylesheet&#39;" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" integrity="sha384-IfxC36XL&#x2F;toUyJ939C73PcgMuRzAZuIzZxE38drsmO5p6jD7ei+Zx&#x2F;1oA&#x2F;0l8ysE" crossorigin="anonymous">
+  
+    
+      
+        
+<link rel="stylesheet" href="https://npm.webcache.cn/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l&#x2F;9On385z&#x2F;&#x2F;&#x2F;+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+
+      
+    
+  
+  
+    
+      
+<link rel="stylesheet" href="https://npm.webcache.cn/@waline/client@2.15.8/dist/waline.css" integrity="sha384-vltfZtesCdl6NYVcFVcjEaIi5RpNvZe9t7fXvq8twVtcoy+Ub9QgnxUYJmwOhYCK" crossorigin="anonymous">
+
+    
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css" integrity="sha384-4NN3fZ5AokFyHuoihl7A9qWaCt+HsAtOaUsXwJGRb4&#x2F;SMBtFr2vcNSHR5E8dg0Wk" crossorigin="anonymous">
+
+  
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi rotate">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      
+      
+        
+      
+      <div class="loading-word">少女祈祷中...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+<div id="heatmap-tooltip"></div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/">首页</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/archives">归档</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/about">关于</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+             
+              &#xe62b;
+             
+          </div>
+          <a class="main-nav-link" href="/friend">友链</a>
+        </span>
+      
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+      <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅" target="_blank"></a>
+    
+    
+    
+  </nav>
+  
+</div>
+<header id="header">
+  
+    <picture></picture>
+    <img  fetchpriority="high" src="/images/background/yasuobao.webp" alt="神奇的开锁师傅">
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">神奇的开锁师傅</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content"  class="sidebar-right" >
+          <aside id="sidebar">
+  
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        
+          <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#zip-%E5%B8%B8%E8%A7%81%E6%94%BB%E5%87%BB%E6%B1%87%E6%80%BB"><span class="toc-number">1.</span> <span class="toc-text"> zip 常见攻击汇总</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#crc32-%E7%88%86%E7%A0%B4%E6%94%BB%E5%87%BB"><span class="toc-number">1.1.</span> <span class="toc-text"> CRC32 爆破攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%AF%86%E8%84%9A%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 解密脚本原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%AF%86%E8%84%9A%E6%9C%AC"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 解密脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98%E4%B8%80"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 例题一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98%E4%BA%8C"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 例题二</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+          <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avator.jpg" data-sizes="auto" alt="Yolo" class="lazyload">
+  <div class="sidebar-author-name">Yolo</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">8</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">1</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">14</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/yo1o-sir itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-bilibili sidebar-social-icon">
+      <a href=https://space.bilibili.com/1066455120 itemprop="url" target="_blank" aria-label="bilibili" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+        
+      
+      
+        
+          <div class="sidebar-btn-wrapper" style="position:static">
+            <div class="sidebar-toc-btn current"></div>
+            <div class="sidebar-common-btn"></div>
+          </div>
+        
+      
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+  
+  </div>
+  
+</aside>
+
+          <section id="main"><article id="post-神奇的开锁师傅" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <span class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-08-20T01:42:19.000Z" itemprop="datePublished">2025-08-20</time>
+    <time style="display: none;" id="post-update-time">2025-08-20</time>
+  </span>
+</div>
+
+      
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h1 id="zip-常见攻击汇总"><a class="markdownIt-Anchor" href="#zip-常见攻击汇总"></a> zip 常见攻击汇总</h1>
+<blockquote>
+<p>Yolo 这里会对遇到的 zip 攻击做个汇总，对原理会做一个简单的讲解</p>
+</blockquote>
+<h2 id="crc32-爆破攻击"><a class="markdownIt-Anchor" href="#crc32-爆破攻击"></a> CRC32 爆破攻击</h2>
+<p>这有两个重要概念需要清楚（来自 Gemini 老师</p>
+<p><strong>CRC32 是什么？</strong></p>
+<ul>
+<li><strong>全称</strong>：Cyclic Redundancy Check，循环冗余校验。</li>
+<li><strong>用途</strong>：它是一种<strong>数据完整性校验</strong>算法，而不是加密算法。它的主要目的是检查数据在传输或存储过程中是否发生了意外的损坏或改变。</li>
+<li><strong>原理</strong>：它会根据文件的二进制内容，通过一套固定的数学运算，生成一个 32 位的整数值（即 CRC32 校验码）。你可以把它想象成是文件的一个非常简单的“指纹”。如果文件的任何一个比特（bit）发生了改变，那么重新计算出的 CRC32 值有极大的概率会不同。</li>
+<li><strong>关键特性</strong>：计算速度非常快。</li>
+</ul>
+<p><strong>ZIP 压缩包的结构</strong></p>
+<ul>
+<li>一个 ZIP 包里可以包含多个文件。对于每个文件，ZIP 格式都会存储两部分信息：
+<ul>
+<li><strong>文件数据（File Data）</strong>：这是文件本身的内容，经过压缩和加密。</li>
+<li><strong>文件元数据（Metadata/Header）</strong>：这是描述文件信息的数据，比如文件名、原始大小、压缩后的大小，以及最重要的——<strong>原始文件（未加密前）的 CRC32 校验码</strong>。</li>
+</ul>
+</li>
+<li><strong>致命缺陷</strong>：在使用传统的 ZipCrypto 加密时，<strong>文件数据本身是被加密的，但包含 CRC32 值的这部分元数据却是以明文形式存储的，没有被加密</strong>。</li>
+</ul>
+<hr />
+<p>回到这一部分讲解的 crc32 爆破攻击，它有局限性，这种攻击主要针对的是<code>ZipCrypto</code>算法，然后文件的未压缩大小都应该足够小，最好是 6 字节以下</p>
+<p>关注的是这一部分，用 bandzip 或其他 zip 解压工具也能看到，基本上都叫做<strong>原始大小</strong></p>
+<img src="/images/神奇的开锁师傅/20250820130830_003.webp" alt="image-20250820121617710" style="zoom:50%;" />
+<h3 id="解密脚本原理"><a class="markdownIt-Anchor" href="#解密脚本原理"></a> 解密脚本原理</h3>
+<p>简单说说这个攻击方法的原理，由于压缩包里面的文件内容很小很小，那么完全可以通过爆破的方式，通过生成所有可能的 3 字节（看未压缩大小）文件，然后和压缩包里的 crc32 值进行匹配，要是成功了，就可以拿它当作已知明文进行明文攻击，获取 flag，到这一步就很轻松了</p>
+<p>然后简单说下我的解密脚本逻辑，当未压缩大小在 4 字节之内的话，那就直接<strong>明文穷举爆破</strong>即可 。然后大小超过 4 字节时，需要使用<a target="_blank" rel="noopener" href="https://github.com/theonlypwner/crc32/blob/main/crc32.py">专门的数学工具</a>进行 crc 反转攻击，原理涉及密码学，zip 加密原理等等（太复杂，没学会，就直接引用 theonlypwner 大佬的工具，然后我再在他的工具基础上，拓展了自行搜集 crc，自行检测密码是否正确的小功能</p>
+<p>理论上，单纯使用 crc 反转攻击几乎可以实现所有小字节的爆破攻击，但是我这里依然选择保留 4 字节以下的明文穷举爆破过程，因为那位大佬的工具内置的字符集里面不包含中文字符或别的特殊字符</p>
+<p><img src="/images/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/20250820130829_000.webp" alt="image-20250820120710267" /></p>
+<p>限制较为严格，我手动尝试添加其他字符的思路是不现实的，综合考虑到如果反转的时候遍历 256 字节，会失去 crc 反转攻击的快速优势，有利有弊吧，最终脚本就这样好了</p>
+<div class="info custom-block"><p class="custom-block-title">INFO</p>
+<p>其实我在想，如果能优化里面的数学原理的话，就不用怕这个遍历 256 字节了，毕竟我看它的解密过程，完全利用数学特性进行反算，而不是遍历爆破猜测，问题是能力有限，更改字符集的话，就要大幅度的更改当前的解密原理和逻辑，对我来说不现实</p>
+</div>
+<h3 id="解密脚本"><a class="markdownIt-Anchor" href="#解密脚本"></a> 解密脚本</h3>
+<p>脚本 1：</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/theonlypwner/crc32/blob/main/crc32.py">https://github.com/theonlypwner/crc32/blob/main/crc32.py</a></p>
+<p>脚本 2：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python3</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> zipfile</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> zlib</span><br><span class="line"><span class="keyword">from</span> tqdm <span class="keyword">import</span> tqdm</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">extract_targets</span>(<span class="params">zip_filename: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;分析 ZIP 文件，提取所有加密文件信息。&quot;&quot;&quot;</span></span><br><span class="line">    targets = []</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[*] 正在分析压缩包: <span class="subst">&#123;zip_filename&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">with</span> zipfile.ZipFile(zip_filename, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> zf:</span><br><span class="line">            <span class="keyword">for</span> info <span class="keyword">in</span> zf.infolist():</span><br><span class="line">                <span class="keyword">if</span> info.flag_bits &amp; <span class="number">0x1</span> <span class="keyword">and</span> info.file_size &gt; <span class="number">0</span>:</span><br><span class="line">                    targets.append(&#123;</span><br><span class="line">                        <span class="string">&quot;filename&quot;</span>: info.filename, <span class="string">&quot;size&quot;</span>: info.file_size, <span class="string">&quot;crc&quot;</span>: info.CRC</span><br><span class="line">                    &#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">def</span> <span class="title function_">sort_key</span>(<span class="params">target</span>):</span><br><span class="line">            <span class="keyword">match</span> = re.search(<span class="string">r&#x27;(\d+)&#x27;</span>, target[<span class="string">&#x27;filename&#x27;</span>])</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">match</span>:</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> (<span class="built_in">int</span>(<span class="keyword">match</span>.group(<span class="number">1</span>)), target[<span class="string">&#x27;filename&#x27;</span>])</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> (<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>), target[<span class="string">&#x27;filename&#x27;</span>])</span><br><span class="line"></span><br><span class="line">        targets.sort(key=sort_key)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[+] 发现 <span class="subst">&#123;<span class="built_in">len</span>(targets)&#125;</span> 个加密文件。&quot;</span>)</span><br><span class="line">    <span class="keyword">except</span> (FileNotFoundError, zipfile.BadZipFile) <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;[!] 错误: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> targets</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">brute_force_many_short_files</span>(<span class="params">targets: <span class="built_in">list</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用高效的“一次爆破，匹配所有”算法来处理批量小文件。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[*] 正在准备高效批量爆破...&quot;</span>)</span><br><span class="line">    crc_map = &#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> t <span class="keyword">in</span> targets:</span><br><span class="line">        <span class="keyword">if</span> t[<span class="string">&#x27;crc&#x27;</span>] <span class="keyword">not</span> <span class="keyword">in</span> crc_map:</span><br><span class="line">            crc_map[t[<span class="string">&#x27;crc&#x27;</span>]] = []</span><br><span class="line">        crc_map[t[<span class="string">&#x27;crc&#x27;</span>]].append(t[<span class="string">&#x27;filename&#x27;</span>])</span><br><span class="line"></span><br><span class="line">    length = targets[<span class="number">0</span>][<span class="string">&#x27;size&#x27;</span>]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;[*] 开始对 <span class="subst">&#123;<span class="built_in">len</span>(crc_map)&#125;</span> 个独特的 CRC 值进行 <span class="subst">&#123;length&#125;</span> 字节爆破...&quot;</span>)</span><br><span class="line"></span><br><span class="line">    crc_to_plaintext = &#123;&#125;</span><br><span class="line">    total_combinations = <span class="number">256</span>**length</span><br><span class="line"></span><br><span class="line">    pbar = tqdm(itertools.product(<span class="built_in">range</span>(<span class="number">256</span>), repeat=length), total=total_combinations,</span><br><span class="line">                desc=<span class="string">&quot;    -&gt; 爆破进度&quot;</span>, unit=<span class="string">&quot;B&quot;</span>)</span><br><span class="line"></span><br><span class="line">    found_count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> byte_tuple <span class="keyword">in</span> pbar:</span><br><span class="line">        plaintext_bytes = <span class="built_in">bytes</span>(byte_tuple)</span><br><span class="line">        crc_val = zlib.crc32(plaintext_bytes) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> crc_val <span class="keyword">in</span> crc_map:</span><br><span class="line">            <span class="keyword">if</span> crc_val <span class="keyword">not</span> <span class="keyword">in</span> crc_to_plaintext:</span><br><span class="line">                crc_to_plaintext[crc_val] = plaintext_bytes</span><br><span class="line">                found_count += <span class="number">1</span></span><br><span class="line">                pbar.set_postfix_str(<span class="string">f&quot;已找到 <span class="subst">&#123;found_count&#125;</span>/<span class="subst">&#123;<span class="built_in">len</span>(crc_map)&#125;</span> 个&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> found_count == <span class="built_in">len</span>(crc_map):</span><br><span class="line">            pbar.update(pbar.total - pbar.n)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;\n[*] 爆破完成！总共 <span class="subst">&#123;<span class="built_in">len</span>(crc_map)&#125;</span> 个独特CRC，成功破解 <span class="subst">&#123;found_count&#125;</span> 个。&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span> crc_map, crc_to_plaintext</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reverse_crc_long</span>(<span class="params">target: <span class="built_in">dict</span>, crc_tool_path: <span class="built_in">str</span></span>) -&gt; <span class="built_in">list</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;调用外部工具进行 CRC 反转。&quot;&quot;&quot;</span></span><br><span class="line">    filename, target_crc = target[<span class="string">&#x27;filename&#x27;</span>], target[<span class="string">&#x27;crc&#x27;</span>]</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;  [-] 正在调用外部工具为 &#x27;<span class="subst">&#123;filename&#125;</span>&#x27; (CRC: <span class="subst">&#123;<span class="built_in">hex</span>(target_crc)&#125;</span>) 进行反转...&quot;</span>)</span><br><span class="line">    command = [<span class="string">&quot;python3&quot;</span>, crc_tool_path, <span class="string">&quot;reverse&quot;</span>, <span class="built_in">hex</span>(target_crc)]</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        proc = subprocess.run(command, capture_output=<span class="literal">True</span>, text=<span class="literal">True</span>, check=<span class="literal">True</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>, errors=<span class="string">&#x27;ignore&#x27;</span>)</span><br><span class="line">        fragments = re.findall(<span class="string">r&quot;(?:alternative|bytes):\s+([\w_`~!@#$%^&amp;*()\-+=&#123;&#125;\[\]|\\;:&#x27;\&quot;,./&lt;&gt;?]+)\s+\(OK\)&quot;</span>, proc.stdout)</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">sorted</span>(<span class="built_in">list</span>(<span class="built_in">set</span>(fragments)), key=fragments.index) <span class="keyword">if</span> fragments <span class="keyword">else</span> []</span><br><span class="line">    <span class="keyword">except</span> FileNotFoundError:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;\n[!] 致命错误: python3 命令未找到。如果你使用的是 Windows，请尝试将脚本中第97行的 &#x27;python3&#x27; 修改为 &#x27;python&#x27;。&quot;</span>)</span><br><span class="line">        exit(<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;\n[!] 调用 &#x27;<span class="subst">&#123;crc_tool_path&#125;</span>&#x27; 失败: <span class="subst">&#123;e&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">test_password</span>(<span class="params">zip_filename: <span class="built_in">str</span>, password_bytes: <span class="built_in">bytes</span>, test_file: <span class="built_in">str</span></span>) -&gt; <span class="built_in">bool</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;验证密码是否正确。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">with</span> zipfile.ZipFile(zip_filename, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> zf:</span><br><span class="line">            zf.read(test_file, pwd=password_bytes)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">main</span>():</span><br><span class="line">    parser = argparse.ArgumentParser(description=<span class="string">&quot;终极版智能 CRC 攻击脚本 V2。&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;zip_file&quot;</span>, <span class="built_in">help</span>=<span class="string">&quot;需要破解的 ZIP 文件路径。&quot;</span>)</span><br><span class="line">    parser.add_argument(<span class="string">&quot;--tool&quot;</span>, <span class="built_in">type</span>=<span class="built_in">str</span>, default=<span class="string">&quot;crc32.py&quot;</span>, <span class="built_in">help</span>=<span class="string">&quot;可用的 crc32.py 工具路径。&quot;</span>)</span><br><span class="line">    args = parser.parse_args()</span><br><span class="line"></span><br><span class="line">    targets = extract_targets(args.zip_file)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> targets: <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">    is_batch_brute_force_mode = <span class="built_in">all</span>(t[<span class="string">&#x27;size&#x27;</span>] &lt;= <span class="number">4</span> <span class="keyword">for</span> t <span class="keyword">in</span> targets)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> is_batch_brute_force_mode:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n[*] 检测到批量小文件场景，进入“高效内容恢复”模式。&quot;</span>)</span><br><span class="line">        crc_map, crc_to_plaintext = brute_force_many_short_files(targets)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> crc_to_plaintext:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;\n[*] 正在拼接最终结果...&quot;</span>)</span><br><span class="line">            final_result_parts = []</span><br><span class="line">            <span class="keyword">for</span> target <span class="keyword">in</span> targets:</span><br><span class="line">                plaintext = crc_to_plaintext.get(target[<span class="string">&#x27;crc&#x27;</span>])</span><br><span class="line">                <span class="keyword">if</span> plaintext:</span><br><span class="line">                    final_result_parts.append(plaintext)</span><br><span class="line"></span><br><span class="line">            full_content_bytes = <span class="string">b&quot;&quot;</span>.join(final_result_parts)</span><br><span class="line"></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span> + <span class="string">&quot;=&quot;</span>*<span class="number">50</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;🎉 [+] 内容恢复完成！&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;=&quot;</span>*<span class="number">50</span>)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;原始字节流 (这才是真实数据):&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(full_content_bytes)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;\n尝试用 UTF-8 解码后的文本 (可能乱码):&quot;</span>)</span><br><span class="line">            <span class="built_in">print</span>(full_content_bytes.decode(errors=<span class="string">&#x27;ignore&#x27;</span>))</span><br><span class="line"></span><br><span class="line">            output_filename = <span class="string">&quot;recovered_content.dat&quot;</span></span><br><span class="line">            <span class="keyword">with</span> <span class="built_in">open</span>(output_filename, <span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                f.write(full_content_bytes)</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;\n[*] 原始字节流已保存到 &#x27;<span class="subst">&#123;output_filename&#125;</span>&#x27; 文件中，方便进一步分析。&quot;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;\n[!] 未能恢复任何内容。&quot;</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n[*] 检测到存在大文件，进入“密码破解”模式。&quot;</span>)</span><br><span class="line">        password_clue_targets = [t <span class="keyword">for</span> t <span class="keyword">in</span> targets <span class="keyword">if</span> <span class="number">4</span> &lt; t[<span class="string">&#x27;size&#x27;</span>] &lt;= <span class="number">16</span>]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> password_clue_targets:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;  [!] 未发现大小在 5-16 字节之间的可疑密码线索文件。&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;  [-] 将只对 <span class="subst">&#123;<span class="built_in">len</span>(password_clue_targets)&#125;</span> 个大小在 5-16 字节之间的文件进行 CRC 反转。&quot;</span>)</span><br><span class="line"></span><br><span class="line">        fragments_map = &#123;&#125;</span><br><span class="line">        <span class="keyword">for</span> target <span class="keyword">in</span> password_clue_targets:</span><br><span class="line">            fragments = reverse_crc_long(target, args.tool)</span><br><span class="line">            <span class="keyword">if</span> fragments:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;    [+] 为 &#x27;<span class="subst">&#123;target[<span class="string">&#x27;filename&#x27;</span>]&#125;</span>&#x27; 找到 <span class="subst">&#123;<span class="built_in">len</span>(fragments)&#125;</span> 个可能片段: <span class="subst">&#123;fragments&#125;</span>&quot;</span>)</span><br><span class="line">                fragments_map[target[<span class="string">&#x27;filename&#x27;</span>]] = fragments</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> fragments_map:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;\n[!] 未找到任何密码片段，无法继续。&quot;</span>)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n[*] 开始自动组合片段并验证密码...&quot;</span>)</span><br><span class="line">        test_file = <span class="built_in">max</span>(targets, key=<span class="keyword">lambda</span> t: t[<span class="string">&#x27;size&#x27;</span>])[<span class="string">&#x27;filename&#x27;</span>]</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;  [-] 自动选择最大文件 &#x27;<span class="subst">&#123;test_file&#125;</span>&#x27; 用于密码验证。&quot;</span>)</span><br><span class="line"></span><br><span class="line">        ordered_fragment_lists = [fragments_map[t[<span class="string">&#x27;filename&#x27;</span>]] <span class="keyword">for</span> t <span class="keyword">in</span> password_clue_targets <span class="keyword">if</span> t[<span class="string">&#x27;filename&#x27;</span>] <span class="keyword">in</span> fragments_map]</span><br><span class="line">        total_passwords = <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> frags <span class="keyword">in</span> ordered_fragment_lists: total_passwords *= <span class="built_in">len</span>(frags)</span><br><span class="line"></span><br><span class="line">        pbar = tqdm(itertools.product(*ordered_fragment_lists), total=total_passwords, desc=<span class="string">&quot;  -&gt; 尝试密码&quot;</span>)</span><br><span class="line">        <span class="keyword">for</span> combo <span class="keyword">in</span> pbar:</span><br><span class="line">            password_bytes = <span class="string">&quot;&quot;</span>.join(combo).encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">            pbar.set_postfix_str(<span class="string">f&quot;正在尝试: <span class="subst">&#123;password_bytes.decode(errors=<span class="string">&#x27;ignore&#x27;</span>)[:<span class="number">30</span>]&#125;</span>...&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> test_password(args.zip_file, password_bytes, test_file):</span><br><span class="line">                pbar.close()</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;\n&quot;</span> + <span class="string">&quot;=&quot;</span>*<span class="number">50</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;🎉 [+] 最终密码验证成功！&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;  &gt;&gt;&gt;  <span class="subst">&#123;password_bytes.decode()&#125;</span>  &lt;&lt;&lt;&quot;</span>)</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&quot;=&quot;</span>*<span class="number">50</span>)</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;\n[!] 自动验证完成，未能找到正确的密码组合。&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<h3 id="例题一"><a class="markdownIt-Anchor" href="#例题一"></a> 例题一</h3>
+<blockquote>
+<p>攻防世界-crc</p>
+</blockquote>
+<p>首先通过 bkcrack 可以直观的看到压缩包的结构以及压缩方式等等，通过特征，我们能判断使用 crc32 爆破攻击</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">bkcrack -L ad71bf43131c4b3fa27066a3b408f843.zip</span><br><span class="line">bkcrack 1.7.1 - 2024-12-21</span><br><span class="line">Archive: ad71bf43131c4b3fa27066a3b408f843.zip</span><br><span class="line">Index Encryption Compression CRC32    Uncompressed  Packed size Name</span><br><span class="line">----- ---------- ----------- -------- ------------ ------------ ----------------</span><br><span class="line">    0 ZipCrypto  Store       cc86365b            6           18 1.txt</span><br><span class="line">    1 ZipCrypto  Store       bcee7ed5            6           18 2.txt</span><br><span class="line">    2 ZipCrypto  Store       ccca7e74            6           18 3.txt</span><br><span class="line">    3 ZipCrypto  Deflate     9ebfae5d        15360         1962 convert.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>因为是 6 字节，所以使用 crc 反转攻击效率更高，而且我的脚本会自行检测字节大小来选择爆破模式，直接用<code>脚本+压缩包</code>即可</p>
+<p><img src="/images/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/20250820130829_001.webp" alt="image-20250820123649724" /></p>
+<p>那个 convert.txt 是串二进制，解密出来是个二维码，扫描得到 flag</p>
+<p><img src="/images/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/20250820130829_002.webp" alt="image-20250820124045822" /></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;owid0-o91hf-9iahg&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="例题二"><a class="markdownIt-Anchor" href="#例题二"></a> 例题二</h3>
+<blockquote>
+<p>ISCTF2023-ezcrc</p>
+</blockquote>
+<p>这道题老坑了呢，那些小字节里的内容都是中文，所以说常用的 crc 爆破工具根本做不了，反转也用不了，好在，原始字节就 3 个，直接遍历爆破即可（为了加速爆破，选择一次性批量爆破，这样做比一个一个文件单独爆破要快得多得多</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">bkcrack -L ezcrc.zip</span><br><span class="line">bkcrack 1.7.1 - 2024-12-21</span><br><span class="line">Archive: ezcrc.zip</span><br><span class="line">Index Encryption Compression CRC32    Uncompressed  Packed size Name</span><br><span class="line">----- ---------- ----------- -------- ------------ ------------ ----------------</span><br><span class="line">    0 ZipCrypto  Store       d2b184ff            3           15 0.txt</span><br><span class="line">    1 ZipCrypto  Store       b462df74            3           15 1.txt</span><br><span class="line">    2 ZipCrypto  Store       b462df74            3           15 10.txt</span><br><span class="line">    3 ZipCrypto  Store       fd2a257b            3           15 100.txt</span><br><span class="line">    4 ZipCrypto  Store       d2b184ff            3           15 101.txt</span><br><span class="line">   ......</span><br><span class="line">   yolo@Yolo:~/Desktop/timu/crcbaopo$ python finalfinal.py ezcrc.zip</span><br><span class="line">[*] 正在分析压缩包: ezcrc.zip</span><br><span class="line">[+] 发现 227 个加密文件。</span><br><span class="line"></span><br><span class="line">[*] 检测到批量小文件场景，进入“高效内容恢复”模式。</span><br><span class="line">[*] 正在准备高效批量爆破...</span><br><span class="line">[*] 开始对 30 个独特的 CRC 值进行 3 字节爆破...</span><br><span class="line">    -&gt; 爆破进度:  91%|██████████████████████████████▏  | 15317381/16777216 [00:04&lt;00:00, 3514721.50B/s, 已找到 30/30 个]</span><br><span class="line"></span><br><span class="line">[*] 爆破完成！总共 30 个独特CRC，成功破解 30 个。</span><br><span class="line"></span><br><span class="line">[*] 正在拼接最终结果...</span><br><span class="line"></span><br><span class="line">==================================================</span><br><span class="line">🎉 [+] 内容恢复完成！</span><br><span class="line">==================================================</span><br><span class="line">原始字节流 (这才是真实数据):</span><br><span class="line">b&#x27;\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe4\xb9\x8c\xe5\xa3\xb9\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe8\xb5\x84\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe5\x96\x94\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x97\xa5\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe4\xbd\x9b\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe8\xb5\x84\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe4\xbd\x9b\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe5\xb7\xab\xe5\x9f\xba\xe5\xbe\x97\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe5\x96\x94\xe7\x8e\xbb\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe4\xb9\x8c\xe9\x9b\xb6\xe8\xb5\x84\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe5\xb7\xab\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe8\xbf\x82\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x97\xa5\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe8\xbf\x82\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe8\xae\xb7\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe4\xb9\x8c\xe5\xa3\xb9\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe5\xb8\x8c\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x97\xa5\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe5\xb8\x8c\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x97\xa5\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe5\x96\x94\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe8\xbf\x82\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe5\x93\xa5\xe5\xbe\x97\xe9\x99\x86\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe7\x89\xb9\xe6\x91\xb8\xe7\xa7\x91\xe5\xb7\xab\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x91\xb8\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe4\xbd\x9b\xe5\x8b\x92\xe7\x89\xb9\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe7\x89\xb9\xe6\x91\xb8\xe5\xb8\x8c\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x91\xb8\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe8\xbf\x82\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe5\x93\xa5\xe9\x9b\x8c\xe5\xb8\x8c\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe7\x89\xb9\xe9\x9b\xb6\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x97\xa5\xe5\x9f\xba\xe5\xbe\x97\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe4\xbd\x9b\xe5\x9d\xa1\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe5\x96\x9d\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe4\xb9\x8c\xe6\x91\xb8\xe5\x8b\x92\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe8\xae\xb7\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x91\xb8\xe7\xa7\x91\xe5\x8b\x92\xe5\x8f\x81\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe7\x89\xb9\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe8\xbf\x82\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x97\xa5\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x97\xa5\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x91\xb8\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe4\xb9\x8c\xe5\xa3\xb9\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe9\xb9\x85\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe6\x80\x9d\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe7\x89\xb9\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe8\xae\xb7\xe6\x91\xb8\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe4\xb9\x8c\xe5\xa4\xa7\xe5\x86\x99\xe7\x9a\x84\xe7\x89\xb9\xe9\x9b\xb6\xe7\x8e\x96&#x27;</span><br><span class="line"></span><br><span class="line">尝试用 UTF-8 解码后的文本 (可能乱码):</span><br><span class="line">大写的乌壹大写的资大写的喔大写的日大写的佛大写的资大写的佛大写的巫基得大写的喔玻大写的乌零资大写的巫大写的迂大写的日大写的迂大写的讷大写的乌壹大写的希大写的日大写的希大写的日大写的喔大写的迂大写的哥得陆大写的特摸科巫大写的摸大写的佛勒特大写的特摸希大写的摸大写的迂大写的哥雌希大写的特零大写的日基得大写的佛坡大写的喝大写的乌摸勒大写的讷大写的摸科勒叁大写的特大写的迂大写的日大写的日大写的摸大写的乌壹大写的鹅大写的思大写的特大写的讷摸大写的乌大写的特零玖</span><br><span class="line"></span><br><span class="line">[*] 原始字节流已保存到 &#x27;recovered_content.dat&#x27; 文件中，方便进一步分析。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这个就是压缩包所有小字节的内容：</span><br><span class="line">大写的乌壹大写的资大写的喔大写的日大写的佛大写的资大写的佛大写的巫基得大写的喔玻大写的乌零资大写的巫大写的迂大写的日大写的迂大写的讷大写的乌壹大写的希大写的日大写的希大写的日大写的喔大写的迂大写的哥得陆大写的特摸科巫大写的摸大写的佛勒特大写的特摸希大写的摸大写的迂大写的哥雌希大写的特零大写的日基得大写的佛坡大写的喝大写的乌摸勒大写的讷大写的摸科勒叁大写的特大写的迂大写的日大写的日大写的摸大写的乌壹大写的鹅大写的思大写的特大写的讷摸大写的乌大写的特零玖</span><br></pre></td></tr></table></figure>
+<p>哈哈，读完我就笑了，这里的东西全是拼音表还有数字呢</p>
+<p>基本上是参考这个表，写个替换反转脚本</p>
+<img src="/images/神奇的开锁师傅/20250820130830_004.webp" alt="image-20250820125629874" style="zoom:50%;" />
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"># -*- coding: UTF-8 -*-</span><br><span class="line"></span><br><span class="line">mapping = &#123;</span><br><span class="line">    # 大写字母</span><br><span class="line">    &#x27;大写的啊&#x27;: &#x27;A&#x27;,</span><br><span class="line">    &#x27;大写的玻&#x27;: &#x27;B&#x27;,</span><br><span class="line">    &#x27;大写的雌&#x27;: &#x27;C&#x27;,</span><br><span class="line">    &#x27;大写的得&#x27;: &#x27;D&#x27;,</span><br><span class="line">    &#x27;大写的鹅&#x27;: &#x27;E&#x27;,</span><br><span class="line">    &#x27;大写的佛&#x27;: &#x27;F&#x27;,</span><br><span class="line">    &#x27;大写的哥&#x27;: &#x27;G&#x27;,</span><br><span class="line">    &#x27;大写的喝&#x27;: &#x27;H&#x27;,</span><br><span class="line">    &#x27;大写的衣&#x27;: &#x27;I&#x27;,</span><br><span class="line">    &#x27;大写的基&#x27;: &#x27;J&#x27;,</span><br><span class="line">    &#x27;大写的科&#x27;: &#x27;K&#x27;,</span><br><span class="line">    &#x27;大写的勒&#x27;: &#x27;L&#x27;,</span><br><span class="line">    &#x27;大写的摸&#x27;: &#x27;M&#x27;,</span><br><span class="line">    &#x27;大写的讷&#x27;: &#x27;N&#x27;,</span><br><span class="line">    &#x27;大写的喔&#x27;: &#x27;O&#x27;,</span><br><span class="line">    &#x27;大写的坡&#x27;: &#x27;P&#x27;,</span><br><span class="line">    &#x27;大写的欺&#x27;: &#x27;Q&#x27;,</span><br><span class="line">    &#x27;大写的日&#x27;: &#x27;R&#x27;,</span><br><span class="line">    &#x27;大写的思&#x27;: &#x27;S&#x27;,</span><br><span class="line">    &#x27;大写的特&#x27;: &#x27;T&#x27;,</span><br><span class="line">    &#x27;大写的乌&#x27;: &#x27;U&#x27;,</span><br><span class="line">    &#x27;大写的迂&#x27;: &#x27;V&#x27;,</span><br><span class="line">    &#x27;大写的巫&#x27;: &#x27;W&#x27;,</span><br><span class="line">    &#x27;大写的希&#x27;: &#x27;X&#x27;,</span><br><span class="line">    &#x27;大写的资&#x27;: &#x27;Z&#x27;,  # 注意：原文中 Y 和 Z 的中文描述重复了“衣”和“资”，这里修正</span><br><span class="line">    # 小写字母</span><br><span class="line">    &#x27;啊&#x27;: &#x27;a&#x27;,</span><br><span class="line">    &#x27;玻&#x27;: &#x27;b&#x27;,</span><br><span class="line">    &#x27;雌&#x27;: &#x27;c&#x27;,</span><br><span class="line">    &#x27;得&#x27;: &#x27;d&#x27;,</span><br><span class="line">    &#x27;鹅&#x27;: &#x27;e&#x27;,</span><br><span class="line">    &#x27;佛&#x27;: &#x27;f&#x27;,</span><br><span class="line">    &#x27;哥&#x27;: &#x27;g&#x27;,</span><br><span class="line">    &#x27;喝&#x27;: &#x27;h&#x27;,</span><br><span class="line">    &#x27;衣&#x27;: &#x27;i&#x27;,</span><br><span class="line">    &#x27;基&#x27;: &#x27;j&#x27;,</span><br><span class="line">    &#x27;科&#x27;: &#x27;k&#x27;,</span><br><span class="line">    &#x27;勒&#x27;: &#x27;l&#x27;,</span><br><span class="line">    &#x27;摸&#x27;: &#x27;m&#x27;,</span><br><span class="line">    &#x27;讷&#x27;: &#x27;n&#x27;,</span><br><span class="line">    &#x27;喔&#x27;: &#x27;o&#x27;,</span><br><span class="line">    &#x27;坡&#x27;: &#x27;p&#x27;,</span><br><span class="line">    &#x27;欺&#x27;: &#x27;q&#x27;,</span><br><span class="line">    &#x27;日&#x27;: &#x27;r&#x27;,</span><br><span class="line">    &#x27;思&#x27;: &#x27;s&#x27;,</span><br><span class="line">    &#x27;特&#x27;: &#x27;t&#x27;,</span><br><span class="line">    &#x27;乌&#x27;: &#x27;u&#x27;,</span><br><span class="line">    &#x27;迂&#x27;: &#x27;v&#x27;,</span><br><span class="line">    &#x27;巫&#x27;: &#x27;w&#x27;,</span><br><span class="line">    &#x27;希&#x27;: &#x27;x&#x27;,</span><br><span class="line">    &#x27;衣&#x27;: &#x27;y&#x27;,  # 注意：&#x27;衣&#x27; 出现两次，这里优先小写 y</span><br><span class="line">    &#x27;资&#x27;: &#x27;z&#x27;,</span><br><span class="line">    # 数字</span><br><span class="line">    &#x27;零&#x27;: &#x27;0&#x27;,</span><br><span class="line">    &#x27;壹&#x27;: &#x27;1&#x27;,</span><br><span class="line">    &#x27;贰&#x27;: &#x27;2&#x27;,</span><br><span class="line">    &#x27;叁&#x27;: &#x27;3&#x27;,</span><br><span class="line">    &#x27;肆&#x27;: &#x27;4&#x27;,</span><br><span class="line">    &#x27;伍&#x27;: &#x27;5&#x27;,</span><br><span class="line">    &#x27;陆&#x27;: &#x27;6&#x27;,</span><br><span class="line">    &#x27;柒&#x27;: &#x27;7&#x27;,</span><br><span class="line">    &#x27;捌&#x27;: &#x27;8&#x27;,</span><br><span class="line">    &#x27;玖&#x27;: &#x27;9&#x27;,</span><br><span class="line">    &#x27;歪&#x27;: &#x27;y&#x27;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">def chinese_to_char(text):</span><br><span class="line">    result = text</span><br><span class="line">    # 按照映射表逐个替换</span><br><span class="line">    for chinese, char in mapping.items():</span><br><span class="line">        result = result.replace(chinese, char)</span><br><span class="line">    return result</span><br><span class="line"></span><br><span class="line">test = &quot;大写的乌壹大写的资大写的喔大写的日大写的佛大写的资大写的佛大写的巫基得大写的喔玻大写的乌零资大写的巫大写的迂大写的日大写的迂大写的讷大写的乌壹大写的希大写的日大写的希大写的日大写的喔大写的迂大写的哥得陆大写的特摸科巫大写的摸大写的佛勒特大写的特摸希大写的摸大写的迂大写的哥雌希大写的特零大写的日基得大写的佛坡大写的喝大写的乌摸勒大写的讷大写的摸科勒叁大写的特大写的迂大写的日大写的日大写的摸大写的乌壹大写的鹅大写的思大写的特大写的讷摸大写的乌大写的特零玖&quot;</span><br><span class="line"></span><br><span class="line">output = chinese_to_char(test)</span><br><span class="line">print(&quot;映射结果:&quot;, output)</span><br></pre></td></tr></table></figure>
+<p>然后将结果进行两次 base64 解码，拿到 flag</p>
+<img src="/images/神奇的开锁师傅/20250820130830_005.webp" alt="image-20250820130702472" style="zoom:50%;" />
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+        <a data-aos="zoom-in" href="/2025/08/20/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/#comments" class="article-comment-link">
+          <span class="post-comments-count waline-comment-count" data-path="/2025/08/20/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/" itemprop="commentCount"></span>
+          留言
+        </a>
+      
+      
+      
+      
+        <span data-aos="zoom-in" class="article-visitor-link">
+          <span class="waline-pageview-count" data-path="/2025/08/20/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/">0</span>
+          <em class="post-meta-item-text">阅读量</em>
+        </span>
+      
+      
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        <img data-src="/images/background/moectf.webp" data-sizes="auto" alt="moectf_随笔" class="lazyload">
+      
+      <a href="/2025/08/09/moectf-%E9%9A%8F%E7%AC%94/"></a>
+      <div class="article-nav-caption">后一篇</div>
+      <h3 class="article-nav-title">
+        
+          moectf_随笔
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+
+
+
+  <section id="comments" data-aos="fade-up">
+    <div class="comment-header">
+      
+      
+        
+      
+      <h2 class="comment-title">说些什么吧！</h2>
+      <div class="comment-selector">
+        <div class="comment-selector-wrap">
+            
+            <div class="selector-item" data-selector="waline">
+              <span>waline</span>
+            </div>
+            
+        </div>
+      </div>
+    </div>
+    <div class="comment-content">
+      
+        <div class="comment waline-comment" data-aos="fade-up"
+          id="waline-comment">
+        </div>
+      
+    </div>
+  </section>
+
+
+</section>
+        </div>
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      
+      
+      
+        2024-2025
+      
+      <span class="footer-info-sep rotate"></span>
+      Yolo
+    </div>
+    
+      <div>
+        基于&nbsp;<a href="https://hexo.io/" rel="noopener external nofollow noreferrer" target="_blank">Hexo</a>&nbsp;
+        Theme.<a href="https://github.com/D-Sketon/hexo-theme-reimu" rel="noopener external nofollow noreferrer" target="_blank">Reimu</a>
+      </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        37.5k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        02:48
+      </div>
+    
+    
+    
+    
+      <div>
+        <span class="icon-eye"></span>
+        <span id="busuanzi_container_site_pv">总访问量&nbsp;<span id="busuanzi_value_site_pv"></span></span>
+        &nbsp;|&nbsp;
+        <span class="icon-user"></span>
+        <span id="busuanzi_container_site_uv">总访客量&nbsp;<span id="busuanzi_value_site_uv"></span></span>
+      </div>
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">文章目录</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#zip-%E5%B8%B8%E8%A7%81%E6%94%BB%E5%87%BB%E6%B1%87%E6%80%BB"><span class="toc-number">1.</span> <span class="toc-text"> zip 常见攻击汇总</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#crc32-%E7%88%86%E7%A0%B4%E6%94%BB%E5%87%BB"><span class="toc-number">1.1.</span> <span class="toc-text"> CRC32 爆破攻击</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%AF%86%E8%84%9A%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 解密脚本原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E5%AF%86%E8%84%9A%E6%9C%AC"><span class="toc-number">1.1.2.</span> <span class="toc-text"> 解密脚本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98%E4%B8%80"><span class="toc-number">1.1.3.</span> <span class="toc-text"> 例题一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98%E4%BA%8C"><span class="toc-number">1.1.4.</span> <span class="toc-text"> 例题二</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/avator.jpg" data-sizes="auto" alt="Yolo" class="lazyload">
+  <div class="sidebar-author-name">Yolo</div>
+  <div class="sidebar-description"></div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>文章</div>
+    <div class="sidebar-state-number">8</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>分类</div>
+    <div class="sidebar-state-number">1</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>标签</div>
+    <div class="sidebar-state-number">14</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/yo1o-sir itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-bilibili sidebar-social-icon">
+      <a href=https://space.bilibili.com/1066455120 itemprop="url" target="_blank" aria-label="bilibili" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="首页"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">首页</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="归档"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">归档</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="关于"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">关于</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/friend" aria-label="友链"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          
+            &#xe62b;
+          
+        </div>
+        <div class="sidebar-menu-link">友链</div>
+      </div>
+    
+  
+</div>
+</div>
+      
+    
+  </div>
+  
+    
+      <div class="sidebar-btn-wrapper">
+        <div class="sidebar-toc-btn current"></div>
+        <div class="sidebar-common-btn"></div>
+      </div>
+    
+  
+</nav>
+
+    </div>
+    
+    
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/mouse-firework@0.1.1/dist/index.umd.js" integrity="sha384-8LyaidD9GPxQQgLJO&#x2F;WRw&#x2F;O2h3BoNq&#x2F;ApI&#x2F;ecpvM6RsrCz2qP2ppBXUKihP4V&#x2F;2d" crossorigin="anonymous"></script>
+
+  <script>
+    window.firework && window.firework(JSON.parse('{"excludeElements":["a","button"],"particles":[{"shape":"circle","move":["emit"],"easing":"easeOutExpo","colors":["var(--red-1)","var(--red-2)","var(--red-3)","var(--red-4)"],"number":20,"duration":[1200,1800],"shapeOptions":{"radius":[16,32],"alpha":[0.3,0.5]}},{"shape":"circle","move":["diffuse"],"easing":"easeOutExpo","colors":["var(--red-0)"],"number":1,"duration":[1200,1800],"shapeOptions":{"radius":20,"alpha":[0.2,0.5],"lineWidth":6}}]}'))
+  </script>
+
+
+
+
+
+
+
+  
+<script src="https://npm.webcache.cn/live2d-widgets@0.9.0/autoload.js" integrity="sha384-poTN7wN&#x2F;SqNhQqo3jdFeX20ikddWeFGkUkDEzsKjgH&#x2F;ez8aQLn81oI0Cw6q5xNyB" crossorigin="anonymous"></script>
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Yolo",
+          title: "神奇的开锁师傅",
+          url: "https://www.yo1o.top/2025/08/20/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%BC%80%E9%94%81%E5%B8%88%E5%82%85/",
+          excerpt: "",
+          description: "",
+          stripContent: " zip 常见攻击汇总  Yolo 这里会对遇到的 zip 攻击做个汇总，对原理会做一个简单的讲解   CRC32 爆破攻击 这有两个重要概念需要清楚（来自 Gemini 老师 CRC32 是什么？  全称：Cyclic Redundancy Check，循环冗余校验。 用途：它是一种数据完整性校验算法，而不是加密算法。它的主要目的是检查数据在传输或存储过程中是否发生了意外的损坏或改变。 原理：它会根据文件的二进制内容，通过一套固定的数学运算，生成一个 32 位的整数值（即 CRC32 校验码）",
+          date: "Wed Aug 20 2025 09:42:19 GMT+0800",
+          updated: "Wed Aug 20 2025 13:49:42 GMT+0800",
+          cover: "/images/background/yasuobao.webp",
+        };
+      </script>
+       
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+        
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+        
+
+
+
+
+
+
+
+
+<script data-pjax>
+  var loadScript = (src, integrity) => {
+    const script = document.createElement('script');
+    script.src = src;
+    if (integrity) script.integrity = integrity;
+    script.crossOrigin = 'anonymous';
+    return script;
+  };
+
+  var commentConfigKeys = ['valine', 'waline', 'twikoo', 'gitalk', 'giscus'];
+  var commentConfig = {
+    valine: {
+      enable: false,
+      load: () => {
+        const container = document.querySelector('.valine-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        const script = loadScript(
+          'https://npm.webcache.cn/valine@1.5.1/dist/Valine.min.js',
+          'sha384-3ma91AExDeMAZ1rjTjaP8V2A2obQE+s5ltKRwYlwdpArz9xVbp0tF3b0VV2ACNPn'
+        );
+        script.onload = () => {
+          var GUEST_INFO = ['nick', 'mail', 'link'];
+          var guest_info = 'nick,mail,link'.split(',').filter((item) => {
+            return GUEST_INFO.indexOf(item) > -1
+          });
+          var recordIP = JSON.parse('true');
+          var highlight = JSON.parse('true');
+          var visitor = JSON.parse('false');
+          var serverURLs = undefined;
+
+          if (window.Valine) {
+            new Valine({
+              el: '.valine-comment',
+              appId: "",
+              appKey: "",
+              placeholder: "Just go go",
+              pageSize: '10',
+              avatar: 'mp',
+              lang: document.documentElement.lang || 'en',
+              recordIP: recordIP,
+              highlight: highlight,
+              visitor: visitor,
+              requiredFields: guest_info,
+              path: window.location.pathname,
+              serverURLs
+            });
+          }
+        };
+        document.head.appendChild(script);
+      }
+    },
+    waline: {
+      enable: true,
+      load: async () => {
+        const container = document.querySelector('.waline-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        let walineInit;
+        const walineCdn = 'https://npm.webcache.cn/@waline/client@2.15.8/dist/waline.mjs';
+        const walineIntegrity = 'sha384-9sbqJjrfGjbkI6/PI4nU/MvBfEmkkPC4YK9I4zBeMIf1CVCZdCMH/KinBEAZII/5';
+
+        const module = await safeImport(walineCdn, walineIntegrity);
+        walineInit = module.init;
+
+        window.walineInstance = walineInit({
+          el: '.waline-comment',
+          serverURL: 'https://comment-sable-alpha.vercel.app/',
+          lang: document.documentElement.lang || 'en',
+          locale: {},
+          emoji: ["https://unpkg.com/@waline/emojis@1.2.0/weibo","https://unpkg.com/@waline/emojis@1.2.0/alus","https://unpkg.com/@waline/emojis@1.2.0/bilibili","https://unpkg.com/@waline/emojis@1.2.0/qq","https://unpkg.com/@waline/emojis@1.2.0/tieba","https://unpkg.com/@waline/emojis@1.2.0/tw-emoji"],
+          meta: ["nick","mail","link"],
+          requiredMeta: ["nick","mail"],
+          wordLimit: JSON.parse('0'),
+          comment: true,
+          pageSize: JSON.parse('10'),
+          dark: 'html[data-theme="dark"]',
+          pageview: JSON.parse('true'),
+        });
+      }
+    },
+    twikoo: {
+      enable: false,
+      load: () => {
+        const container = document.querySelector('.twikoo-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        const script = loadScript(
+          'https://npm.webcache.cn/twikoo@1.6.44/dist/twikoo.all.min.js',
+          'sha384-kwWLC0HjeZZnVPqCJ1AncI8tsk+kQqF9TbAmCclcc9Z0hGkfgHRzeQZxmdmZhE0K'
+        );
+
+        script.onload = () => {
+          if (window.twikoo) {
+            twikoo.init({
+              envId: '',
+              el: '.twikoo-comment',
+              region: '',
+              lang: document.documentElement.lang || 'en',
+            });
+
+            twikoo.getCommentsCount({
+              envId: '',
+              region: '',
+              urls: [
+                '/categories/index.html'
+              ],
+              includeReply: false
+            }).then((res) => {
+              _$('.twikoo-comment-count').innerText = res[0].count;
+            }).catch((err) => {
+              console.error(err);
+            });
+          }
+        } 
+        document.head.appendChild(script);
+      }
+    },
+    gitalk: {
+      enable: false,
+      load: () => {
+        const container = document.querySelector('.gitalk-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        const script = loadScript(
+          'https://npm.webcache.cn/gitalk@1.8.0/dist/gitalk.min.js',
+          'sha384-kspnZUWBoSWwoJHa0hBCXYbHGbhvU/lcEH5O8eVbSDhbPwsiVUTp/aGX/z/5EuMA'
+        );
+
+        script.onload = () => {
+          if (false) {
+            const md5Script = loadScript(
+              'https://npm.webcache.cn/blueimp-md5@2.19.0/js/md5.min.js',
+              'sha384-JmVtRz6RWiXnA14QbIOJzPuU3MidULOpBP66deeLLyyoF4Tr/gZlbkHkL6vTthxH'
+            );
+            md5Script.onload = initGitalk;
+            document.head.appendChild(md5Script);
+          } else {
+            initGitalk();
+          }
+        }
+        document.head.appendChild(script);
+
+        function initGitalk() {
+          var gitalkId = location.pathname;
+          var gitalk = new Gitalk({
+            clientID: '',
+            clientSecret: '',
+            repo: '',
+            owner: '',
+            admin: null,
+            id: gitalkId,
+            distractionFreeMode: false,
+            language: document.documentElement.lang || 'en',
+          })
+          gitalk.render('gitalk-comment');
+        }
+      }
+    },
+    giscus: {
+      enable: false,
+      load: () => {
+        const container = document.querySelector('.giscus-comment');
+        if (!container) return;
+        container.style.display = 'block';
+
+        // 删除可能已存在的 giscus 脚本和 iframe
+        const existingScript = container.querySelector('script[src*="giscus.app/client.js"]');
+        if (existingScript) existingScript.remove();
+        const existingFrame = document.querySelector('iframe.giscus-frame');
+        if (existingFrame) existingFrame.remove();
+
+        const giscusScript = document.createElement('script');
+        const domMode = document.documentElement.getAttribute("data-theme");
+
+        const docLang = document.documentElement.lang || 'en';
+        const langBase = docLang.split('-')[0];
+        const supportedLangs = ['ar', 'be', 'bg', 'ca', 'cs', 'da', 'de', 'en', 
+        'eo', 'es', 'eu', 'fa', 'fr', 'gr', 'hbs', 'he', 'hu', 'id', 'it', 'ja', 
+        'kh', 'ko', 'nl', 'pl', 'pt', 'ro', 'ru', 'th', 'tr', 'uk', 'uz', 'vi', 'zh-CN', 'zh-HK', 'zh-TW'];
+        const giscusLang = supportedLangs.includes(docLang) ? docLang : supportedLangs.includes(langBase) ? langBase : 'en';
+
+        giscusScript.src = 'https://giscus.app/client.js';
+        giscusScript.setAttribute('data-repo', '');
+        giscusScript.setAttribute('data-repo-id', '');
+        giscusScript.setAttribute('data-category', ''); 
+        giscusScript.setAttribute('data-category-id', '');
+        giscusScript.setAttribute('data-mapping', '0');
+        giscusScript.setAttribute('data-strict', '0');
+        giscusScript.setAttribute('data-reactions-enabled', '1');
+        giscusScript.setAttribute('data-emit-metadata', '0');
+        giscusScript.setAttribute('data-input-position', 'bottom');
+        giscusScript.setAttribute('data-theme', domMode === 'dark' ? 'dark' : 'light');
+        giscusScript.setAttribute('data-lang', giscusLang);
+        giscusScript.setAttribute('crossorigin', 'anonymous');
+        giscusScript.async = true;
+        container.appendChild(giscusScript);
+        document.body.addEventListener('light-theme-set', () => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: 'light' } } }, 'https://giscus.app');
+        });
+        document.body.addEventListener('dark-theme-set', () => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: { setConfig: { theme: 'dark' } } }, 'https://giscus.app');
+        });
+      }
+    }
+  }
+  commentConfig.enable = commentConfigKeys.some(key => commentConfig[key].enable);
+
+  var defaultComment = '';
+  if (commentConfig.enable) {
+    // 1. 首先检查localStorage中是否有保存的评论类型
+    var savedCommentType = localStorage.getItem('commentType');
+    
+    // 2. 如果localStorage中有值且对应的评论系统可用，就使用它
+    if (savedCommentType) {
+      if (commentConfig[savedCommentType]?.enable) {
+        defaultComment = savedCommentType;
+      }
+    }
+    
+    // 3. 如果localStorage无效，检查配置的默认评论系统
+    if (!defaultComment) {
+      var configDefault = 'waline';
+      if (commentConfig[configDefault]?.enable) {
+        defaultComment = configDefault;
+      }
+    }
+    
+    // 4. 如果前两项都无效，按指定顺序找到第一个可用的评论系统
+    if (!defaultComment) {
+      defaultComment = commentConfigKeys.find(sys => commentConfig[sys].enable) || '';
+    }
+  }
+  function loadComments() {
+    if (!commentConfig.enable) return;
+    // 评论组件加载状态跟踪
+    const loadedComments = {
+      valine: false,
+      waline: false,
+      twikoo: false,
+      gitalk: false,
+      giscus: false
+    };
+
+    // 隐藏所有评论容器
+    const hideAllComments = () => {
+      const commentContainers = document.querySelectorAll('.comment');
+      commentContainers.forEach(container => {
+        container.style.display = 'none';
+      });
+    };
+
+    // 按需加载评论系统
+    const loadCommentSystem = (type) => {
+      if (loadedComments[type]) {
+        // 如果已加载，只需显示对应容器
+        document.querySelector(`.${type}-comment`).style.display = 'block';
+        return;
+      }
+
+      // 根据类型加载对应的脚本
+      commentConfig[type]?.load();
+      loadedComments[type] = true;
+    };
+
+    // 评论组件选择器
+    const changeActiveCommentItems = (item) => {
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let i = 0; i < commentItems.length; i++) {
+        commentItems[i].classList.remove('active');
+      }
+      item.classList.add('active');
+
+      // 获取要加载的评论系统类型
+      const commentType = item.getAttribute('data-selector');
+
+      // 隐藏所有评论系统
+      hideAllComments();
+
+      // 加载选中的评论系统
+      loadCommentSystem(commentType);
+    };
+
+    const commentInit = () => {
+      // 评论组件选择器点击事件
+      const commentItems = document.querySelectorAll('.selector-item');
+      for (let item of commentItems) {
+        item.addEventListener('click', () => {
+          // 保存选择器状态
+          const commentType = item.getAttribute('data-selector');
+          window.localStorage.setItem('commentType', commentType);
+          // 切换选中状态
+          changeActiveCommentItems(item);
+        });
+      }
+
+      // 检查是否需要加载默认评论系统
+      if (defaultComment) {
+        const defaultSelectorItem = document.querySelector(`[data-selector="${defaultComment}"]`);
+        if (!defaultSelectorItem) return;
+        defaultSelectorItem.style.display = 'block';
+        defaultSelectorItem.classList.add('active');
+        loadCommentSystem(defaultComment);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', commentInit);
+    } else {
+      commentInit();
+    }
+  };
+  loadComments();
+</script>
+
+      
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.9.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+  
+<script src="https://npm.webcache.cn/busuanzi@2.3.0/bsz.pure.mini.js" integrity="sha384-0M75wtSkhjIInv4coYlaJU83+OypaRCIq2SukQVQX04eGTCBXJDuWAbJet56id+S" crossorigin="anonymous" async></script>
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+  
+
+
+
+
+
+
+
+    
+  </body>
+  </html>
+
