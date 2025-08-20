@@ -431,6 +431,14 @@ body [data-aos='zoom-in'] {
   font-family: "iconfont";
   content: "\e62b";
 }
+.icon-weixin:before {
+  font-family: "iconfont";
+  content: "\e640";
+}
+.icon-qq:before {
+  font-family: "iconfont";
+  content: "\e63e";
+}
 .icon-image:before {
   font-family: "iconfont";
   content: "\e63f";
@@ -2056,6 +2064,44 @@ button {
     background: var(--footer-icon) no-repeat center/80%;
   }
 }
+.article-copyright {
+  background: var(--red-5-5);
+  border-left: 6px var(--red-4) solid;
+  margin: 1.8em 0;
+  border-radius: 10px;
+  transition: 0.3s;
+  padding: 5px 10px;
+  box-shadow: var(--shadow-meta);
+  position: relative;
+  overflow: hidden;
+  word-break: break-all;
+}
+.article-copyright .icon {
+  margin: 0 4px;
+}
+.article-copyright p {
+  font-size: 14px;
+  line-height: 2;
+  color: var(--color-default);
+}
+.article-copyright p strong {
+  font-weight: 700;
+}
+.article-copyright a {
+  color: var(--color-default);
+  text-decoration: none;
+}
+.article-copyright a:hover {
+  text-decoration: underline;
+}
+.article-copyright-bg {
+  font-size: 120px;
+  color: var(--red-3);
+  opacity: 0.2;
+  position: absolute;
+  right: -15px;
+  bottom: -40px;
+}
 @media screen and (min-width: 960px) {
   #mobile-nav {
     display: none;
@@ -2612,6 +2658,110 @@ pre .javascript .function {
     background: var(--top-icon) no-repeat center/100%;
   }
 }
+.sponsor-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px 0;
+  margin-top: 10px;
+}
+.sponsor-title {
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: var(--color-link);
+  opacity: 0.8;
+  text-decoration: none;
+  transition: opacity 0.2s;
+  display: block;
+  padding: 10px 0;
+  font-weight: 700;
+  user-select: none;
+}
+.sponsor-icon {
+  width: 30px;
+  margin: 0 10px;
+  opacity: 0.8;
+}
+.sponsor-icon.rotate {
+  animation: rotate-all 3s linear infinite;
+}
+@supports (-webkit-mask: var(--sponsor-icon) no-repeat center/80%) {
+  .sponsor-icon {
+    background-color: var(--red-1);
+    -webkit-mask: var(--sponsor-icon) no-repeat center/80%;
+  }
+}
+@supports (mask: var(--sponsor-icon) no-repeat center/80%) {
+  .sponsor-icon {
+    background-color: var(--red-1);
+    mask: var(--sponsor-icon) no-repeat center/80%;
+  }
+}
+@supports not ((mask: var(--sponsor-icon) no-repeat center/80%) and (-webkit-mask: var(--sponsor-icon) no-repeat center/80%)) {
+  .sponsor-icon {
+    background: var(--sponsor-icon) no-repeat center/80%;
+  }
+}
+.sponsor-button-wrapper {
+  margin: 8px 50px;
+  display: flex;
+  position: relative;
+  width: fit-content;
+  justify-content: center;
+  border: 10px var(--color-red-3-shadow) double;
+  transition: border 0.5s;
+  cursor: var(--cursor-pointer) !important;
+}
+.sponsor-button-wrapper:hover {
+  border: 10px var(--color-h2-after) double;
+}
+.sponsor-button-wrapper:hover + .sponsor-tip {
+  opacity: 0.8;
+}
+.sponsor-button-wrapper.active {
+  border: 10px var(--color-h2-after) double;
+}
+.sponsor-tip {
+  transition: opacity 0.2s;
+  color: var(--color-link);
+  opacity: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.sponsor-tip.active {
+  opacity: 0.8;
+}
+.sponsor-qr {
+  gap: 5px;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  display: none;
+  margin-top: 5px;
+}
+.sponsor-qr.active {
+  display: flex;
+}
+.sponsor-qr-image-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.sponsor-qr-name {
+  font-size: 14px;
+  opacity: 0.9;
+  color: var(--color-default);
+  margin-top: 8px;
+}
+.sponsor-qr-image-wrapper img {
+  width: 200px;
+  height: auto;
+  margin: 0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
 #sidebar {
   display: none;
 }
@@ -3008,6 +3158,129 @@ pre .javascript .function {
 }
 .sidebar-toc-sidebar {
   width: 100%;
+}
+.share-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.share-icon {
+  margin: 8px;
+  color: var(--color-link) !important;
+  position: relative;
+  transition: all 0.2s;
+}
+.share-icon:before {
+  display: block;
+  opacity: 0.8;
+  font-size: 24px;
+  transition: all 0.2s;
+  will-change: transform;
+}
+.share-icon:hover:before {
+  opacity: 1;
+  transform: scale(1.2);
+}
+#share-weixin {
+  display: none;
+  position: absolute;
+  top: -440px;
+  left: -138px;
+  background: #fff;
+  user-select: none;
+  width: 300px;
+  height: 420px;
+  overflow: hidden;
+  border-radius: 10px;
+  z-index: 50;
+  box-shadow: var(--shadow-card);
+}
+#share-weixin img {
+  filter: none !important;
+}
+#share-weixin.active {
+  display: block;
+}
+.share-weixin-dom {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #fff;
+  height: 100%;
+}
+.share-weixin-canvas {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+}
+.share-weixin-canvas img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+#share-weixin-banner {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+}
+#share-weixin-title {
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--color-link);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#share-weixin-desc {
+  margin: 0 16px 10px;
+  font-size: 14px;
+  color: var(--color-default);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  overflow: hidden;
+  word-break: break-word;
+  line-height: 2;
+  position: relative;
+}
+#share-weixin-desc:after {
+  content: "";
+  position: absolute;
+  background: linear-gradient(rgba(255,255,255,0), #fff);
+  height: 30px;
+  width: 100%;
+  left: 0;
+  bottom: 5px;
+}
+#share-weixin-qr {
+  width: 80px;
+  height: 80px;
+}
+#share-weixin-author {
+  color: var(--color-default);
+  font-size: 14px;
+  margin: 12px 0;
+}
+#share-weixin-theme {
+  color: var(--color-default);
+  font-size: 12px;
+}
+.share-weixin-qrcode {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 16px 16px;
+}
+.share-weixin-info {
+  display: flex;
+  flex-direction: column;
+  align-self: flex-end;
 }
 :root {
   --color-info-bg: #ecf5fe;
