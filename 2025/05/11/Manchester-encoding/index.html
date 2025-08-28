@@ -14,7 +14,7 @@
 
   
 
-  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_0khxww3tj3q9';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":300};window.REIMU_CONFIG.base = 'https://www.yo1o.top';</script>
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_4k4bc36ef96';window.REIMU_CONFIG.clipboard_tips = {"success":{"en":"Copy successfully (*^▽^*)","zh-CN":"复制成功 (*^▽^*)","zh-TW":"複製成功 (*^▽^*)","ja":"コピー成功 (*^▽^*)","pt-BR":"Copiado com sucesso (*^▽^*)"},"fail":{"en":"Copy failed (ﾟ⊿ﾟ)ﾂ","zh-CN":"复制失败 (ﾟ⊿ﾟ)ﾂ","zh-TW":"複製失敗 (ﾟ⊿ﾟ)ﾂ","ja":"コピー失敗 (ﾟ⊿ﾟ)ﾂ","pt-BR":"Falha ao copiar (ﾟ⊿ﾟ)ﾂ"},"copyright":{"enable":false,"count":50,"license_type":"by-nc-sa"}};window.REIMU_CONFIG.clipboard_tips.copyright.content = '本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！';window.REIMU_CONFIG.code_block = {"expand":true};window.REIMU_CONFIG.base = 'https://www.yo1o.top';</script>
   
   <title>
     深入理解曼彻斯特编码及其变种 |
@@ -23,11 +23,13 @@
   </title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
+    
   
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=ZCOOL%20KuaiLe:400,400italic,700,700italic%7CQuicksand:400,400italic,700,700italic%7CFira%20Code:400,400italic,700,700italic%7CJetBrains%20Mono:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=ZCOOL%20KuaiLe:400,400italic,700,700italic%7CQuicksand:400,400italic,700,700italic%7CFira%20Code:400,400italic,700,700italic%7CJetBrains%20Mono:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
   
   
-    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_0khxww3tj3q9.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_4k4bc36ef96.woff2" as="font" type="font/woff2" crossorigin="anonymous">
   
   
     
@@ -109,7 +111,7 @@
   
   
     
-<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css" integrity="sha384-4NN3fZ5AokFyHuoihl7A9qWaCt+HsAtOaUsXwJGRb4&#x2F;SMBtFr2vcNSHR5E8dg0Wk" crossorigin="anonymous">
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.2/dist/aos.css" integrity="sha384-GMRP93c6Hkz9JVKGAuRR3nTS7M07RwPgTFenXiosjq2VbVgvdDNcz1g6Mkj8AONa" crossorigin="anonymous">
 
   
   
@@ -252,30 +254,32 @@
         <div id="content"  class="sidebar-right" >
           <aside id="sidebar">
   
+  <div class="sidebar-wrapper-container sticky">
   
+    
+    
   
-  <div class="sidebar-wrapper wrap-sticky">
+ 
+  <div class="sidebar-wrapper">
     <div class="sidebar-wrap" data-aos="fade-up">
       
         
-          <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
-  <h3 class="toc-title">文章目录</h3>
-  <div class="sidebar-toc-wrapper toc-div-class" >
-      
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-manchester-encoding"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码 (Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E7%9A%84%E4%B8%A4%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 编码规则的两种主要约定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text"> 标准曼彻斯特编码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-differential-manchester-encoding"><span class="toc-number">1.4.</span> <span class="toc-text"> 差分曼彻斯特编码 (Differential Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 核心原理与编码规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 差分曼彻斯特编码示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text"> 曼彻斯特编码的解码过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%97%B6%E9%92%9F%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%90%8C%E6%AD%A5-clock-recovery-and-synchronization"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1. 时钟恢复与同步 (Clock Recovery and Synchronization)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%86%E5%88%AB%E6%AF%94%E7%89%B9%E5%86%85%E7%9A%84%E7%94%B5%E5%B9%B3%E6%A8%A1%E5%BC%8F%E8%B7%B3%E5%8F%98%E7%89%B9%E5%BE%81"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2. 识别比特内的电平模式&#x2F;跳变特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E8%BF%9B%E8%A1%8C%E8%A7%A3%E7%A0%81"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3. 应用编码规则进行解码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">1.5.4.</span> <span class="toc-text"> 4. 处理数据流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#summary"><span class="toc-number">1.6.</span> <span class="toc-text"> Summary</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ieee-8023-%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.1.</span> <span class="toc-text"> IEEE 802.3 编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gethomas-%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.2.</span> <span class="toc-text"> G.E.Thomas 曼彻斯特编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F-summary"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 小 Summary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.4.</span> <span class="toc-text"> 差分曼彻斯特编码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E7%BC%96%E7%A0%81"><span class="toc-number">1.7.</span> <span class="toc-text"> Python 脚本 (用于编码)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E8%A7%A3%E7%A0%81"><span class="toc-number">1.8.</span> <span class="toc-text"> Python 脚本 (用于解码)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%A6%8F%E5%88%A9%E7%BD%91%E9%BC%8E%E6%9D%AF-%E6%9C%B1%E9%9B%80%E7%BB%84-misc1"><span class="toc-number">2.</span> <span class="toc-text"> 小福利（网鼎杯-朱雀组-Misc1)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E5%9C%A8%E9%9F%B3%E9%A2%91%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text"> 补充（曼彻斯特在音频中的应用）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text"> 题目分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E5%8F%96%E8%84%9A%E6%9C%AC%E5%8F%8A%E5%85%B6%E7%94%A8%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text"> 提取脚本及其用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%84%9A%E6%9C%AC%E5%8F%8A%E5%85%B6%E7%94%A8%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text"> 编码脚本及其用法</span></a></li></ol></li></ol>
-      
-  </div>
+          <div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+  
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-manchester-encoding"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码 (Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E7%9A%84%E4%B8%A4%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 编码规则的两种主要约定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text"> 标准曼彻斯特编码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-differential-manchester-encoding"><span class="toc-number">1.4.</span> <span class="toc-text"> 差分曼彻斯特编码 (Differential Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 核心原理与编码规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 差分曼彻斯特编码示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text"> 曼彻斯特编码的解码过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%97%B6%E9%92%9F%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%90%8C%E6%AD%A5-clock-recovery-and-synchronization"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1. 时钟恢复与同步 (Clock Recovery and Synchronization)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%86%E5%88%AB%E6%AF%94%E7%89%B9%E5%86%85%E7%9A%84%E7%94%B5%E5%B9%B3%E6%A8%A1%E5%BC%8F%E8%B7%B3%E5%8F%98%E7%89%B9%E5%BE%81"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2. 识别比特内的电平模式&#x2F;跳变特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E8%BF%9B%E8%A1%8C%E8%A7%A3%E7%A0%81"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3. 应用编码规则进行解码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">1.5.4.</span> <span class="toc-text"> 4. 处理数据流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#summary"><span class="toc-number">1.6.</span> <span class="toc-text"> Summary</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ieee-8023-%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.1.</span> <span class="toc-text"> IEEE 802.3 编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gethomas-%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.2.</span> <span class="toc-text"> G.E.Thomas 曼彻斯特编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F-summary"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 小 Summary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.4.</span> <span class="toc-text"> 差分曼彻斯特编码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E7%BC%96%E7%A0%81"><span class="toc-number">1.7.</span> <span class="toc-text"> Python 脚本 (用于编码)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E8%A7%A3%E7%A0%81"><span class="toc-number">1.8.</span> <span class="toc-text"> Python 脚本 (用于解码)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%A6%8F%E5%88%A9%E7%BD%91%E9%BC%8E%E6%9D%AF-%E6%9C%B1%E9%9B%80%E7%BB%84-misc1"><span class="toc-number">2.</span> <span class="toc-text"> 小福利（网鼎杯-朱雀组-Misc1)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E5%9C%A8%E9%9F%B3%E9%A2%91%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text"> 补充（曼彻斯特在音频中的应用）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text"> 题目分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E5%8F%96%E8%84%9A%E6%9C%AC%E5%8F%8A%E5%85%B6%E7%94%A8%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text"> 提取脚本及其用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%84%9A%E6%9C%AC%E5%8F%8A%E5%85%B6%E7%94%A8%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text"> 编码脚本及其用法</span></a></li></ol></li></ol>
+  
 </div>
 </div>
           <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
-  <img data-src="/avatar/avator.jpg" data-sizes="auto" alt="Yolo" class="lazyload">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yolo" class="lazyload">
   <div class="sidebar-author-name">Yolo</div>
   <div class="sidebar-description"></div>
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">10</div>
+    <div class="sidebar-state-number">9</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -283,7 +287,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">16</div>
+    <div class="sidebar-state-number">14</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -355,8 +359,10 @@
       
     </div>
   </div>
-
+  
   <div class="sidebar-widget">
+  
+  </div>
   
   </div>
   
@@ -366,10 +372,15 @@
   <div class="article-inner" data-aos="fade-up">
     <div class="article-meta">
       <div class="article-date">
-  <span class="article-date-link" data-aos="zoom-in">
+  <span class="article-date-link icon-calendar" data-aos="zoom-in">
     <time datetime="2025-05-11T08:51:46.000Z" itemprop="datePublished">2025-05-11</time>
     <time style="display: none;" id="post-update-time">2025-08-18</time>
   </span>
+  
+    <span class="article-date-link icon-calendar-plus" data-aos="zoom-in">
+      <time datetime="2025-08-18T12:59:18.170Z" itemprop="dateModified">2025-08-18</time>
+    </span>
+  
 </div>
 
       
@@ -1111,13 +1122,25 @@
     
       <div>
         <span class="icon-brush"></span>
-        40.5k
+        39.2k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
-        03:02
+        02:56
       </div>
     
     
+    
+    
+      <div class="footer-beian">
+        <img
+          style="object-fit: contain;margin-right: 2px;"
+          src="https://icp.gov.moe/images/ico64.png"
+          alt=""
+          width="24"
+          height="24"
+        />
+        <a target="_blank" rel="noopener external nofollow noreferrer" href="https://icp.gov.moe/?keyword=20251429">萌ICP备20251429号</a>
+      </div>
     
     
       <div>
@@ -1143,24 +1166,22 @@
   <div class="sidebar-wrap">
     
       
-        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
-  <h3 class="toc-title">文章目录</h3>
-  <div class="sidebar-toc-wrapper toc-div-class" >
-      
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-manchester-encoding"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码 (Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E7%9A%84%E4%B8%A4%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 编码规则的两种主要约定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text"> 标准曼彻斯特编码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-differential-manchester-encoding"><span class="toc-number">1.4.</span> <span class="toc-text"> 差分曼彻斯特编码 (Differential Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 核心原理与编码规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 差分曼彻斯特编码示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text"> 曼彻斯特编码的解码过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%97%B6%E9%92%9F%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%90%8C%E6%AD%A5-clock-recovery-and-synchronization"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1. 时钟恢复与同步 (Clock Recovery and Synchronization)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%86%E5%88%AB%E6%AF%94%E7%89%B9%E5%86%85%E7%9A%84%E7%94%B5%E5%B9%B3%E6%A8%A1%E5%BC%8F%E8%B7%B3%E5%8F%98%E7%89%B9%E5%BE%81"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2. 识别比特内的电平模式&#x2F;跳变特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E8%BF%9B%E8%A1%8C%E8%A7%A3%E7%A0%81"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3. 应用编码规则进行解码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">1.5.4.</span> <span class="toc-text"> 4. 处理数据流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#summary"><span class="toc-number">1.6.</span> <span class="toc-text"> Summary</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ieee-8023-%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.1.</span> <span class="toc-text"> IEEE 802.3 编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gethomas-%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.2.</span> <span class="toc-text"> G.E.Thomas 曼彻斯特编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F-summary"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 小 Summary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.4.</span> <span class="toc-text"> 差分曼彻斯特编码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E7%BC%96%E7%A0%81"><span class="toc-number">1.7.</span> <span class="toc-text"> Python 脚本 (用于编码)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E8%A7%A3%E7%A0%81"><span class="toc-number">1.8.</span> <span class="toc-text"> Python 脚本 (用于解码)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%A6%8F%E5%88%A9%E7%BD%91%E9%BC%8E%E6%9D%AF-%E6%9C%B1%E9%9B%80%E7%BB%84-misc1"><span class="toc-number">2.</span> <span class="toc-text"> 小福利（网鼎杯-朱雀组-Misc1)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E5%9C%A8%E9%9F%B3%E9%A2%91%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text"> 补充（曼彻斯特在音频中的应用）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text"> 题目分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E5%8F%96%E8%84%9A%E6%9C%AC%E5%8F%8A%E5%85%B6%E7%94%A8%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text"> 提取脚本及其用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%84%9A%E6%9C%AC%E5%8F%8A%E5%85%B6%E7%94%A8%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text"> 编码脚本及其用法</span></a></li></ol></li></ol>
-      
-  </div>
+        <div class="sidebar-toc-sidebar"><h3 class="toc-title">文章目录</h3>
+<div class="sidebar-toc-wrapper toc-div-class" >
+  
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-manchester-encoding"><span class="toc-number">1.</span> <span class="toc-text"> 曼彻斯特编码 (Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text"> 核心原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E7%9A%84%E4%B8%A4%E7%A7%8D%E4%B8%BB%E8%A6%81%E7%BA%A6%E5%AE%9A"><span class="toc-number">1.1.1.</span> <span class="toc-text"> 编码规则的两种主要约定</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7"><span class="toc-number">1.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.</span> <span class="toc-text"> 标准曼彻斯特编码示例</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-differential-manchester-encoding"><span class="toc-number">1.4.</span> <span class="toc-text"> 差分曼彻斯特编码 (Differential Manchester Encoding)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%E4%B8%8E%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99"><span class="toc-number">1.4.1.</span> <span class="toc-text"> 核心原理与编码规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7-2"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 关键特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.4.3.</span> <span class="toc-text"> 差分曼彻斯特编码示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81%E7%9A%84%E8%A7%A3%E7%A0%81%E8%BF%87%E7%A8%8B"><span class="toc-number">1.5.</span> <span class="toc-text"> 曼彻斯特编码的解码过程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E6%97%B6%E9%92%9F%E6%81%A2%E5%A4%8D%E4%B8%8E%E5%90%8C%E6%AD%A5-clock-recovery-and-synchronization"><span class="toc-number">1.5.1.</span> <span class="toc-text"> 1. 时钟恢复与同步 (Clock Recovery and Synchronization)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%AF%86%E5%88%AB%E6%AF%94%E7%89%B9%E5%86%85%E7%9A%84%E7%94%B5%E5%B9%B3%E6%A8%A1%E5%BC%8F%E8%B7%B3%E5%8F%98%E7%89%B9%E5%BE%81"><span class="toc-number">1.5.2.</span> <span class="toc-text"> 2. 识别比特内的电平模式&#x2F;跳变特征</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E5%BA%94%E7%94%A8%E7%BC%96%E7%A0%81%E8%A7%84%E5%88%99%E8%BF%9B%E8%A1%8C%E8%A7%A3%E7%A0%81"><span class="toc-number">1.5.3.</span> <span class="toc-text"> 3. 应用编码规则进行解码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%A4%84%E7%90%86%E6%95%B0%E6%8D%AE%E6%B5%81"><span class="toc-number">1.5.4.</span> <span class="toc-text"> 4. 处理数据流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#summary"><span class="toc-number">1.6.</span> <span class="toc-text"> Summary</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ieee-8023-%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.1.</span> <span class="toc-text"> IEEE 802.3 编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#gethomas-%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.2.</span> <span class="toc-text"> G.E.Thomas 曼彻斯特编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B0%8F-summary"><span class="toc-number">1.6.3.</span> <span class="toc-text"> 小 Summary</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="toc-number">1.6.4.</span> <span class="toc-text"> 差分曼彻斯特编码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E7%BC%96%E7%A0%81"><span class="toc-number">1.7.</span> <span class="toc-text"> Python 脚本 (用于编码)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#python-%E8%84%9A%E6%9C%AC-%E7%94%A8%E4%BA%8E%E8%A7%A3%E7%A0%81"><span class="toc-number">1.8.</span> <span class="toc-text"> Python 脚本 (用于解码)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B0%8F%E7%A6%8F%E5%88%A9%E7%BD%91%E9%BC%8E%E6%9D%AF-%E6%9C%B1%E9%9B%80%E7%BB%84-misc1"><span class="toc-number">2.</span> <span class="toc-text"> 小福利（网鼎杯-朱雀组-Misc1)</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A5%E5%85%85%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E5%9C%A8%E9%9F%B3%E9%A2%91%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text"> 补充（曼彻斯特在音频中的应用）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E5%88%86%E6%9E%90"><span class="toc-number">3.1.</span> <span class="toc-text"> 题目分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%90%E5%8F%96%E8%84%9A%E6%9C%AC%E5%8F%8A%E5%85%B6%E7%94%A8%E6%B3%95"><span class="toc-number">3.2.</span> <span class="toc-text"> 提取脚本及其用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E8%84%9A%E6%9C%AC%E5%8F%8A%E5%85%B6%E7%94%A8%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text"> 编码脚本及其用法</span></a></li></ol></li></ol>
+  
 </div>
 </div>
         <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
-  <img data-src="/avatar/avator.jpg" data-sizes="auto" alt="Yolo" class="lazyload">
+  <img data-src="/avatar/avatar.webp" data-sizes="auto" alt="Yolo" class="lazyload">
   <div class="sidebar-author-name">Yolo</div>
   <div class="sidebar-description"></div>
 </div>
 <div class="sidebar-state">
   <div class="sidebar-state-article">
     <div>文章</div>
-    <div class="sidebar-state-number">10</div>
+    <div class="sidebar-state-number">9</div>
   </div>
   <div class="sidebar-state-category">
     <div>分类</div>
@@ -1168,7 +1189,7 @@
   </div>
   <div class="sidebar-state-tag">
     <div>标签</div>
-    <div class="sidebar-state-number">16</div>
+    <div class="sidebar-state-number">14</div>
   </div>
 </div>
 <div class="sidebar-social">
@@ -1301,10 +1322,6 @@
 
 
 
-  
-<script src="https://npm.webcache.cn/live2d-widgets@0.9.0/autoload.js" integrity="sha384-poTN7wN&#x2F;SqNhQqo3jdFeX20ikddWeFGkUkDEzsKjgH&#x2F;ez8aQLn81oI0Cw6q5xNyB" crossorigin="anonymous"></script>
-
-
 
 
 
@@ -1335,10 +1352,10 @@
 
         
           
-<script src="https://npm.webcache.cn/html-to-image@1.11.11/dist/html-to-image.js" integrity="sha384-UbfRVKN3&#x2F;elS1r7JcK2FhmPP+KlJ4CvYwbyYD7tH+uTkbT9bNJr9eJeQ0FoFbAgz" crossorigin="anonymous" defer data-pjax></script>
+<script src="https://npm.webcache.cn/@zumer/snapdom@1.9.9/dist/snapdom.min.js" integrity="sha384-taz9Bq0wPqLsuiB4ix4blTozt&#x2F;y84cjbMX5ZWkfPPjpVBme8M&#x2F;jWopanNBcdH&#x2F;qp" crossorigin="anonymous" defer data-pjax></script>
 
           
-<script src="https://npm.webcache.cn/qrcode@1.4.4/build/qrcode.min.js" integrity="sha384-0RsG1yo&#x2F;crf&#x2F;1Qc14sho26SXXOTngNCjgJw7fuvXBt9W&#x2F;OChF&#x2F;Ijx+aUuBDqQwEk" crossorigin="anonymous" defer data-pjax></script>
+<script src="https://npm.webcache.cn/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous" defer data-pjax></script>
 
         
       
@@ -1719,7 +1736,7 @@
   \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
                                                   
 `,'color: #ff5252;')
-    console.log('%c Theme.Reimu v' + '1.9.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.9.1' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
   </script>
   
 
