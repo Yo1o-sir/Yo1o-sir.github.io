@@ -360,7 +360,7 @@ if __name__ == "__main__":
 
 上面的是官方给出的说明，可能理解上有点点困难
 
-这是[libpng](http://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html)提供的手册，可能会更好理解一点
+这是[libpng](https://www.libpng.org/pub/png/spec/1.2/PNG-Chunks.html)提供的手册，可能会更好理解一点
 
 ### summary
 
