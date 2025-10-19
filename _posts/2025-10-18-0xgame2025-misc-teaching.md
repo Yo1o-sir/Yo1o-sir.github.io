@@ -345,7 +345,7 @@ hacker!
 
 ### Zootopia
 
-这个题的考点很基础，是png图片的LSB隐写，下面就简单说说lsb的隐写原理，如果对其他png隐写方法感兴趣，可以看看这篇[博客](https://www.yo1o.top/2025/04/13/png-challenge/)
+这个题的考点很基础，是png图片的LSB隐写，下面就简单说说lsb的隐写原理，如果对其他png隐写方法感兴趣，可以看看这篇[博客](https://www.yo1o.top/posts/png-challenge/)
 
 > 嗯，没错，是我写的
 
