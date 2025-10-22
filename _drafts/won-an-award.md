@@ -8,4 +8,6 @@ date: 2024-11-30 +0800
 
 学了一学期cad，我没白学哈哈
 
-![CAD 中级证书](won-an-award.assets/Image_1761120355759.jpg)
+> 0ops，好险，差点就自己把自己盒了
+
+![CAD 中级证书](won-an-award.assets/IMG_20251022_161824.jpg)
