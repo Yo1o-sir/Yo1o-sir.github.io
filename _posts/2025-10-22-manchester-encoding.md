@@ -4,6 +4,8 @@ title: Manchester encoding
 date: 2025-05-11 16:51 +0800
 tags:
   - 曼彻斯特编码
+categories: 
+  - misc
 image: /assets/img/backgrounds/manchester.webp
 ---
 
