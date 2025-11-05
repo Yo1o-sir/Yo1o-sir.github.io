@@ -424,7 +424,7 @@ NET-SNMP-EXTEND-MIB::nsExtendOutputFull."mycreds" = STRING: ethan:1N3qVgwNB6cZmN
 
 会发现这里，SNMP的只读社区字符串读取不到信息，只能在特权社区中去读取，应该是拿到了网站的账密，理由是ethan刚好在主页见过
 
-<img src="2025-10-18-the-hackers-labs.assets/image-20251105215034702.png" alt="image-20251105215034702" style="zoom:50%;" />
+<img src="/assets/img/thehackerslabs-notes/image-20251105215034702.png" alt="image-20251105215034702" style="zoom:50%;" />
 
 ### get shell
 
@@ -462,11 +462,11 @@ NET-SNMP-EXTEND-MIB::nsExtendOutputFull."mycreds" = STRING: ethan:1N3qVgwNB6cZmN
 
 图片上传失败了，因为我发现上传的图片会自动打开，然后观察到这里用img标签解析，那么也许可以尝试下svg
 
-<img src="2025-10-18-the-hackers-labs.assets/image-20251105221154546.png" alt="image-20251105221154546" style="zoom:50%;" />
+<img src="/assets/img/thehackerslabs-notes/image-20251105221154546.png" alt="image-20251105221154546" style="zoom:50%;" />
 
 look here
 
-<img src="2025-10-18-the-hackers-labs.assets/image-20251105221030326.png" alt="image-20251105221030326" style="zoom:50%;" />
+<img src="/assets/img/thehackerslabs-notes/image-20251105221030326.png" alt="image-20251105221030326" style="zoom:50%;" />
 
 然后我研究了下，尝试的payload如下，可以读任意文件
 
@@ -483,7 +483,7 @@ look here
 
 先拿下upload.php，很疑惑，为啥能传svg文件
 
-<img src="2025-10-18-the-hackers-labs.assets/image-20251105222247800.png" alt="image-20251105222247800" style="zoom:50%;" />
+<img src="/assets/img/thehackerslabs-notes/image-20251105222247800.png" alt="image-20251105222247800" style="zoom:50%;" />
 
 ```php
 <?php
