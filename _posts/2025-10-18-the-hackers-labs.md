@@ -357,6 +357,11 @@ TheHackersLabs-ZAPP#
 
 # Photographer
 
+> **提示:** 靶机跳转传送门
+[Photographer](https://labs.thehackerslabs.com/machines/142)
+
+<img src="/assets/img/thehackerslabs-notes/photographer.png" alt="Photographer" style="zoom:50%;" />
+
 ## 信息搜集
 
 IP 10.161.208.161
