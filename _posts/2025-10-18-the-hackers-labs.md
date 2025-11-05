@@ -12,14 +12,14 @@ image: /assets/img/backgrounds/thehackerslabs.png
 
 > From now , I'm diving into stuff that actually fires me up - no more "shoulds," just pure curiosity.
 
-# Tortuga
+## Tortuga
 
 > **提示:** 靶机跳转传送门
 [Tortuga](https://labs.thehackerslabs.com/machines/131)
 
 <img src="/assets/img/thehackerslabs-notes/20251012150814_008.webp" alt="Tortugs" style="zoom:50%;" />
 
-## 信息搜集
+### 信息搜集
 
 ![img](/assets/img/thehackerslabs-notes/20251012150813_000.webp)
 
@@ -57,7 +57,7 @@ look here,这是`http://10.161.253.201/mapa.php?filename=tripulacion.php`的结�
 
 ![img](/assets/img/thehackerslabs-notes/20251012150813_006.webp)
 
-## 提权
+### 提权
 
 然后想办法提权root
 
@@ -80,13 +80,13 @@ root@TheHackersLabs-Tortuga:~# cat /root/root.txt
 c???????????????????????????ae
 ```
 
-# ZAPP
+## ZAPP
 > **提示:** 靶机跳转传送门
 [ZAPP](https://labs.thehackerslabs.com/machines/143)
 
 <img src="/assets/img/thehackerslabs-notes/zapp.png" alt="ZAPP" style="zoom:50%;" />
 
-## 信息搜集
+### 信息搜集
 
 ```bash
 (base) yolo@yolo:~$ nmap -sV -Pn 10.161.167.222
@@ -186,7 +186,7 @@ GoodLuck
 
 怎么能是压缩的呢，不晓得密码是啥
 
-## get flag
+### get flag
 
 > 下面是参考老大的视频学习的：【thehackerlabs ZAPP靶机复盘-哔哩哔哩】 https://b23.tv/MdQIjKw
 
@@ -355,14 +355,14 @@ c2llbXByZSBlcyBudWV???????==
 TheHackersLabs-ZAPP#
 ```
 
-# Photographer
+## Photographer
 
 > **提示:** 靶机跳转传送门
 [Photographer](https://labs.thehackerslabs.com/machines/142)
 
 <img src="/assets/img/thehackerslabs-notes/photographer.png" alt="Photographer" style="zoom:50%;" />
 
-## 信息搜集
+### 信息搜集
 
 IP 10.161.208.161
 
@@ -426,7 +426,7 @@ NET-SNMP-EXTEND-MIB::nsExtendOutputFull."mycreds" = STRING: ethan:1N3qVgwNB6cZmN
 
 <img src="2025-10-18-the-hackers-labs.assets/image-20251105215034702.png" alt="image-20251105215034702" style="zoom:50%;" />
 
-## get shell
+### get shell
 
 成功登录进来了
 
