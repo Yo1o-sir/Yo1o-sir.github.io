@@ -6,7 +6,17 @@ tags:
 categories:
 - misc
 image: "/assets/img/backgrounds/game.png"
+date: 2025-11-09 16:10 +0800
 ---
+> 0xGame2025 CTF Misc赛道出题解析与教学指南
+>
+> 作者：Yo1o
+>
+> https://xz.aliyun.com/news/19232
+>
+> 文章转载自 先知社区
+{: .prompt-tip }
+
 我是0xGame2025的部分Misc的出题人，下面是针对misc方向的授课文案，希望能帮助刚踏上ctf路上的学弟学妹们快速入门
 
 > 0xgame2025所有题目归档传送门如下
