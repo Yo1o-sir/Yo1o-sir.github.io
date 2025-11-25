@@ -1,15 +1,12 @@
 ---
 layout: post
 title: the hackers labs notes
-date: 2025-10-12 14:16 +0800
-categories: 
-  - permeation
-tags: 
-  - the hackers labs
-image: /assets/img/backgrounds/thehackerslabs.png
+categories:
+- permeation
+tags:
+- the hackers labs
+image: "/assets/img/backgrounds/thehackerslabs.png"
 ---
-
-
 > From now , I'm diving into stuff that actually fires me up - no more "shoulds," just pure curiosity.
 
 ## Tortuga
