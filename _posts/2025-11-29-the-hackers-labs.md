@@ -6,6 +6,7 @@ categories:
 tags:
 - the hackers labs
 image: "/assets/img/backgrounds/thehackerslabs.png"
+date: 2025-11-29 09:55 +0800
 ---
 > From now , I'm diving into stuff that actually fires me up - no more "shoulds," just pure curiosity.
 
