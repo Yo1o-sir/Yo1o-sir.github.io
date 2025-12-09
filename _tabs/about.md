@@ -40,28 +40,6 @@ order: 4
     </div>
   </div>
 
-  <div class="about-stats">
-    {% assign post_count = site.posts | size %}
-    {% assign tag_count = site.tags | size %}
-    {% assign category_count = site.categories | size %}
-    
-    <div class="about-stat-item">
-      <div class="about-stat-number" data-count="{{ post_count }}">0</div>
-      <div class="about-stat-label">文章</div>
-    </div>
-    {% if category_count > 0 %}
-    <div class="about-stat-item">
-      <div class="about-stat-number" data-count="{{ category_count }}">0</div>
-      <div class="about-stat-label">分类</div>
-    </div>
-    {% endif %}
-    {% if tag_count > 0 %}
-    <div class="about-stat-item">
-      <div class="about-stat-number" data-count="{{ tag_count }}">0</div>
-      <div class="about-stat-label">标签</div>
-    </div>
-    {% endif %}
-  </div>
 
   <div class="about-content">
     <div class="about-card">
@@ -108,54 +86,3 @@ order: 4
     </div>
   </div>
 </div>
-
-<script>
-(function() {
-  // 数字计数动画
-  function animateCounter(element) {
-    const target = parseInt(element.getAttribute('data-count'));
-    if (isNaN(target) || target <= 0) {
-      element.textContent = '0';
-      return;
-    }
-    
-    const duration = 2000; // 2秒
-    const step = target / (duration / 16); // 60fps
-    let current = 0;
-    
-    const timer = setInterval(() => {
-      current += step;
-      if (current >= target) {
-        current = target;
-        clearInterval(timer);
-      }
-      element.textContent = Math.floor(current);
-    }, 16);
-  }
-
-  // 使用 Intersection Observer 来触发动画
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const numberElement = entry.target.querySelector('.about-stat-number');
-          if (numberElement && !numberElement.classList.contains('animated')) {
-            numberElement.classList.add('animated');
-            animateCounter(numberElement);
-          }
-        }
-      });
-    }, { threshold: 0.5 });
-
-    // 观察所有统计项
-    document.querySelectorAll('.about-stat-item').forEach(item => {
-      observer.observe(item);
-    });
-  } else {
-    // 降级方案：直接执行动画
-    document.querySelectorAll('.about-stat-number').forEach(el => {
-      animateCounter(el);
-    });
-  }
-})();
-</script>
