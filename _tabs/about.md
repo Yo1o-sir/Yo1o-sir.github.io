@@ -41,9 +41,9 @@ order: 4
   </div>
 
   <div class="about-stats">
-    {% assign post_count = site.posts.size %}
-    {% assign tag_count = site.tags.size %}
-    {% assign category_count = site.categories.size %}
+    {% assign post_count = site.posts | size %}
+    {% assign tag_count = site.tags | size %}
+    {% assign category_count = site.categories | size %}
     
     <div class="about-stat-item">
       <div class="about-stat-number" data-count="{{ post_count }}">0</div>

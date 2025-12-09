@@ -403,7 +403,22 @@ mjx-container {
 }
 
 #mask {
-  inset: 0 0 0 0;
+  position: fixed;
+  inset: 0;
+  background-color: var(--mask-bg);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1030;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+
+  @include bp.lt(bp.get(lg)) {
+    &:not(.d-none) {
+      opacity: 0.6;
+      visibility: visible;
+    }
+  }
 }
 
 #main-wrapper {
@@ -413,6 +428,7 @@ mjx-container {
 
   @include bp.lt(bp.get(lg)) {
     @include mx.slide;
+    margin-top: v.$topbar-height;
   }
 
   @include bp.lg {
