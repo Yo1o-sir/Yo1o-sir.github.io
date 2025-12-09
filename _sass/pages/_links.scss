@@ -1,0 +1,88 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/breakpoints' as bp;
+@use '../abstracts/placeholders';
+
+#friend-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+
+  @include bp.lt(bp.get(sm)) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.friend-card {
+  background: var(--card-bg);
+  border-radius: v.$radius-lg;
+  padding: 2rem;
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+  border: 1px solid var(--main-border-color);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 12px 28px rgba(0, 0, 0, 0.12),
+      0 4px 8px rgba(0, 0, 0, 0.08);
+    border-color: var(--link-color);
+  }
+
+  @include bp.lt(bp.get(sm)) {
+    padding: 1.5rem;
+  }
+}
+
+.friend-avatar-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.friend-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--main-border-color);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    0 0 0 3px var(--card-bg);
+  transition: all 0.3s ease;
+
+  @include bp.lt(bp.get(sm)) {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.friend-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 0.75rem;
+  transition: color 0.3s ease;
+
+  @include bp.lt(bp.get(sm)) {
+    font-size: 1.25rem;
+  }
+}
+
+.friend-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-muted-color);
+  margin: 0;
+  max-width: 100%;
+}
+

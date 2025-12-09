@@ -1,23 +1,79 @@
 @use '../abstracts/breakpoints' as bp;
+@use '../abstracts/variables' as v;
+@use '../abstracts/placeholders';
 
-.tag {
-  border-radius: 0.7em;
-  padding: 6px 8px 7px;
-  margin-right: 0.8rem;
-  line-height: 3rem;
-  letter-spacing: 0;
-  border: 1px solid var(--tag-border) !important;
-  box-shadow: 0 0 3px 0 var(--tag-shadow);
-
-  span {
-    margin-left: 0.6em;
-    font-size: 0.7em;
-    font-family: Oswald, sans-serif;
+#tags {
+  margin-top: 1.5rem;
+  gap: 0.75rem;
+  
+  @include bp.lt(bp.get(lg)) {
+    justify-content: center !important;
   }
 }
 
-#tags {
-  @include bp.lt(bp.get(lg)) {
-    justify-content: center !important;
+.tag {
+  border-radius: v.$radius-lg;
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  line-height: 1.5;
+  letter-spacing: 0;
+  border: 1px solid var(--tag-border) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  background: var(--card-bg);
+  color: var(--text-color);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-color: var(--link-color) !important;
+    color: var(--link-color);
+    text-decoration: none;
+
+    &::before {
+      left: 100%;
+    }
+
+    span {
+      transform: scale(1.1);
+    }
+  }
+
+  span {
+    margin-left: 0.5rem;
+    font-size: 0.85em;
+    font-weight: 600;
+    color: var(--text-muted-color);
+    transition: all 0.3s ease;
+    background: var(--main-border-color);
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.5rem;
+    display: inline-block;
+  }
+
+  &:hover span {
+    color: var(--link-color);
+    background: rgba(99, 102, 241, 0.1);
   }
 }

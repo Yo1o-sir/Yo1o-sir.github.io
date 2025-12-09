@@ -6,4 +6,21 @@ permalink: /404.html
 
 {% include lang.html %}
 
-<p class="lead">{{ site.data.locales[lang].not_found.statement }}</p>
+<div class="error-page">
+  <div class="error-content">
+    <div class="error-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h1 class="error-code">404</h1>
+    <h2 class="error-title">页面未找到</h2>
+    <p class="error-message">{{ site.data.locales[lang].not_found.statement }}</p>
+    <div class="error-actions">
+      <a href="{{ '/' | relative_url }}" class="btn btn-primary">
+        <i class="fas fa-home me-2"></i>返回首页
+      </a>
+      <button onclick="history.back()" class="btn btn-outline-secondary">
+        <i class="fas fa-arrow-left me-2"></i>返回上页
+      </button>
+    </div>
+  </div>
+</div>

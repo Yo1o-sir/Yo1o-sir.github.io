@@ -1,0 +1,551 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/breakpoints' as bp;
+@use '../abstracts/placeholders';
+
+.about-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+
+  @include bp.lt(bp.get(sm)) {
+    padding: 1.5rem 0 3rem;
+  }
+}
+
+// 头部区域
+.about-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+
+  @include bp.lt(bp.get(sm)) {
+    margin-bottom: 2rem;
+  }
+}
+
+.about-avatar-wrapper {
+  display: inline-block;
+  position: relative;
+  margin-bottom: 1.5rem;
+  width: 180px;
+  height: 180px;
+
+  @include bp.lt(bp.get(sm)) {
+    width: 140px;
+    height: 140px;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% + 12px);
+    height: calc(100% + 12px);
+    border-radius: 50%;
+    background: linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.4) 0%,
+      rgba(168, 85, 247, 0.4) 25%,
+      rgba(236, 72, 153, 0.4) 50%,
+      rgba(251, 146, 60, 0.4) 75%,
+      rgba(99, 102, 241, 0.4) 100%
+    );
+    background-size: 200% 200%;
+    animation: gradient-rotate 4s ease infinite;
+    z-index: -1;
+    filter: blur(8px);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% + 20px);
+    height: calc(100% + 20px);
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background: linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.2) 0%,
+      rgba(168, 85, 247, 0.2) 50%,
+      rgba(236, 72, 153, 0.2) 100%
+    ) padding-box,
+    linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.3) 0%,
+      rgba(168, 85, 247, 0.3) 50%,
+      rgba(236, 72, 153, 0.3) 100%
+    ) border-box;
+    z-index: -2;
+    animation: gradient-rotate 6s ease infinite reverse;
+  }
+}
+
+.about-avatar {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid var(--card-bg);
+  box-shadow: 
+    0 12px 32px rgba(0, 0, 0, 0.15),
+    0 0 0 1px var(--main-border-color);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
+
+  &:hover {
+    transform: scale(1.08) rotate(5deg);
+    box-shadow: 
+      0 16px 40px rgba(99, 102, 241, 0.25),
+      0 0 0 2px var(--link-color);
+  }
+
+  @include bp.lt(bp.get(sm)) {
+    width: 140px;
+    height: 140px;
+    border-width: 4px;
+  }
+}
+
+.about-name {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+  background: linear-gradient(
+    135deg,
+    var(--heading-color) 0%,
+    var(--link-color) 50%,
+    rgba(168, 85, 247, 0.9) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  transition: all 0.3s ease;
+
+  @include bp.lt(bp.get(sm)) {
+    font-size: 2.25rem;
+  }
+}
+
+.about-subtitle {
+  font-size: 1.2rem;
+  color: var(--text-muted-color);
+  font-style: italic;
+  margin: 0 0 1.5rem;
+  font-weight: 500;
+
+  @include bp.lt(bp.get(sm)) {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+}
+
+// 社交链接
+.about-social {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.about-social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  color: var(--text-muted-color);
+  border: 2px solid var(--main-border-color);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-size: 1.2rem;
+
+  &:hover {
+    background: var(--link-color);
+    color: white;
+    border-color: var(--link-color);
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+  }
+
+  @include bp.lt(bp.get(sm)) {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+}
+
+// 统计信息
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+
+  @include bp.lt(bp.get(sm)) {
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.about-stat-item {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  border-radius: v.$radius-lg;
+  border: 1px solid var(--main-border-color);
+  box-shadow: var(--card-shadow);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 
+      0 8px 24px rgba(0, 0, 0, 0.1),
+      0 0 0 1px var(--link-color);
+    border-color: var(--link-color);
+  }
+
+  @include bp.lt(bp.get(sm)) {
+    padding: 1.25rem 1rem;
+  }
+}
+
+.about-stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    var(--link-color) 0%,
+    rgba(168, 85, 247, 0.9) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+
+  @include bp.lt(bp.get(sm)) {
+    font-size: 2rem;
+  }
+}
+
+.about-stat-label {
+  font-size: 0.95rem;
+  color: var(--text-muted-color);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  @include bp.lt(bp.get(sm)) {
+    font-size: 0.85rem;
+  }
+}
+
+// 内容区域
+.about-content {
+  display: grid;
+  gap: 2rem;
+
+  @include bp.lt(bp.get(sm)) {
+    gap: 1.5rem;
+  }
+}
+
+.about-card {
+  background: var(--card-bg);
+  border-radius: v.$radius-lg;
+  padding: 2.5rem;
+  box-shadow: var(--card-shadow);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid var(--main-border-color);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      var(--link-color) 0%,
+      rgba(168, 85, 247, 0.8) 50%,
+      rgba(236, 72, 153, 0.8) 100%
+    );
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 
+      0 16px 40px rgba(0, 0, 0, 0.12),
+      0 4px 12px rgba(0, 0, 0, 0.08);
+    border-color: var(--link-color);
+
+    &::before {
+      transform: scaleX(1);
+    }
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    i {
+      color: var(--link-color);
+      font-size: 1.5rem;
+      width: 2rem;
+      text-align: center;
+    }
+
+    @include bp.lt(bp.get(sm)) {
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+
+      i {
+        font-size: 1.25rem;
+        width: 1.75rem;
+      }
+    }
+  }
+
+  @include bp.lt(bp.get(sm)) {
+    padding: 1.75rem;
+  }
+}
+
+.about-card-content {
+  p {
+    font-size: 1.05rem;
+    line-height: 1.9;
+    color: var(--text-color);
+    margin: 0 0 1.25rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    @include bp.lt(bp.get(sm)) {
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+  }
+}
+
+// 技能标签
+.about-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.about-skill-tag {
+  display: inline-block;
+  padding: 0.5rem 1.25rem;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.1) 0%,
+    rgba(168, 85, 247, 0.1) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-color);
+  transition: all 0.3s ease;
+  cursor: default;
+
+  &:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(99, 102, 241, 0.15) 0%,
+      rgba(168, 85, 247, 0.15) 100%
+    );
+    border-color: var(--link-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+  }
+
+  @include bp.lt(bp.get(sm)) {
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+// 引用样式
+.about-quote {
+  margin: 0;
+  padding: 2rem;
+  background: linear-gradient(
+    135deg,
+    rgba(99, 102, 241, 0.06) 0%,
+    rgba(168, 85, 247, 0.06) 50%,
+    rgba(236, 72, 153, 0.06) 100%
+  );
+  border-left: 5px solid var(--link-color);
+  border-radius: 0 v.$radius-lg v.$radius-lg 0;
+  position: relative;
+
+  &::before {
+    content: '"';
+    position: absolute;
+    top: 1rem;
+    left: 1.5rem;
+    font-size: 4rem;
+    font-family: Georgia, serif;
+    color: var(--link-color);
+    opacity: 0.2;
+    line-height: 1;
+  }
+
+  p {
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text-color);
+    line-height: 1.8;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+
+    @include bp.lt(bp.get(sm)) {
+      font-size: 1.05rem;
+      padding-left: 0.5rem;
+    }
+  }
+
+  @include bp.lt(bp.get(sm)) {
+    padding: 1.5rem;
+  }
+}
+
+// 时间线样式
+.about-timeline {
+  position: relative;
+  padding-left: 2rem;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(
+      180deg,
+      var(--link-color) 0%,
+      rgba(168, 85, 247, 0.3) 100%
+    );
+  }
+
+  @include bp.lt(bp.get(sm)) {
+    padding-left: 1.5rem;
+  }
+}
+
+.about-timeline-item {
+  position: relative;
+  margin-bottom: 2rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.about-timeline-dot {
+  position: absolute;
+  left: -1.75rem;
+  top: 0.5rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--link-color);
+  border: 3px solid var(--card-bg);
+  box-shadow: 
+    0 0 0 2px var(--link-color),
+    0 2px 8px rgba(99, 102, 241, 0.3);
+  z-index: 1;
+
+  @include bp.lt(bp.get(sm)) {
+    left: -1.5rem;
+    width: 12px;
+    height: 12px;
+  }
+}
+
+.about-timeline-content {
+  padding-left: 0.5rem;
+}
+
+.about-timeline-year {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--link-color);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.about-timeline-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 0.5rem;
+
+  @include bp.lt(bp.get(sm)) {
+    font-size: 1.1rem;
+  }
+}
+
+.about-timeline-desc {
+  font-size: 1rem;
+  color: var(--text-muted-color);
+  line-height: 1.6;
+
+  @include bp.lt(bp.get(sm)) {
+    font-size: 0.95rem;
+  }
+}
+
+// 动画
+@keyframes gradient-rotate {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+// 数字计数动画（需要JavaScript支持）
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

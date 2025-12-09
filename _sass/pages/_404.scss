@@ -1,0 +1,102 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/breakpoints' as bp;
+@use '../abstracts/placeholders';
+
+.error-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.error-content {
+  max-width: 600px;
+  width: 100%;
+}
+
+.error-icon {
+  font-size: 5rem;
+  color: var(--link-color);
+  margin-bottom: 1.5rem;
+  animation: bounce 2s ease-in-out infinite;
+  opacity: 0.8;
+}
+
+.error-code {
+  font-size: 8rem;
+  font-weight: 900;
+  line-height: 1;
+  margin: 0;
+  background: linear-gradient(
+    135deg,
+    var(--link-color) 0%,
+    rgba(168, 85, 247, 0.8) 50%,
+    rgba(236, 72, 153, 0.8) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1rem;
+
+  @include bp.lt(bp.get(sm)) {
+    font-size: 5rem;
+  }
+}
+
+.error-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 1rem;
+
+  @include bp.lt(bp.get(sm)) {
+    font-size: 1.5rem;
+  }
+}
+
+.error-message {
+  font-size: 1.1rem;
+  color: var(--text-muted-color);
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+
+  @include bp.lt(bp.get(sm)) {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  .btn {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    border-radius: v.$radius-lg;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+
