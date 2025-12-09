@@ -82,7 +82,7 @@ order: 4
         <span class="about-skill-tag">Python</span>
         <span class="about-skill-tag">Linux</span>
         <span class="about-skill-tag">Docker</span>
-        <span class="about-skill-tag">Jekyll</span>
+        <span class="about-skill-tag">Misc</span>
       </div>
     </div>
 
@@ -99,9 +99,9 @@ order: 4
         <div class="about-timeline-item">
           <div class="about-timeline-dot"></div>
           <div class="about-timeline-content">
-            <div class="about-timeline-year">2023 - 至今</div>
+            <div class="about-timeline-year">2024 - 至今</div>
             <div class="about-timeline-title">南京邮电大学</div>
-            <div class="about-timeline-desc">计算机科学与技术专业</div>
+            <div class="about-timeline-desc">信息安全专业</div>
           </div>
         </div>
       </div>
