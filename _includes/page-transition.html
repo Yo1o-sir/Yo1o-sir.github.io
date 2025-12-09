@@ -1,0 +1,158 @@
+<script>
+(function() {
+  'use strict';
+
+  // 页面过渡管理器
+  const PageTransition = {
+    transitionEl: null,
+    mainWrapper: null,
+    isTransitioning: false,
+    transitionDuration: 300,
+
+    init: function() {
+      this.transitionEl = document.getElementById('page-transition');
+      this.mainWrapper = document.getElementById('main-wrapper');
+      
+      if (!this.transitionEl || !this.mainWrapper) {
+        return;
+      }
+
+      // 页面加载完成时的处理
+      this.handlePageLoad();
+      
+      // 监听所有内部链接的点击
+      this.setupLinkInterception();
+      
+      // 监听浏览器前进/后退
+      this.setupHistoryNavigation();
+    },
+    
+    setupHistoryNavigation: function() {
+      // 使用 pageshow 事件处理浏览器前进/后退
+      window.addEventListener('pageshow', (e) => {
+        // 如果是从缓存恢复的页面（bfcache）
+        if (e.persisted) {
+          // 重置状态
+          this.isTransitioning = false;
+          // 立即显示内容
+          this.fadeIn();
+        }
+      });
+      
+      // 监听 popstate 事件（前进/后退按钮）
+      window.addEventListener('popstate', () => {
+        // 显示过渡层
+        this.transitionEl.classList.add('transitioning');
+        this.mainWrapper.classList.remove('content-loaded');
+        document.body.classList.remove('page-loaded');
+        
+        // 页面加载后会通过 fadeIn 恢复
+      });
+    },
+
+    handlePageLoad: function() {
+      // 等待DOM和资源加载
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+          this.fadeIn();
+        });
+      } else {
+        // DOM已经加载完成
+        this.fadeIn();
+      }
+
+      // 等待所有资源加载完成
+      window.addEventListener('load', () => {
+        this.fadeIn();
+      });
+    },
+
+    fadeIn: function() {
+      // 添加页面加载完成的类
+      document.body.classList.add('page-loaded');
+      this.mainWrapper.classList.add('content-loaded');
+      
+      // 移除过渡层（延迟以确保动画完成）
+      setTimeout(() => {
+        if (this.transitionEl) {
+          this.transitionEl.classList.remove('transitioning');
+        }
+      }, 150);
+      
+      // 重置过渡状态
+      setTimeout(() => {
+        this.isTransitioning = false;
+      }, this.transitionDuration);
+    },
+
+    fadeOut: function(callback) {
+      if (this.isTransitioning) {
+        return;
+      }
+
+      this.isTransitioning = true;
+      
+      // 显示过渡层
+      this.transitionEl.classList.add('transitioning');
+      this.mainWrapper.classList.remove('content-loaded');
+      document.body.classList.remove('page-loaded');
+
+      // 执行回调（通常是页面跳转）
+      // 使用 requestAnimationFrame 确保动画开始后再跳转
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            if (callback) {
+              callback();
+            }
+          }, this.transitionDuration);
+        });
+      });
+    },
+
+    setupLinkInterception: function() {
+      // 监听所有链接点击
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a');
+        
+        if (!link) return;
+        
+        const href = link.getAttribute('href');
+        
+        // 只处理内部链接
+        if (!href || 
+            href.startsWith('#') || 
+            href.startsWith('javascript:') ||
+            href.startsWith('mailto:') ||
+            href.startsWith('tel:') ||
+            link.hasAttribute('target') ||
+            link.hasAttribute('download')) {
+          return;
+        }
+
+        // 检查是否是同域链接
+        try {
+          const url = new URL(href, window.location.origin);
+          if (url.origin !== window.location.origin) {
+            return;
+          }
+        } catch (e) {
+          // 相对路径
+        }
+
+        // 阻止默认行为
+        e.preventDefault();
+        
+        // 执行过渡动画并跳转
+        this.fadeOut(() => {
+          window.location.href = href;
+        });
+      }, true);
+    }
+  };
+
+  // 初始化
+  PageTransition.init();
+})();
+</script>
+
