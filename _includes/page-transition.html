@@ -2,6 +2,9 @@
 (function() {
   'use strict';
 
+  // 标记页面已启用JS（用于渐进增强）
+  document.body.classList.add('js-enabled');
+
   // 页面过渡管理器
   const PageTransition = {
     transitionEl: null,
@@ -14,6 +17,11 @@
       this.mainWrapper = document.getElementById('main-wrapper');
       
       if (!this.transitionEl || !this.mainWrapper) {
+        // 如果元素不存在，确保页面可见
+        document.body.classList.add('page-loaded');
+        if (this.mainWrapper) {
+          this.mainWrapper.classList.add('content-loaded');
+        }
         return;
       }
 
