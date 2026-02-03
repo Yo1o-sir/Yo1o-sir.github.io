@@ -19,7 +19,7 @@ jobs:
         uses: withastro/action@v3
         with:
           path: .
-          packages_manager: pnpm@latest
+          package-manager: pnpm
         # 如果你使用 pnpm，可以在这里配置，默认支持 npm/yarn
 
   deploy:
