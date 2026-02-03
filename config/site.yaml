@@ -11,23 +11,22 @@
 # Site Basic Information
 # =============================================================================
 site:
-  title: 余弦の博客 # 网站名称
-  alternate: cosine # 网站英文名称 用于页脚、Logo、@ handle 等
-  subtitle: WA 的一声就哭了 # 网站副标题
-  name: cos # 作者名称 - 请修改为你的名字
-  description: 一个基于 Astro 的现代化博客主题 # 网站描述
+  title: YoloのBlog # 网站名称
+  #alternate: Yolo # 网站英文名称 用于页脚、Logo、@ handle 等
+  subtitle: You only live once! # 网站副标题
+  name: Yolo # 作者名称 - 请修改为你的名字
+  description: CTFer / misc / V&N # 网站描述
   avatar: /img/avatar.webp # 网站头像
   showLogo: true # 是否显示 Logo
-  author: Author # 作者名称 - 请修改为你的名字
-  url: https://koharu.cosine.ren # 站点 URL 用于 RSS 和 SEO
+  author: Yolo # 作者名称 - 请修改为你的名字
+  url: https://yo1o.top # 站点 URL 用于 RSS 和 SEO
   defaultOgImage: /img/avatar.webp # 默认 Open Graph 图片
-  startYear: 2024 # 建站年份
+  startYear: 2026 # 建站年份
   timezone: Asia/Shanghai # 时区配置 (IANA 格式)，用于日期显示和处理
   keywords: # SEO 关键词
     - 博客
-    - Astro
-    - 技术
-    - 前端
+    - CTFer
+    - misc
     # 请根据你的网站内容添加关键词
   # breadcrumbHome: 首页  # 面包屑导航中首页的显示名称（默认: '首页'）
 
@@ -37,18 +36,17 @@ site:
 # Example: '随笔' category URL becomes /categories/life
 # =============================================================================
 categoryMap:
-  # Primary categories
   随笔: life
-  笔记: note
+  笔记: note          # 保持和已有文章一致
   工具: tools
   周刊: weekly
-  # Secondary categories (for nested paths)
+  渗透: pentest
+  项目: project
+  CTF: ctf
+  密码: crypto
+  杂项: misc
   前端: front-end
-  # Add more as needed:
-  # 书摘: reading
-  # 后端: back-end
-  # 算法: algorithm
-  # 项目: project
+
 
 # =============================================================================
 # Featured Categories (Homepage)
@@ -60,23 +58,40 @@ categoryMap:
 #   image: 封面图片路径（相对于 public 目录）
 #   description: 分类描述文字，显示在卡片上
 # -----------------------------------------------------------------------------
+
 featuredCategories:
-  - link: life # 对应 categoryMap 中 随笔: life
+  - link: life
     label: 随笔
     image: /img/cover/2.webp
     description: 生活记录、随想随笔
-  - link: note # 对应 categoryMap 中 笔记: note
-    label: 笔记
+  - link: ctf
+    label: CTF
     image: /img/cover/4.webp
-    description: 技术笔记、学习笔记
-  - link: note/front-end # 嵌套分类：笔记/前端
-    label: 前端
-    image: /img/cover/1.webp
-    description: 前端技术相关
-  - link: tools # 对应 categoryMap 中 工具: tools
-    label: 工具
+    description: 打的一些比赛、出的一些题目
+  - link: note        # 改为 note 而不是 Notes
+    label: 笔记
     image: /img/cover/11.webp
-    description: 工具使用、效率提升
+    description: 记录下学习中的点滴
+  - link: note/pentest
+    label: 渗透
+    image: /img/cover/5.webp
+    description: 渗透测试相关技术分享
+  # - link: note/crypto
+  #   label: 密码
+  #   image: /img/cover/6.webp
+  #   description: 密码学算法与实践
+  # - link: note/front-end
+  #   label: 前端
+  #   image: /img/cover/7.webp
+  #   description: 前端开发相关技术笔记
+  # - link: note/misc
+  #   label: 杂项
+  #   image: /img/cover/8.webp
+  #   description: 其他技术相关内容
+  # - link: project
+  #   label: 项目
+  #   image: /img/cover/10.webp
+  #   description: 个人项目与开源作品
 
 # =============================================================================
 # Featured Series
@@ -108,7 +123,7 @@ featuredSeries:
     enabled: true # 启用此系列
     icon: ri:newspaper-line # 导航图标
     links: # 相关链接（可选）
-      github: https://github.com/your-username/your-repo # (可选) GitHub 仓库
+      github: https://github.com/Yo1o-sir/your-repo # (可选) GitHub 仓库
       rss: /rss.xml # (可选) RSS 订阅链接
       # chrome: https://chromewebstore.google.com/detail/your-extension-id # (可选) 浏览器插件
       # docs: https://your-docs-url # (可选) 文档链接
@@ -136,11 +151,11 @@ featuredSeries:
 # -----------------------------------------------------------------------------
 social:
   github:
-    url: https://github.com/your-username # 替换为你的 GitHub 链接
+    url: https://github.com/Yo1o-sir # 替换为你的 GitHub 链接
     icon: ri:github-fill # Remix Icon 的 GitHub 图标
     color: '#191717' # (可选) 图标颜色
   email:
-    url: mailto:your@email.com # 替换为你的邮箱，需加 mailto: 前缀
+    url: mailto:2406213396@qq.com # 替换为你的邮箱，需加 mailto: 前缀
     icon: ri:mail-line
     color: '#55acd5'
   rss:
@@ -199,30 +214,37 @@ friends:
         image: https://your-blog.com/avatar.jpg # 头像链接
         color: "#ffc0cb" # 主题色（可选）
   data: # 友链列表
-    - site: 余弦の博客
-      url: https://blog.cosine.ren
-      owner: cos
-      desc: FE / ACG / 手工 / 深色模式强迫症 / INFP / 兴趣广泛养两只猫的老宅女 / remote
-      image: https://blog.cosine.ren/img/avatar.webp
+    - site: C3ngh's Blog
+      url: https://c3ngh.top
+      owner: C3ngh
+      desc: 对我特别好的师傅，现在平时养养鸡
+      image: /img/avatars/c3ngh.webp
       color: '#ed788b'
-    - site: 示例博客 A
-      url: https://example-a.com
-      owner: Alice
-      desc: 一个热爱技术的开发者
-      image: https://api.dicebear.com/7.x/avataaars/svg?seed=Alice
+    - site: Samsāra's Blog
+      url: https://samsara-lo.github.io/
+      owner: Samsāra
+      desc: 一位漂亮&有趣的逆向小姐姐
+      image: /img/avatars/samsara.jpg
       color: '#BEDCFF'
-    - site: 示例博客 B
-      url: https://example-b.com
-      owner: Bob
-      desc: 分享生活与技术的小站
-      image: https://api.dicebear.com/7.x/avataaars/svg?seed=Bob
+    - site: Findkey's Blog
+      url: https://find-key.github.io/
+      owner: Findkey
+      desc: 很厉害很厉害的PWN大手子
+      image: /img/avatars/findkey.jpg
       color: '#FBC1CC'
-    - site: 示例博客 C
-      url: https://example-c.com
-      owner: Carol
-      desc: 记录学习与成长的地方
-      image: https://api.dicebear.com/7.x/avataaars/svg?seed=Carol
+    - site: Mitunlny's Blog
+      url: https://czxh.top/
+      owner: Mitunlny
+      desc: Misc大手子,太有实力了
+      image: /img/avatars/MY.jpg
       color: '#ABDCFF'
+
+    - site: V&N team
+      url: https://vnteam.cn/
+      owner: V&N
+      desc: 欢迎来到V&N大家庭
+      image: /img/avatars/vnteam.webp
+      color: '#FFD700'
 
 # =============================================================================
 # Announcements
@@ -547,18 +569,18 @@ christmas:
 #     - urlTemplate: URL 模板，支持占位符 {path}（文件绝对路径）
 # -----------------------------------------------------------------------------
 dev:
-  localProjectPath: '/Users/yourname/path/to/astro-koharu' # 请修改为你的项目绝对路径
+  localProjectPath: '/home/yolo/astro-koharu' # 请修改为你的项目绝对路径
   contentRelativePath: 'src/content/blog'
   editors:
     - id: vscode
       name: VS Code
       icon: devicon-plain:vscode
       urlTemplate: 'vscode://file{path}'
-    - id: cursor
-      name: Cursor
-      icon: simple-icons:cursor
-      urlTemplate: 'cursor://file{path}'
-    - id: zed
-      name: Zed
-      icon: simple-icons:zedindustries
-      urlTemplate: 'zed://file{path}'
+    # - id: cursor
+    #   name: Cursor
+    #   icon: simple-icons:cursor
+    #   urlTemplate: 'cursor://file{path}'
+    # - id: zed
+    #   name: Zed
+    #   icon: simple-icons:zedindustries
+    #   urlTemplate: 'zed://file{path}'
