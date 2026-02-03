@@ -1,164 +1,218 @@
 {
   "getting-started": [
     {
-      "slug": "astro-koharu-guide",
-      "title": "astro-koharu 使用指南",
-      "similarity": 0.752
+      "slug": "buu-shua-ti-xiao-ji-crypto",
+      "title": "BUU刷题小记-crypto",
+      "similarity": 0.32
     },
     {
-      "slug": "theme-customization",
-      "title": "主题定制指南",
-      "similarity": 0.675
+      "slug": "png-challenge",
+      "title": "PNG challenge",
+      "similarity": 0.284
     },
     {
-      "slug": "markdown-features",
-      "title": "Markdown 增强功能演示",
-      "similarity": 0.649
+      "slug": "man-che-si-te-bian-ma-xiao-yan-jiu",
+      "title": "曼彻斯特编码小研究",
+      "similarity": 0.278
     },
     {
-      "slug": "toc-no-numbering",
-      "title": "关闭目录编号示例",
-      "similarity": 0.513
+      "slug": "my-first-project",
+      "title": "My first project",
+      "similarity": 0.276
     },
     {
-      "slug": "hello-world",
-      "title": "Hello World",
-      "similarity": 0.425
+      "slug": "0xgame2025-misc-teaching",
+      "title": "0xGame2025 misc teaching",
+      "similarity": 0.233
     }
   ],
-  "astro-koharu-guide": [
+  "bruteforce-qun-u-ba-ji": [
     {
-      "slug": "getting-started",
-      "title": "欢迎使用 astro-koharu",
-      "similarity": 0.752
+      "slug": "the-hackers-labs-notes",
+      "title": "The Hackers Labs Notes",
+      "similarity": 0.369
     },
     {
-      "slug": "markdown-features",
-      "title": "Markdown 增强功能演示",
-      "similarity": 0.735
+      "slug": "buu-shua-ti-xiao-ji-crypto",
+      "title": "BUU刷题小记-crypto",
+      "similarity": 0.333
     },
     {
-      "slug": "theme-customization",
-      "title": "主题定制指南",
-      "similarity": 0.7
+      "slug": "0xgame2025-misc-teaching",
+      "title": "0xGame2025 misc teaching",
+      "similarity": 0.298
     },
     {
-      "slug": "toc-no-numbering",
-      "title": "关闭目录编号示例",
-      "similarity": 0.561
+      "slug": "man-che-si-te-bian-ma-xiao-yan-jiu",
+      "title": "曼彻斯特编码小研究",
+      "similarity": 0.297
     },
     {
-      "slug": "hello-world",
-      "title": "Hello World",
-      "similarity": 0.527
+      "slug": "my-first-project",
+      "title": "My first project",
+      "similarity": 0.264
     }
   ],
-  "toc-no-numbering": [
+  "my-first-project": [
     {
-      "slug": "theme-customization",
-      "title": "主题定制指南",
-      "similarity": 0.564
+      "slug": "buu-shua-ti-xiao-ji-crypto",
+      "title": "BUU刷题小记-crypto",
+      "similarity": 0.395
     },
     {
-      "slug": "astro-koharu-guide",
-      "title": "astro-koharu 使用指南",
-      "similarity": 0.561
+      "slug": "png-challenge",
+      "title": "PNG challenge",
+      "similarity": 0.365
     },
     {
-      "slug": "markdown-features",
-      "title": "Markdown 增强功能演示",
-      "similarity": 0.541
+      "slug": "man-che-si-te-bian-ma-xiao-yan-jiu",
+      "title": "曼彻斯特编码小研究",
+      "similarity": 0.359
     },
     {
-      "slug": "getting-started",
-      "title": "欢迎使用 astro-koharu",
-      "similarity": 0.513
+      "slug": "0xgame2025-misc-teaching",
+      "title": "0xGame2025 misc teaching",
+      "similarity": 0.294
     },
     {
-      "slug": "hello-world",
-      "title": "Hello World",
-      "similarity": 0.364
+      "slug": "the-hackers-labs-notes",
+      "title": "The Hackers Labs Notes",
+      "similarity": 0.28
     }
   ],
-  "markdown-features": [
+  "0xgame2025-misc-teaching": [
     {
-      "slug": "astro-koharu-guide",
-      "title": "astro-koharu 使用指南",
-      "similarity": 0.735
+      "slug": "png-challenge",
+      "title": "PNG challenge",
+      "similarity": 0.366
     },
     {
-      "slug": "getting-started",
-      "title": "欢迎使用 astro-koharu",
-      "similarity": 0.649
+      "slug": "buu-shua-ti-xiao-ji-crypto",
+      "title": "BUU刷题小记-crypto",
+      "similarity": 0.363
     },
     {
-      "slug": "theme-customization",
-      "title": "主题定制指南",
-      "similarity": 0.611
+      "slug": "man-che-si-te-bian-ma-xiao-yan-jiu",
+      "title": "曼彻斯特编码小研究",
+      "similarity": 0.343
     },
     {
-      "slug": "toc-no-numbering",
-      "title": "关闭目录编号示例",
-      "similarity": 0.541
+      "slug": "the-hackers-labs-notes",
+      "title": "The Hackers Labs Notes",
+      "similarity": 0.323
     },
     {
-      "slug": "hello-world",
-      "title": "Hello World",
-      "similarity": 0.406
+      "slug": "bruteforce-qun-u-ba-ji",
+      "title": "bruteforce_群U靶机",
+      "similarity": 0.298
     }
   ],
-  "hello-world": [
+  "the-hackers-labs-notes": [
     {
-      "slug": "astro-koharu-guide",
-      "title": "astro-koharu 使用指南",
-      "similarity": 0.527
+      "slug": "buu-shua-ti-xiao-ji-crypto",
+      "title": "BUU刷题小记-crypto",
+      "similarity": 0.376
     },
     {
-      "slug": "theme-customization",
-      "title": "主题定制指南",
-      "similarity": 0.462
+      "slug": "bruteforce-qun-u-ba-ji",
+      "title": "bruteforce_群U靶机",
+      "similarity": 0.369
     },
     {
-      "slug": "getting-started",
-      "title": "欢迎使用 astro-koharu",
-      "similarity": 0.425
+      "slug": "png-challenge",
+      "title": "PNG challenge",
+      "similarity": 0.339
     },
     {
-      "slug": "markdown-features",
-      "title": "Markdown 增强功能演示",
-      "similarity": 0.406
+      "slug": "0xgame2025-misc-teaching",
+      "title": "0xGame2025 misc teaching",
+      "similarity": 0.323
     },
     {
-      "slug": "toc-no-numbering",
-      "title": "关闭目录编号示例",
-      "similarity": 0.364
+      "slug": "man-che-si-te-bian-ma-xiao-yan-jiu",
+      "title": "曼彻斯特编码小研究",
+      "similarity": 0.31
     }
   ],
-  "theme-customization": [
+  "buu-shua-ti-xiao-ji-crypto": [
     {
-      "slug": "astro-koharu-guide",
-      "title": "astro-koharu 使用指南",
-      "similarity": 0.7
+      "slug": "my-first-project",
+      "title": "My first project",
+      "similarity": 0.395
     },
     {
-      "slug": "getting-started",
-      "title": "欢迎使用 astro-koharu",
-      "similarity": 0.675
+      "slug": "man-che-si-te-bian-ma-xiao-yan-jiu",
+      "title": "曼彻斯特编码小研究",
+      "similarity": 0.392
     },
     {
-      "slug": "markdown-features",
-      "title": "Markdown 增强功能演示",
-      "similarity": 0.611
+      "slug": "the-hackers-labs-notes",
+      "title": "The Hackers Labs Notes",
+      "similarity": 0.376
     },
     {
-      "slug": "toc-no-numbering",
-      "title": "关闭目录编号示例",
-      "similarity": 0.564
+      "slug": "png-challenge",
+      "title": "PNG challenge",
+      "similarity": 0.365
     },
     {
-      "slug": "hello-world",
-      "title": "Hello World",
-      "similarity": 0.462
+      "slug": "0xgame2025-misc-teaching",
+      "title": "0xGame2025 misc teaching",
+      "similarity": 0.363
+    }
+  ],
+  "png-challenge": [
+    {
+      "slug": "0xgame2025-misc-teaching",
+      "title": "0xGame2025 misc teaching",
+      "similarity": 0.366
+    },
+    {
+      "slug": "my-first-project",
+      "title": "My first project",
+      "similarity": 0.365
+    },
+    {
+      "slug": "buu-shua-ti-xiao-ji-crypto",
+      "title": "BUU刷题小记-crypto",
+      "similarity": 0.365
+    },
+    {
+      "slug": "man-che-si-te-bian-ma-xiao-yan-jiu",
+      "title": "曼彻斯特编码小研究",
+      "similarity": 0.359
+    },
+    {
+      "slug": "the-hackers-labs-notes",
+      "title": "The Hackers Labs Notes",
+      "similarity": 0.339
+    }
+  ],
+  "man-che-si-te-bian-ma-xiao-yan-jiu": [
+    {
+      "slug": "buu-shua-ti-xiao-ji-crypto",
+      "title": "BUU刷题小记-crypto",
+      "similarity": 0.392
+    },
+    {
+      "slug": "my-first-project",
+      "title": "My first project",
+      "similarity": 0.359
+    },
+    {
+      "slug": "png-challenge",
+      "title": "PNG challenge",
+      "similarity": 0.359
+    },
+    {
+      "slug": "0xgame2025-misc-teaching",
+      "title": "0xGame2025 misc teaching",
+      "similarity": 0.343
+    },
+    {
+      "slug": "the-hackers-labs-notes",
+      "title": "The Hackers Labs Notes",
+      "similarity": 0.31
     }
   ]
 }
