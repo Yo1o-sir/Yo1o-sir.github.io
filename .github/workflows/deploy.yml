@@ -2,7 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ] # 确保这里对应你的主分支名称
+    branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -20,7 +21,6 @@ jobs:
         with:
           path: .
           package-manager: pnpm
-        # 如果你使用 pnpm，可以在这里配置，默认支持 npm/yarn
 
   deploy:
     needs: build
