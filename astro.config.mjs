@@ -18,7 +18,9 @@ import svgr from 'vite-plugin-svgr';
 import YAML from 'yaml';
 import { rehypeImagePlaceholder } from './src/lib/markdown/rehype-image-placeholder.ts';
 import { remarkLinkEmbed } from './src/lib/markdown/remark-link-embed.ts';
+import { remarkFileDownload } from './src/lib/markdown/remark-file-download.ts';
 import { normalizeUrl } from './src/lib/utils.ts';
+import remarkDirective from 'remark-directive';
 
 // Load YAML config directly with Node.js (before Vite plugins are available)
 // This is only used in astro.config.mjs - other files use @rollup/plugin-yaml
@@ -82,11 +84,19 @@ export default defineConfig({
     gfm: true,
     // Configure remark plugins for link embedding
     remarkPlugins: [
+      remarkDirective,
       [
         remarkLinkEmbed,
         {
           enableTweetEmbed: yamlConfig.content?.enableTweetEmbed ?? true,
           enableOGPreview: yamlConfig.content?.enableOGPreview ?? true,
+        },
+      ],
+      [
+        remarkFileDownload,
+        {
+          enableFileDownload: true,
+          publicDir: 'public',
         },
       ],
     ],

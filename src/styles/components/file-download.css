@@ -1,0 +1,48 @@
+/**
+ * File Download Component Styles
+ * 
+ * Styles for file download cards that integrate with the blog theme.
+ * Supports light/dark theme switching via CSS variables.
+ */
+
+/* File download block container */
+.file-download-block {
+  @apply my-6;
+}
+
+/* Download card link */
+.file-download-block a {
+  @apply block rounded-lg border border-border bg-card p-4;
+  @apply transition-all duration-250;
+  @apply hover:border-primary/50 hover:shadow-md;
+}
+
+/* Disable link underline */
+.file-download-block a:hover {
+  text-decoration: none;
+}
+
+/* Focus state for accessibility */
+.file-download-block a:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2;
+}
+
+/* Error card styles */
+.file-download-block .rounded-lg.border-destructive\/50 {
+  @apply bg-destructive/10;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 640px) {
+  .file-download-block a {
+    @apply p-3;
+  }
+
+  .file-download-block .h-12.w-12 {
+    @apply h-10 w-10;
+  }
+
+  .file-download-block .font-semibold {
+    @apply text-sm;
+  }
+}
