@@ -1,6 +1,6 @@
 ---
 title: 0xGame2025 misc teaching
-link: 0xgame2025-misc-teaching
+link: 0xgame2025-misc
 sticky: false
 catalog: true
 tocNumbering: true

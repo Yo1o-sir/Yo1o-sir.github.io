@@ -1,5 +1,6 @@
 ---
 title: V(N)Shell 出题小记
+link: v-n-shell
 draft: true
 sticky: false
 catalog: true
@@ -14,7 +15,7 @@ tags:
   - VShell
 description: 这次VNCTF2026上出这道题目的一些记录以及详细的解题wp
 cover: /img/cover/girlfriend2.jpg
-link: v-n-shell-chu-ti-xiao-ji
+
 updated: 2026-02-03 13:22:59
 ---
 # V(N)shell 出题小记
