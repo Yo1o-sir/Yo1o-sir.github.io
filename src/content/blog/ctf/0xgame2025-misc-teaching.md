@@ -1,6 +1,10 @@
 ---
 title: 0xGame2025 misc teaching
 link: 0xgame2025-misc-teaching
+sticky: false
+catalog: true
+tocNumbering: true
+excludeFromSummary: false
 date: 2026-02-03 21:23:45
 description: 0xGame2025 Misc赛道出题解析与教学指南
 tags:
@@ -9,8 +13,10 @@ tags:
 categories:
   - ['CTF']
 cover: /img/cover/game.png
+updated: 2026-02-03 13:22:59
 ---
 
+# 0xGame2025 misc 赛题解析
 > 0xGame2025 CTF Misc 赛道出题解析与教学指南
 作者：Yo1o
 >https://xz.aliyun.com/news/19232

@@ -14,5 +14,5 @@ categories:
 ## Take my hand
 - misc
 - ez
-:::download{file="/files/stego.txt" title="隐写术练习文件" description="hint:base64可能也有lsb哎"}
+:::download{file="/files/stego.txt" title="Take my hand附件" description="hint:base64可能也有lsb哎"}
 :::
