@@ -450,10 +450,10 @@ navigation:
 #     turnstileKey: Cloudflare Turnstile Key (可选)
 #     locale: 自定义语言显示 (可选)
 comment:
-  provider: waline  # 'remark42' | 'giscus' | 'waline' | 'none'
-  # remark42:
-  #   host: https://comment.example.com/
-  #   siteId: your-site-id
+  provider: remark42  # 'remark42' | 'giscus' | 'waline' | 'none'
+  remark42:
+    host: https://115.190.97.52/
+    siteId: yo1o-blog
   # giscus:
   #   repo: username/repo              # GitHub 仓库名 (owner/repo 格式)
   #   repoId: R_kgDOxxxxxx             # 仓库 ID (从 giscus.app 获取)
@@ -466,7 +466,7 @@ comment:
   #   lang: zh-CN                      # 语言
 
   waline:
-    serverURL: https://comment.yo1o.top/  # Waline 服务端地址 (必填)
+    serverURL: http://yolo.zeabur.app/  # Waline 服务端地址 (必填)
     lang: zh-CN                      # 语言 (默认: 'zh-CN')
     dark: html.dark                  # 暗黑模式 (默认: 'html.dark')
                                      # 可选: true (自适应) | false (禁用) | CSS选择器字符串

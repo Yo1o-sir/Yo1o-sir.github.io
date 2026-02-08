@@ -1,10 +1,6 @@
 ---
 title: 0xGame2025 misc teaching
 link: 0xgame2025-misc
-sticky: false
-catalog: true
-tocNumbering: true
-excludeFromSummary: false
 date: 2026-02-03 21:23:45
 description: 0xGame2025 Misc赛道出题解析与教学指南
 tags:
