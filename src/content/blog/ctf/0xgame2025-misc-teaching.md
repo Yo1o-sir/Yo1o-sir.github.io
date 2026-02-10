@@ -9,7 +9,6 @@ tags:
 categories:
   - ['CTF']
 cover: /img/cover/game.png
-updated: 2026-02-03 13:22:59
 ---
 
 # 0xGame2025 misc 赛题解析
