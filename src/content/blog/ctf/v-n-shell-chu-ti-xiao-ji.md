@@ -1,7 +1,6 @@
 ---
 title: V(N)Shell 出题小记
 link: v-n-shell
-draft: true
 sticky: false
 catalog: true
 tocNumbering: true
