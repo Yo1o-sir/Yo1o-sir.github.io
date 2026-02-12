@@ -58,6 +58,9 @@ const ogImage = getOgImageUrl(post?.data.cover, Astro.site);
     <link rel="stylesheet" href="/fonts/ChillRoundFRegular/result.css" media="print" onload="this.setAttribute('media','all')" />
     <link rel="stylesheet" href="/fonts/ChillRoundFBold/result.css" media="print" onload="this.setAttribute('media','all')" />
 
+    <!-- KaTeX CSS for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex.min.css" crossorigin="anonymous" />
+
     <ClientRouter />
     <LoadingIndicator color="#e9536a" />
     <Tooltips />

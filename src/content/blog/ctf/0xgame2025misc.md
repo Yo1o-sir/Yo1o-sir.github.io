@@ -1,21 +1,16 @@
 ---
-title: 0xGame2025 misc teaching
-draft: false
-sticky: false
-catalog: true
-tocNumbering: true
-excludeFromSummary: false
-date: 2026-02-03 21:23:45
-categories:
-  - [CTF]
+title: 0xgame2025misc
+link: 0xgame2025misc
+date: 2026-02-11 13:45:36
+description: 0xgame2025的misc几乎都是我出的，这里记录一些赛题详细题解
 tags:
-  - 0xGame2025
+  - 0xgame2025
   - misc
-description: 0xGame2025 Misc赛道出题解析与教学指南
+categories:
+  - CTF
 cover: /img/cover/game.png
-link: 0xgame2025-misc
-updated: 2026-02-10 22:06:28
 ---
+
 # 0xGame2025 misc 赛题解析
 
 > 0xGame2025 CTF Misc 赛道出题解析与教学指南\

@@ -1,4 +1,6 @@
 import fs from 'node:fs';
+import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
 import path from 'node:path';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
@@ -84,6 +86,7 @@ export default defineConfig({
     gfm: true,
     // Configure remark plugins for link embedding
     remarkPlugins: [
+      remarkMath,
       remarkDirective,
       [
         remarkLinkEmbed,
@@ -114,6 +117,7 @@ export default defineConfig({
         },
       ],
       rehypeImagePlaceholder,
+      rehypeKatex,
     ],
     syntaxHighlight: {
       type: 'shiki',

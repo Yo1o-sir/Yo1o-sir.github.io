@@ -480,11 +480,11 @@ comment:
     wordLimit: 0                     # 评论字数限制 (0 = 无限制, 默认: 0)
                                      # 可选: 单个数字 | [min, max] 数组
     pageSize: 10                     # 每页评论数 (默认: 10)
-    imageUploader: false             # 图片上传功能 (默认: false)
+    imageUploader: true             # 图片上传功能 (默认: false)
     highlighter: true                # 代码高亮 (默认: true)
-    texRenderer: false               # LaTeX 渲染 (默认: false)
-    search: false                    # 搜索功能 (默认: false)
-    reaction: false                  # 文章反应功能 (默认: false)
+    texRenderer: true              # LaTeX 渲染 (默认: false)
+    search: true                    # 搜索功能 (默认: false)
+    reaction: true                  # 文章反应功能 (默认: false)
                                      # 可选: true | false | 字符串数组 (自定义反应图标)
     emoji: true                      # 表情包配置 (默认: ['//unpkg.com/@waline/emojis@1.2.0/weibo'])
                                      # 可选: true | false | 字符串/对象数组
