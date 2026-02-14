@@ -48,7 +48,9 @@ Virtualbox Kali linux
 
 ## 官方 wp（我写的，所以官方
 
-> tips:本次出题大部分借鉴[GitHub - Esonhugh/How-AI-Kills-the-VShell: Article backup](https://github.com/Esonhugh/How-AI-Kills-the-VShell/tree/Skyworship)
+> tips:
+本次出题大部分借鉴
+[How AI Kills the VShell](https://github.com/Esonhugh/How-AI-Kills-the-VShell/tree/Skyworship)
 
 ### 提取 stage1,stage2
 

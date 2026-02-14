@@ -1,4 +1,5 @@
 :root {
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Monaco, 'Fira Code', 'Roboto Mono', monospace;
   --gradient-bg-start: #fdfbfb;
   --gradient-bg-end: #ebedee;
   --gradient-bg: linear-gradient(180deg, var(--gradient-bg-start) 10%, var(--gradient-bg-end) 100%);
@@ -22,6 +23,7 @@
 }
 
 .dark {
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, Monaco, 'Fira Code', 'Roboto Mono', monospace;
   --gradient-bg-start: #21252b;
   --gradient-bg-end: #000;
   --gradient-bg: linear-gradient(180deg, var(--gradient-bg-start) 10%, var(--gradient-bg-end) 100%);

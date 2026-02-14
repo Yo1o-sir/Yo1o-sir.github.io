@@ -111,6 +111,7 @@ export default {
       },
       fontFamily: {
         sans: ['寒蝉全圆体', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'monospace'],
         'chill-round': ['寒蝉全圆体', 'sans-serif'],
       },
       clipPath: {
