@@ -1,7 +1,7 @@
 ---
 title: 0xgame2025 misc题解-上
 link: 0xgame2025misc1
-date: 2026-02-11 13:45:36
+date: 2026-01-11 13:45:36
 description: 0xgame2025的misc几乎都是我出的，这里记录一些赛题详细题解
 tags:
   - 0xgame2025
