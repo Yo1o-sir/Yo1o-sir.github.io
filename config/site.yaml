@@ -450,20 +450,20 @@ navigation:
 #     turnstileKey: Cloudflare Turnstile Key (可选)
 #     locale: 自定义语言显示 (可选)
 comment:
-  provider: remark42  # 'remark42' | 'giscus' | 'waline' | 'none'
-  remark42:
-    host: https://115.190.97.52/
-    siteId: yo1o-blog
-  # giscus:
-  #   repo: username/repo              # GitHub 仓库名 (owner/repo 格式)
-  #   repoId: R_kgDOxxxxxx             # 仓库 ID (从 giscus.app 获取)
-  #   category: Announcements          # Discussion 分类名称
-  #   categoryId: DIC_kwDOxxxxxx       # 分类 ID (从 giscus.app 获取)
-  #   mapping: pathname                # 映射方式
-  #   reactionsEnabled: '1'            # 启用 reactions ('0' | '1')
-  #   emitMetadata: '0'                # 发送元数据 ('0' | '1')
-  #   inputPosition: top               # 输入框位置 ('top' | 'bottom')
-  #   lang: zh-CN                      # 语言
+  provider: giscus  # 'remark42' | 'giscus' | 'waline' | 'none'
+  # remark42:
+  #   host: https://115.190.97.52/
+  #   siteId: yo1o-blog
+  giscus:
+    repo: Yo1o-sir/comments              # GitHub 仓库名 (owner/repo 格式)
+    repoId: R_kgDORUoOtQ            # 仓库 ID (从 giscus.app 获取)
+    category: Announcements          # Discussion 分类名称
+    categoryId: DIC_kwDORUoOtc4C22U2       # 分类 ID (从 giscus.app 获取)
+    mapping: title                # 映射方式
+    reactionsEnabled: '1'            # 启用 reactions ('0' | '1')
+    emitMetadata: '0'                # 发送元数据 ('0' | '1')
+    inputPosition: top               # 输入框位置 ('top' | 'bottom')
+    lang: zh-CN                      # 语言
 
   waline:
     serverURL: http://yolo.zeabur.app/  # Waline 服务端地址 (必填)
