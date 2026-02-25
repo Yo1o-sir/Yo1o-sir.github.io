@@ -10,25 +10,11 @@ categories:
   - CTF
 cover: /img/cover/game.png
 ---
-# 0xGame2025 misc 赛题解析
 
 > 0xGame2025 CTF Misc 赛道出题解析与教学指南\
 > 作者：Yo1o\
 > <https://xz.aliyun.com/news/19232>\
 > 文章转载自 先知社区
-
-我是 0xGame2025 的部分 Misc 的出题人，下面是针对 misc 方向的授课文案，希望能帮助刚踏上 ctf 路上的学弟学妹们快速入门
-
-> 0xgame2025 所有题目归档传送门如下
-
-* [0xGame2025Week1](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1975497062459904000)
-
-* [0xGame2025Week2](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1978130369429377024)
-
-* [0xGame2025Week3](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1980644777888059392)
-
-* [0xGame2025Week4](https://www.ctfplus.cn/learning/problem/excellent-problemSet/detail/1983791961533845504)
-
 
 ## Week3
 
