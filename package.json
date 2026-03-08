@@ -24,9 +24,7 @@
     "change": "git cliff --bump -o CHANGELOG.md",
     "prepare": "husky",
     "knip": "knip",
-    "koharu": "npx tsx scripts/koharu.tsx",
-    "cms": "cd cms && pnpm dev",
-    "cms:install": "cd cms && pnpm install"
+    "koharu": "npx tsx scripts/koharu.tsx"
   },
   "dependencies": {
     "@antv/infographic": "^0.2.4",
