@@ -1,0 +1,70 @@
+{
+  "categories": [
+    {
+      "title": "Best Friends",
+      "description": "永远的好朋友",
+      "links": [
+        {
+          "name": "C3ngh",
+          "bio": "对我特别好的师傅,现在平时养养小鸟",
+          "url": "https://c3ngh.top",
+          "avatar": "/img/avatars/c3ngh.webp"
+        },
+        {
+          "name": "Samsāra",
+          "bio": "一位漂亮&有趣的逆向小姐姐",
+          "url": "https://samsara-lo.github.io/",
+          "avatar": "/img/avatars/samsara.jpg"
+        },
+        {
+          "name": "Findkey",
+          "bio": "很厉害很厉害的PWN二次元玩家",
+          "url": "https://find-key.github.io/",
+          "avatar": "/img/avatars/findkey.jpg"
+        }
+      ]
+    },
+    {
+      "title": "CTFers",
+      "description": "学习CTF的路上结识的大佬们",
+      "links": [
+        {
+          "name": "Xiaohao",
+          "bio": "Xiaohao==小号炸鱼",
+          "url": "https://blog.enxiaohao.cn/",
+          "avatar": "https://img.enxiaohao.cn/images/0f57b237120e4f1eab3593e2d2ab9a7c.png"
+        },
+        {
+          "name": "Mitunlny",
+          "bio": "Miscer,很厉害的",
+          "url": "https://czxh.top/",
+          "avatar": "/img/avatars/MY.jpg"
+        }
+      ]
+    },
+    {
+      "title": "开发大手子们",
+      "description": "逛开源社区认识的开发大手子们",
+      "links": [
+        {
+          "name": "hilyary",
+          "bio": "很厉害的开发大手子,他写了很好用的析镜",
+          "url": "https://hilyary.github.io",
+          "avatar": "/img/avatars/hilyary.jpg"
+        }
+      ]
+    },
+    {
+      "title": "some organization",
+      "description": "记录我join的一些组织",
+      "links": [
+        {
+          "name": "V&N team",
+          "bio": "我真的很幸运,能进入VN,遇到不少厉害的师傅,他们也对我帮助很多很多",
+          "url": "https://vnteam.cn/",
+          "avatar": "/img/avatars/vnteam.webp"
+        }
+      ]
+    }
+  ]
+}

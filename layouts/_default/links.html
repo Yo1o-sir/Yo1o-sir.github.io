@@ -1,0 +1,162 @@
+{{ define "main" }}
+{{ .Scratch.Set "scope" "single" }}
+
+<article>
+    {{ if .Params.showHero | default (.Site.Params.article.showHero | default false) }}
+    {{ $heroStyle := .Params.heroStyle }}
+    {{ if not $heroStyle }}{{ $heroStyle = .Site.Params.article.heroStyle }}{{ end }}
+    {{ $heroStyle := print "hero/" $heroStyle ".html" }}
+  {{ if templates.Exists ( printf "partials/%s" $heroStyle ) }}
+    {{ partial $heroStyle . }}
+    {{ else }}
+    {{ partial "hero/basic.html" . }}
+    {{ end }}
+    {{ end }}
+
+    <header id="single_header" class="mt-5 max-w-prose">
+        {{ if .Params.showBreadcrumbs | default (.Site.Params.article.showBreadcrumbs | default false) }}
+        {{ partial "breadcrumbs.html" . }}
+        {{ end }}
+        <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+            {{ .Title }}
+        </h1>
+
+        <div class="mt-1 mb-6 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+            {{ partial "article-meta/basic.html" (dict "context" . "scope" "single") }}
+        </div>
+
+    </header>
+
+    <section class="flex flex-col max-w-full mt-0 prose dark:prose-invert lg:flex-row">
+
+            <div class="min-w-0 min-h-0 max-w-fit">
+
+                <div class="article-content max-w-full mb-20 break-words">
+
+                        {{ .Content }}
+
+                        <!-- 添加 not-prose 类来避免 prose 样式的影响 -->
+                        <div class="not-prose">
+                                {{ $linksResource := resources.Get "data/links.json" }}
+                                {{ $links := $linksResource | transform.Unmarshal }}
+                                
+                                {{ range $links.categories }}
+                                <div class="mb-8">
+                                    <h2 class="text-2xl font-bold mb-2 text-neutral-900 dark:text-neutral">{{ .title }}</h2>
+                                    {{ if .description }}
+                                    <p class="text-neutral-500 dark:text-neutral-400 mb-4">{{ .description }}</p>
+                                    {{ end }}
+                                    <div class="friends-links grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                        {{ range .links }}
+                                            {{ $name := .name }}
+                                            {{ $bio := .bio }}
+                                            {{ $url := .url }}
+                                            {{ $avatar := .avatar }}
+
+                                            <a target="_blank" href="{{ $url }}" title="{{ $name }}" class="block" rel="noopener noreferrer">
+                                              <div class="group flex items-center p-4 bg-gray-100 dark:bg-gray-900 rounded-lg hover:scale-105 transition-all duration-300 ease-in-out">
+                                                <div class="flex-shrink-0 mr-4">
+                                                  <div class="friend-avatar-wrapper">
+                                                  <img class="friend-avatar lazy nozoom w-16 h-16 object-cover rounded-full block" loading="lazy"
+                                                       src="{{ $avatar }}"
+                                                       alt="{{ $name }}"
+                                                       onerror="this.onerror=null; this.src='/img/Transparent_Akkarin.th.jpg';"
+                                                       style="width: 64px; height: 64px;">
+                                                </div>
+                                              </div>
+                                                <span class="inline-block w-4 h-4 mr-3"></span>
+                                                <div class="flex-grow min-w-0">
+                                                  <div class="flex items-center mb-2">
+                                                    <span class="font-medium text-neutral-900 dark:text-neutral-100 truncate" style="strong">{{ $name }}</span>
+                                                  </div>
+                                                  <p class="text-sm text-neutral-700 dark:text-neutral-300 line-clamp-2 m-0">{{ $bio }}</p>
+                                                </div>
+                                              </div>
+                                            </a>
+                                        {{ end }}
+                                    </div>
+                                </div>
+                                {{ end }}
+                        </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+</article>
+
+{{ $lazyloadJS := resources.Get "js/lazyload.life.min.js" }}
+{{ if $lazyloadJS }}
+    {{ $lazyloadJS = $lazyloadJS | fingerprint "sha256" }}
+    <script type="text/javascript" src="{{ $lazyloadJS.RelPermalink }}" integrity="{{ $lazyloadJS.Data.Integrity }}"></script>
+{{ end }}
+
+<script>
+        // Random links
+        function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+        }
+
+        function randomizeLinks() {
+                const linkContainers = document.querySelectorAll('.friends-links');
+                linkContainers.forEach(container => {
+                        const links = Array.from(container.querySelectorAll('a'));
+                        const shuffledLinks = shuffleArray(links);
+
+                        links.forEach(link => link.remove());
+
+                        shuffledLinks.forEach(link => container.appendChild(link));
+                });
+        }
+
+        randomizeLinks();
+</script>
+
+<script>
+        var lazyLoadInstance = new LazyLoad({
+                // Your custom settings go here
+        });
+</script>
+
+<style>
+
+.friend-avatar-wrapper {
+  width: 64px;
+  aspect-ratio: 1 / 1; /* 保证是正方形，避免压扁 */
+  border-radius: 50%;     /* 圆形裁切 */
+  overflow: hidden;
+  border: 2px solid #9ca3af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  box-sizing: border-box;
+  transition: transform 0.6s ease;
+}
+
+/* 鼠标悬停时旋转 */
+.friend-avatar-wrapper:hover {
+  transform: rotate(360deg);
+}
+
+/* dark 模式下边框稍调亮 */
+html.dark .friend-avatar-wrapper {
+  border-color: #d1d5db;  /* light gray for dark mode */
+}
+
+.friend-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+</style>
+
+{{ end }}
