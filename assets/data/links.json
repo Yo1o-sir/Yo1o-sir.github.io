@@ -63,6 +63,12 @@
           "bio": "我真的很幸运,能进入VN,遇到不少厉害的师傅,他们也对我帮助很多很多",
           "url": "https://vnteam.cn/",
           "avatar": "/img/avatars/vnteam.webp"
+        },
+        {
+          "name": "Maze-sec",
+          "bio": "练习靶机渗透的地方,qq群里能经常学到大佬传授的经验知识,里面的每个人都很友好,很棒的社区",
+          "url": "https://maze-sec.com/",
+          "avatar": "https://maze-sec.com/img/favicon_logo/logo.jpg"
         }
       ]
     }
