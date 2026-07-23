@@ -29,6 +29,12 @@
       "description": "学习CTF的路上结识的大佬们",
       "links": [
         {
+          "name": "LamentXU",
+          "bio": "传奇高中生,Web佬,还会开发",
+          "url": "https://www.cnblogs.com/LAMENTXU",
+          "avatar": "/img/avatars/lamentxu.jpg"
+        },
+        {
           "name": "Xiaohao",
           "bio": "Xiaohao==小号炸鱼",
           "url": "https://blog.enxiaohao.cn/",
